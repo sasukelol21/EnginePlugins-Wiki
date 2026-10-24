@@ -629,7 +629,7 @@
         </div>
       </div>
 
-      <!-- APARTADO 3: CHATENGINE -->
+            <!-- APARTADO 3: CHATENGINE -->
       <div id="tab-chatengine" class="tab-content">
         <div class="plugin-header">
           <img src="chatengine.png" alt="ChatEngine">
@@ -649,43 +649,43 @@
           <li data-i18n="chat_f2"><strong>Menciones:</strong> Etiqueta jugadores con <code>@Nombre</code>, aplicando resaltado y alerta de sonido.</li>
           <li data-i18n="chat_f3"><strong>Filtros:</strong> Detección de enlaces, palabras restringidas y control de repetición.</li>
           <li data-i18n="chat_f4"><strong>LuckPerms:</strong> Consulta prefijos, sufijos y grupos primarios en tiempo real.</li>
-          <li><strong>Java 25 Nativo:</strong> Arquitectura asíncrona compatible con Minecraft 1.21.x hasta 26.3.</li>
+          <li data-i18n="chat_f5"><strong>Java 25 Nativo:</strong> Arquitectura asíncrona compatible con Minecraft 1.21.x hasta 26.3.</li>
         </ul>
 
-        <h2>Compatibilidad de Versiones</h2>
+        <h2 data-i18n="compat_h2">Compatibilidad de Versiones</h2>
         <table>
           <thead>
             <tr>
-              <th style="width: 140px;">Versión Plugin</th>
-              <th>Versiones Minecraft Soportadas</th>
-              <th style="width: 110px;">Java</th>
-              <th style="width: 110px;">Estado</th>
+              <th style="width: 140px;" data-i18n="th_plugin_version">Versión Plugin</th>
+              <th data-i18n="th_mc_versions">Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;" data-i18n="th_java_version">Java</th>
+              <th style="width: 110px;" data-i18n="th_status">Estado</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><code>1.3.0</code> (Última)</td>
+              <td><code>1.3.0</code> (<span data-i18n="badge_latest">Última</span>)</td>
               <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
               <td>Java 21 – 25+</td>
-              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+              <td><span style="color: #4ade80; font-weight: 600;" data-i18n="status_stable">Estable</span></td>
             </tr>
             <tr>
               <td><code>1.2.1</code></td>
               <td>1.21.0 – 1.21.4</td>
               <td>Java 21</td>
-              <td>Soportada</td>
+              <td><span data-i18n="status_supported">Soportada</span></td>
             </tr>
             <tr>
               <td><code>1.1.0</code></td>
               <td>1.21.0 – 1.21.1</td>
               <td>Java 21</td>
-              <td>Heredada</td>
+              <td><span data-i18n="status_legacy">Heredada</span></td>
             </tr>
             <tr>
               <td><code>1.0.0</code></td>
               <td>1.20.4 – 1.21.0</td>
               <td>Java 17 – 21</td>
-              <td>Descontinuada</td>
+              <td><span data-i18n="status_deprecated">Descontinuada</span></td>
             </tr>
           </tbody>
         </table>
@@ -701,7 +701,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>/chatengine reload</code> (o <code>/ce reload</code>)</td>
+              <td><code>/chatengine reload</code></td>
               <td><code>chatengine.admin.reload</code></td>
               <td data-i18n="chat_cmd_reload">Recarga las configuraciones y canales.</td>
             </tr>
@@ -716,204 +716,116 @@
               <td data-i18n="chat_cmd_mute">Mutea o desmutea el chat global.</td>
             </tr>
             <tr>
-              <td><code>/channel [canal] [mensaje]</code> (o <code>/ch</code>)</td>
-              <td>Variable por canal</td>
+              <td><code>/channel [canal] [mensaje]</code></td>
+              <td>Variable</td>
               <td data-i18n="chat_cmd_ch">Cambia de canal activo o envía un mensaje rápido.</td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Configuración Principal (config.yml)</h2>
-        <p>Archivo de configuración generado automáticamente en <code>plugins/ChatEngine/config.yml</code>:</p>
-        <pre><code># ==========================================
-# ChatEngine - Configuración Principal (config.yml)
-# ==========================================
+        <h2 data-i18n="ce_config_h2">Configuración Principal (config.yml)</h2>
+        <p data-i18n="ce_config_p">Archivo de configuración generado automáticamente en <code>plugins/ChatEngine/config.yml</code>:</p>
+        <pre><code data-i18n="ce_code_config"></code></pre>
 
-chat:
-  # Canal por defecto al que se conectan los jugadores al entrar
-  default-channel: global
+        <h2 data-i18n="ce_channels_h2">Configuración de Canales (channels.yml)</h2>
+        <p data-i18n="ce_channels_p">Permite definir canales de chat independientes en <code>plugins/ChatEngine/channels.yml</code>:</p>
+        <pre><code data-i18n="ce_code_channels"></code></pre>
 
-  # Cancela el chat vanilla de Bukkit para procesarlo mediante ChatEngine
-  cancel-vanilla-chat: true
-
-  # Formatos de chat (Prioridad: by-group > by-world > default)
-  formats:
-    # Formato general por defecto
-    default: "{prefix}{player}{suffix}&7: &f{message}"
-
-    # Formatos específicos por mundo (usa el nombre interno de la carpeta del mundo)
-    by-world:
-      world: "&7[&aSurvival&7] {prefix}{player}{suffix}&7: &f{message}"
-      world_nether: "&7[&cNether&7] {prefix}{player}{suffix}&7: &f{message}"
-      world_the_end: "&7[&dTheEnd&7] {prefix}{player}{suffix}&7: &f{message}"
-
-    # Formatos por grupo de LuckPerms (usa el primary group del jugador)
-    by-group:
-      default: "&7[&fUsuario&7] {prefix}{player}{suffix}&7: &f{message}"
-      vip: "&7[&aVIP&7] <gradient:#00FFAA:#00A2FF>{player}</gradient>{suffix}&7: &f{message}"
-      admin: "&7[&cAdmin&7] <gradient:#FF5555:#FFAA00>{player}</gradient>{suffix}&7: &f{message}"
-
-  # Control de permisos para colores en el chat
-  colors:
-    use-permissions: true      # Si es false, cualquiera puede usar colores
-    allow-magic: false         # Desactiva &k para evitar abusos visuales
-
-    legacy:
-      enabled: true
-      permission: "chatcolor.color.legacy" # &0-&f
-
-    hex:
-      enabled: true
-      permission: "chatcolor.color.hex"    # &#RRGGBB o <#RRGGBB>
-
-    formats:
-      bold:
-        enabled: true
-        permission: "chatcolor.format.bold"      # &l
-      italic:
-        enabled: true
-        permission: "chatcolor.format.italic"    # &o
-      underline:
-        enabled: true
-        permission: "chatcolor.format.underline" # &n
-      strikethrough:
-        enabled: true
-        permission: "chatcolor.format.strike"    # &m
-      magic:
-        enabled: false
-        permission: "chatcolor.format.magic"     # &k
-
-# Módulo de protección Anti-Spam
-spam:
-  enabled: true
-  cooldown-seconds: 2          # Segundos mínimos entre cada mensaje
-  repeat-window-seconds: 5     # Ventana para bloquear el envío del mismo mensaje
-
-  bypass-permissions:
-    cooldown: "chatengine.bypass.cooldown"
-    repeat: "chatengine.bypass.repeat"</code></pre>
-
-        <h2>Configuración de Canales (channels.yml)</h2>
-        <p>Permite definir canales de chat independientes en <code>plugins/ChatEngine/channels.yml</code>:</p>
-        <pre><code># ==========================================
-# ChatEngine - Canales (channels.yml)
-# ==========================================
-
-channels:
-  global:
-    # Ámbito: GLOBAL (todo el servidor) o WORLD (solo jugadores en el mismo mundo)
-    scope: GLOBAL
-    permission-speak: "chatengine.channel.global.speak"
-    permission-view: "chatengine.channel.global.view"
-    format: "&7[&aGlobal&7] {prefix}{player}{suffix}&7: &f{message}"
-
-  world:
-    scope: WORLD
-    permission-speak: "chatengine.channel.world.speak"
-    permission-view: "chatengine.channel.world.view"
-    format: "&7[&b{world}&7] {prefix}{player}{suffix}&7: &f{message}"
-
-  staff:
-    scope: GLOBAL
-    permission-speak: "chatengine.channel.staff.speak"
-    permission-view: "chatengine.channel.staff.view"
-    format: "&c[StaffChat] &f{player}&7: &e{message}"</code></pre>
-
-        <h2>Lista Completa de Permisos</h2>
+        <h2 data-i18n="ce_perms_h2">Lista Completa de Permisos</h2>
         <table>
           <thead>
             <tr>
-              <th>Permiso</th>
-              <th>Por Defecto</th>
-              <th>Descripción</th>
+              <th data-i18n="th_perm">Permiso</th>
+              <th data-i18n="th_default">Por Defecto</th>
+              <th data-i18n="th_desc">Descripción</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>chatengine.admin</code></td>
               <td>OP</td>
-              <td>Acceso total a todos los comandos de ChatEngine.</td>
+              <td data-i18n="ce_p_admin">Acceso total a todos los comandos de ChatEngine.</td>
             </tr>
             <tr>
               <td><code>chatengine.admin.reload</code></td>
               <td>OP</td>
-              <td>Permite recargar archivos de configuración.</td>
+              <td data-i18n="ce_p_reload">Permite recargar archivos de configuración.</td>
             </tr>
             <tr>
               <td><code>chatengine.admin.clearchat</code></td>
               <td>OP</td>
-              <td>Permite limpiar el chat global.</td>
+              <td data-i18n="ce_p_clearchat">Permite limpiar el chat global.</td>
             </tr>
             <tr>
               <td><code>chatengine.admin.mutechat</code></td>
               <td>OP</td>
-              <td>Permite silenciar o habilitar el chat global.</td>
+              <td data-i18n="ce_p_mutechat">Permite silenciar o habilitar el chat global.</td>
             </tr>
             <tr>
               <td><code>chatengine.bypass.cooldown</code></td>
               <td>OP</td>
-              <td>Omite el tiempo de espera entre mensajes.</td>
+              <td data-i18n="ce_p_bp_cooldown">Omite el tiempo de espera entre mensajes.</td>
             </tr>
             <tr>
               <td><code>chatengine.bypass.repeat</code></td>
               <td>OP</td>
-              <td>Omite el bloqueo de mensajes repetidos.</td>
+              <td data-i18n="ce_p_bp_repeat">Omite el bloqueo de mensajes repetidos.</td>
             </tr>
             <tr>
               <td><code>chatengine.bypass.moderation</code></td>
               <td>OP</td>
-              <td>Omite los filtros de palabras y enlaces prohibidos.</td>
+              <td data-i18n="ce_p_bp_mod">Omite los filtros de palabras y enlaces prohibidos.</td>
             </tr>
             <tr>
               <td><code>chatengine.mentions</code></td>
               <td>true</td>
-              <td>Permite mencionar a otros usuarios con @Jugador.</td>
+              <td data-i18n="ce_p_mentions">Permite mencionar a otros usuarios con @Jugador.</td>
             </tr>
             <tr>
               <td><code>chatcolor.color.legacy</code></td>
               <td>OP</td>
-              <td>Permite usar códigos clásicos (&0-&f).</td>
+              <td data-i18n="ce_p_c_legacy">Permite usar códigos clásicos (&amp;0-&amp;f).</td>
             </tr>
             <tr>
               <td><code>chatcolor.color.hex</code></td>
               <td>OP</td>
-              <td>Permite usar colores hexadecimales (&#RRGGBB).</td>
+              <td data-i18n="ce_p_c_hex">Permite usar colores hexadecimales (&amp;#RRGGBB).</td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Placeholders Soportados</h2>
+        <h2 data-i18n="ce_ph_h2">Placeholders Soportados</h2>
         <table>
           <thead>
             <tr>
-              <th>Placeholder</th>
-              <th>Descripción</th>
+              <th data-i18n="th_placeholder">Placeholder</th>
+              <th data-i18n="th_desc">Descripción</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>{player}</code></td>
-              <td>Nombre del jugador que envía el mensaje.</td>
+              <td data-i18n="ce_ph_player">Nombre del jugador que envía el mensaje.</td>
             </tr>
             <tr>
               <td><code>{prefix}</code></td>
-              <td>Prefijo del jugador obtenido de LuckPerms o Vault.</td>
+              <td data-i18n="ce_ph_prefix">Prefijo del jugador obtenido de LuckPerms o Vault.</td>
             </tr>
             <tr>
               <td><code>{suffix}</code></td>
-              <td>Sufijo del jugador obtenido de LuckPerms o Vault.</td>
+              <td data-i18n="ce_ph_suffix">Sufijo del jugador obtenido de LuckPerms o Vault.</td>
             </tr>
             <tr>
               <td><code>{world}</code></td>
-              <td>Nombre del mundo en el que se encuentra el jugador.</td>
+              <td data-i18n="ce_ph_world">Nombre del mundo en el que se encuentra el jugador.</td>
             </tr>
             <tr>
               <td><code>{message}</code></td>
-              <td>Contenido del mensaje enviado.</td>
+              <td data-i18n="ce_ph_message">Contenido del mensaje enviado.</td>
             </tr>
             <tr>
               <td><code>PlaceholderAPI</code></td>
-              <td>Soporte total para cualquier placeholder de PAPI (ej. <code>%vault_eco_balance%</code>).</td>
+              <td data-i18n="ce_ph_papi">Soporte total para cualquier placeholder de PAPI.</td>
             </tr>
           </tbody>
         </table>
@@ -947,7 +859,7 @@ channels:
         </table>
       </div>
 
-      <!-- APARTADO GUIENGINE -->
+            <!-- APARTADO GUIENGINE -->
       <div id="tab-guiengine" class="tab-content">
         <div class="plugin-header">
           <img src="guiengine.png" alt="GUIEngine">
@@ -966,17 +878,17 @@ channels:
           <li data-i18n="gui_f1"><strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.</li>
           <li data-i18n="gui_f2"><strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.</li>
           <li data-i18n="gui_f3"><strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.</li>
-          <li><strong>Gestión de Eventos Automática:</strong> Cancelación de eventos no deseados en clics rápidos o atajos de teclado (números del hotbar, drop, shift-click).</li>
+          <li data-i18n="gui_f4"><strong>Gestión de Eventos Automática:</strong> Cancelación de eventos no deseados en clics rápidos o atajos de teclado.</li>
         </ul>
 
-        <h2>Compatibilidad de Versiones</h2>
+        <h2 data-i18n="compat_h2">Compatibilidad de Versiones</h2>
         <table>
           <thead>
             <tr>
-              <th style="width: 140px;">Versión Plugin</th>
-              <th>Versiones Minecraft Soportadas</th>
-              <th style="width: 110px;">Java</th>
-              <th style="width: 110px;">Estado</th>
+              <th style="width: 140px;" data-i18n="th_plugin_version">Versión Plugin</th>
+              <th data-i18n="th_mc_versions">Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;" data-i18n="th_java_version">Java</th>
+              <th style="width: 110px;" data-i18n="th_status">Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -984,40 +896,22 @@ channels:
               <td><code>1.0.0</code> (Core)</td>
               <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
               <td>Java 21 – 25+</td>
-              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+              <td><span style="color: #4ade80; font-weight: 600;" data-i18n="status_stable">Estable</span></td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Seguridad y Protección Antidupe</h2>
-        <p>GUIEngine implementa una capa estricta de validación sobre el ciclo de vida de los inventarios de Spigot/Paper:</p>
+        <h2 data-i18n="ge_sec_h2">Seguridad y Protección Antidupe</h2>
+        <p data-i18n="ge_sec_p">GUIEngine implementa una capa estricta de validación sobre el ciclo de vida de los inventarios:</p>
         <ul>
-          <li><strong>Cancelación Obligatoria:</strong> <code>InventoryClickEvent</code> y <code>InventoryDragEvent</code> están blindados para evitar que los jugadores saquen ítems decorativos.</li>
-          <li><strong>Control de Cierre:</strong> Manejo seguro con <code>InventoryCloseEvent</code> para limpieza de memoria y eliminación de listeners temporales.</li>
-          <li><strong>Prevención de Clicks Fantasma:</strong> Verificación de identificadores únicos (UUID) por sesión de menú.</li>
+          <li data-i18n="ge_sec_li1"><strong>Cancelación Obligatoria:</strong> <code>InventoryClickEvent</code> y <code>InventoryDragEvent</code> están blindados contra robos de ítems.</li>
+          <li data-i18n="ge_sec_li2"><strong>Control de Cierre:</strong> Manejo seguro con <code>InventoryCloseEvent</code> para limpieza de memoria.</li>
+          <li data-i18n="ge_sec_li3"><strong>Prevención de Clicks Fantasma:</strong> Verificación por identificador único (UUID) en cada sesión.</li>
         </ul>
 
-        <h2>Ejemplo de Integración (API para Desarrolladores)</h2>
-        <p>Ejemplo de creación de un menú interactivo protegido con callbacks usando la API de GUIEngine:</p>
-        <pre><code>// Creación de un menú de 27 slots (3 filas)
-GUIEngineMenu menu = new GUIEngineMenu("Menú Principal", 27);
-
-// Configuración de un botón interactivo
-ItemStack item = new ItemBuilder(Material.COMPASS)
-    .name("&a&lSelector de Modalidades")
-    .lore("&7Haz clic para abrir el menú de servidores.")
-    .build();
-
-menu.setItem(13, item, (player, clickType) -> {
-    player.sendMessage("§aAbriendo servidor Survival...");
-    player.closeInventory();
-});
-
-// Relleno estético de bordes
-menu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);
-
-// Apertura segura para el jugador
-menu.open(player);</code></pre>
+        <h2 data-i18n="ge_api_h2">Ejemplo de Integración (API para Desarrolladores)</h2>
+        <p data-i18n="ge_api_p">Ejemplo de creación de un menú interactivo protegido con callbacks usando la API de GUIEngine:</p>
+        <pre><code data-i18n="ge_code_api"></code></pre>
 
         <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
         <table>
@@ -1036,7 +930,7 @@ menu.open(player);</code></pre>
         </table>
       </div>
 
-      <!-- APARTADO 4: POLLENGINE -->
+            <!-- APARTADO 4: POLLENGINE -->
       <div id="tab-pollengine" class="tab-content">
         <div class="plugin-header">
           <img src="pollengine.png" alt="PollEngine">
@@ -1052,87 +946,45 @@ menu.open(player);</code></pre>
 
         <h2 data-i18n="features">Características</h2>
         <ul>
-          <li><strong>Interfaz GUI Interactiva:</strong> Los usuarios votan haciendo clic en el menú sin tener que escribir comandos complejos.</li>
-          <li><strong>Temporizador y Anuncio Automático:</strong> Cuenta atrás configurable con anuncio en el chat y pantalla al terminar.</li>
-          <li><strong>Cambio de Voto Flexible:</strong> Opción para permitir a los jugadores rectificar su elección mientras la encuesta siga activa.</li>
-          <li><strong>Recuento en Vivo:</strong> Consulta los porcentajes y votos totales en cualquier momento con <code>/poll results</code>.</li>
+          <li data-i18n="poll_f1"><strong>Interfaz GUI Interactiva:</strong> Los usuarios votan haciendo clic en el menú sin tener que escribir comandos complejos.</li>
+          <li data-i18n="poll_f2"><strong>Temporizador y Anuncio Automático:</strong> Cuenta atrás configurable con anuncio en el chat y pantalla al terminar.</li>
+          <li data-i18n="poll_f3"><strong>Cambio de Voto Flexible:</strong> Opción para permitir a los jugadores rectificar su elección mientras la encuesta siga activa.</li>
+          <li data-i18n="poll_f4"><strong>Recuento en Vivo:</strong> Consulta los porcentajes y votos totales en cualquier momento con <code>/poll results</code>.</li>
         </ul>
 
-        <h2>Compatibilidad de Versiones</h2>
+        <h2 data-i18n="compat_h2">Compatibilidad de Versiones</h2>
         <table>
           <thead>
             <tr>
-              <th style="width: 140px;">Versión Plugin</th>
-              <th>Versiones Minecraft Soportadas</th>
-              <th style="width: 110px;">Java</th>
-              <th style="width: 110px;">Estado</th>
+              <th style="width: 140px;" data-i18n="th_plugin_version">Versión Plugin</th>
+              <th data-i18n="th_mc_versions">Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;" data-i18n="th_java_version">Java</th>
+              <th style="width: 110px;" data-i18n="th_status">Estado</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><code>2.0.0</code> (Última)</td>
+              <td><code>2.0.0</code> (<span data-i18n="badge_latest">Última</span>)</td>
               <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
               <td>Java 21 – 25+</td>
-              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+              <td><span style="color: #4ade80; font-weight: 600;" data-i18n="status_stable">Estable</span></td>
             </tr>
             <tr>
               <td><code>1.0.0</code></td>
               <td>1.20.x – 1.21.2</td>
               <td>Java 17 – 21</td>
-              <td>Descontinuada</td>
+              <td><span data-i18n="status_deprecated">Descontinuada</span></td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Configuración Principal (config.yml)</h2>
-        <p>Configuración completa con soporte de sonidos, mensajes y temporizador en <code>plugins/PollEngine/config.yml</code>:</p>
-        <pre><code># ==========================================
-# PollEngine - Configuración Principal (config.yml)
-# ==========================================
-
-settings:
-  # Título que se muestra en la interfaz gráfica del menú de votación
-  # Admite etiquetas MiniMessage (<gradient>, <bold>, etc.)
-  gui-title: "<gradient:#FFAA00:#FF5500><bold>PollEngine</bold></gradient> <dark_gray>| <gray>Votación"
-  
-  # Duración predeterminada de la encuesta en segundos al crearla sin especificar tiempo
-  # (0 = duración ilimitada, se cierra manualmente con /poll end)
-  default-duration-seconds: 120
-  
-  # Si es true, los jugadores pueden cambiar su voto mientras la votación siga abierta
-  allow-change-vote: true
-  
-  # Efectos de sonido en acciones (nombres de sonidos de Bukkit, dejar vacío para desactivar)
-  sounds:
-    open-menu: "BLOCK_CHEST_OPEN"
-    vote-success: "ENTITY_PLAYER_LEVELUP"
-    vote-already: "ENTITY_VILLAGER_NO"
-    poll-start: "ENTITY_EXPERIENCE_ORB_PICKUP"
-    poll-end: "UI_TOAST_CHALLENGE_COMPLETE"
-
-# Mensajes del sistema
-messages:
-  prefix: "<gradient:#FFAA00:#FF5500><bold>PollEngine</bold></gradient> <dark_gray>| <gray>"
-  no-permission: "<red>No tienes permiso para ejecutar este comando."
-  no-active-poll: "<yellow>No hay ninguna encuesta activa en este momento."
-  already-voted: "<yellow>Ya has votado por: <white>{option}<yellow>."
-  vote-changed: "<green>Tu voto ha sido actualizado a: <white>{option}<green>."
-  vote-registered: "<green>¡Gracias por votar! Tu opción: <white>{option}<green>."
-  poll-created: "<green>¡Una nueva encuesta ha comenzado!<newline><gray>Pregunta: <yellow>{question}<newline><gray>Usa <gold>/poll<gray> para votar."
-  poll-ended-broadcast: "<gold><bold>¡Encuesta Finalizada!</bold><newline><gray>Pregunta: <yellow>{question}<newline><gray>Ganador: <green>{winner} <dark_gray>({winner_votes} votos)"
-  poll-results-header: "<gradient:#FFAA00:#FF5500><bold>--- Resultados de la Encuesta ---</bold></gradient><newline><gray>Pregunta: <yellow>{question}<newline><gray>Total de votos: <white>{total_votes}"
-  poll-results-entry: "<gray>  <white>{option}: <gold>{votes} votos <dark_gray>({percent}%)"
-  config-reloaded: "<green>Configuración de PollEngine recargada correctamente."</code></pre>
+        <h2 data-i18n="pe_config_h2">Configuración Principal (config.yml)</h2>
+        <p data-i18n="pe_config_p">Configuración completa con soporte de sonidos, mensajes y temporizador en <code>plugins/PollEngine/config.yml</code>:</p>
+        <pre><code data-i18n="pe_code_config"></code></pre>
 
         <h2 data-i18n="poll_h2_create">Creación de Encuestas</h2>
-        <p>Sintaxis del comando para administradores:</p>
-        <pre><code>/poll start &lt;Pregunta&gt; | &lt;Opción 1&gt; | &lt;Opción 2&gt; ... [segundos]
-
-# Ejemplo con 2 opciones y 60 segundos:
-/poll start ¿Reiniciar el mundo Nether? | Sí | No 60
-
-# Ejemplo con 3 opciones y 120 segundos:
-/poll start ¿Qué evento prefieres el sábado? | PvP Arena | Parkour | Spleef 120</code></pre>
+        <p data-i18n="pe_create_p">Sintaxis del comando para administradores:</p>
+        <pre><code data-i18n="pe_code_usage"></code></pre>
 
         <h2 data-i18n="commands">Comandos</h2>
         <table>
@@ -1172,40 +1024,40 @@ messages:
           </tbody>
         </table>
 
-        <h2>Permisos</h2>
+        <h2 data-i18n="pe_perms_h2">Permisos</h2>
         <table>
           <thead>
             <tr>
-              <th>Permiso</th>
-              <th>Por Defecto</th>
-              <th>Descripción</th>
+              <th data-i18n="th_perm">Permiso</th>
+              <th data-i18n="th_default">Por Defecto</th>
+              <th data-i18n="th_desc">Descripción</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>pollengine.vote</code></td>
-              <td>true (todos)</td>
-              <td>Permite abrir el menú y emitir un voto en encuestas activas.</td>
+              <td>true</td>
+              <td data-i18n="pe_p_vote">Permite abrir el menú y emitir un voto en encuestas activas.</td>
             </tr>
             <tr>
               <td><code>pollengine.admin</code></td>
               <td>OP</td>
-              <td>Acceso administrativo completo a PollEngine.</td>
+              <td data-i18n="pe_p_admin">Acceso administrativo completo a PollEngine.</td>
             </tr>
             <tr>
               <td><code>pollengine.admin.start</code></td>
               <td>OP</td>
-              <td>Permite iniciar nuevas encuestas.</td>
+              <td data-i18n="pe_p_start">Permite iniciar nuevas encuestas.</td>
             </tr>
             <tr>
               <td><code>pollengine.admin.end</code></td>
               <td>OP</td>
-              <td>Permite finalizar manualmente una encuesta activa.</td>
+              <td data-i18n="pe_p_end">Permite finalizar manualmente una encuesta activa.</td>
             </tr>
             <tr>
               <td><code>pollengine.admin.reload</code></td>
               <td>OP</td>
-              <td>Permite recargar la configuración del plugin.</td>
+              <td data-i18n="pe_p_reload">Permite recargar la configuración del plugin.</td>
             </tr>
           </tbody>
         </table>
@@ -1231,7 +1083,7 @@ messages:
         </table>
       </div>
 
-      <!-- APARTADO 5: MOTDENGINE -->
+            <!-- APARTADO 5: MOTDENGINE -->
       <div id="tab-motdengine" class="tab-content">
         <div class="plugin-header">
           <img src="motdengine.png" alt="MotdEngine">
@@ -1252,95 +1104,35 @@ messages:
           <li data-i18n="motd_m3"><strong>STATIC:</strong> Muestra un único mensaje fijo.</li>
         </ul>
 
-        <h2>Compatibilidad de Versiones</h2>
+        <h2 data-i18n="compat_h2">Compatibilidad de Versiones</h2>
         <table>
           <thead>
             <tr>
-              <th style="width: 140px;">Versión Plugin</th>
-              <th>Versiones Minecraft Soportadas</th>
-              <th style="width: 110px;">Java</th>
-              <th style="width: 110px;">Estado</th>
+              <th style="width: 140px;" data-i18n="th_plugin_version">Versión Plugin</th>
+              <th data-i18n="th_mc_versions">Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;" data-i18n="th_java_version">Java</th>
+              <th style="width: 110px;" data-i18n="th_status">Estado</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><code>2.0.0</code> (Última)</td>
+              <td><code>2.0.0</code> (<span data-i18n="badge_latest">Última</span>)</td>
               <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
               <td>Java 21 – 25+</td>
-              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+              <td><span style="color: #4ade80; font-weight: 600;" data-i18n="status_stable">Estable</span></td>
             </tr>
             <tr>
               <td><code>1.0.0</code></td>
               <td>1.20.x – 1.21.1</td>
               <td>Java 17 – 21</td>
-              <td>Descontinuada</td>
+              <td><span data-i18n="status_deprecated">Descontinuada</span></td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Configuración Principal (config.yml)</h2>
-        <p>Configuración completa para MOTD, hover de jugadores y mantenimiento en <code>plugins/MotdEngine/config.yml</code>:</p>
-        <pre><code># ==========================================
-# MotdEngine - Configuración Principal (config.yml)
-# ==========================================
-
-# Configuración del mensaje en la lista de servidores
-motd:
-  # Modos disponibles:
-  # - "ROTATING": Rota cíclicamente los mensajes cada X segundos
-  # - "RANDOM": Elige un mensaje al azar en cada ping de un jugador
-  # - "STATIC": Muestra siempre el primer mensaje de la lista
-  mode: "ROTATING"
-
-  # Intervalo de rotación en segundos cuando el modo es ROTATING
-  rotation-interval-seconds: 15
-
-  # Lista de mensajes MOTD (Usa \n o <newline> para separar línea 1 y línea 2)
-  # Soporta MiniMessage (<gradient>, <rainbow>, <bold>) y códigos clásicos (&a-&f)
-  messages:
-    - "<gradient:#00FFAA:#00A2FF><bold>¡Bienvenido a Nuestro Servidor!</bold></gradient>\n<gray>Survival Custom, Minijuegos & Creativo <dark_gray>• <yellow>¡Únete ya!"
-    - "<gradient:#FFAA00:#FF5500><bold>La Mejor Experiencia Minecraft</bold></gradient>\n<gray>Eventos especiales de fin de semana activos <dark_gray>• <green>Juega con amigos"
-    - "<gradient:#FF55FF:#AA00AA><bold>Actualizado a la última versión 26.3!</bold></gradient>\n<gray>Rendimiento óptimo sin lag <dark_gray>• <aqua>¡Te esperamos!"
-
-# Personalización del recuento de jugadores y slots
-player-count:
-  # Si es true, sobrescribe el límite de jugadores del server.properties
-  override-max-players: false
-  # Límite estático de jugadores (si override-max-players es true y dynamic-max es false)
-  max-players: 100
-  # Si es true, el máximo siempre será (jugadores_conectados + dynamic-addition)
-  dynamic-max: true
-  dynamic-addition: 1
-
-# Menú emergente al pasar el ratón sobre el recuento de jugadores
-player-hover:
-  enabled: true
-  lines:
-    - "<gradient:#00FFAA:#00A2FF><bold>--- INFORMACIÓN DEL SERVIDOR ---</bold></gradient>"
-    - "<gray>Jugadores en línea: <yellow>{online} <dark_gray>/ <yellow>{max}"
-    - "<gray>Comunidad Discord: <aqua>discord.gg/tuservidor"
-    - "<gray>Tienda Oficial: <gold>tienda.tuservidor.net"
-    - "<green>¡Que disfrutes de tu estancia!"
-
-# Sistema de Modo Mantenimiento
-maintenance:
-  enabled: false
-  # MOTD mostrado cuando el mantenimiento está activo
-  motd: "<gradient:#FF0000:#FF5555><bold>SERVIDOR EN MANTENIMIENTO</bold></gradient>\n<gray>Volveremos en breve. Consulta nuestro Discord para más noticias."
-  # Mensaje de desconexión al intentar entrar sin permiso de bypass
-  kick-message: "<red><bold>¡El servidor se encuentra actualmente en mantenimiento!</bold></red><newline><gray>Por favor, inténtalo más tarde o visita nuestro Discord."
-  # Texto que reemplaza el número de versión en el cliente de Minecraft
-  custom-version-text: "<red>Mantenimiento"
-
-# Mensajes del plugin
-messages:
-  prefix: "<gradient:#00FFAA:#00A2FF><bold>MotdEngine</bold></gradient> <dark_gray>| <gray>"
-  no-permission: "<red>No tienes permiso para ejecutar este comando."
-  config-reloaded: "<green>¡Configuración de MotdEngine recargada correctamente!"
-  maintenance-toggled: "<yellow>El modo mantenimiento ahora está: {status}"
-  maintenance-on: "<red><bold>ACTIVADO</bold></red>"
-  maintenance-off: "<green><bold>DESACTIVADO</bold></green>"
-  motd-set: "<green>MOTD estático establecido: <white>{motd}"</code></pre>
+        <h2 data-i18n="me_config_h2">Configuración Principal (config.yml)</h2>
+        <p data-i18n="me_config_p">Configuración completa para MOTD, hover de jugadores y mantenimiento en <code>plugins/MotdEngine/config.yml</code>:</p>
+        <pre><code data-i18n="me_code_config"></code></pre>
 
         <h2 data-i18n="commands">Comandos</h2>
         <table>
@@ -1375,25 +1167,25 @@ messages:
           </tbody>
         </table>
 
-        <h2>Permisos</h2>
+        <h2 data-i18n="me_perms_h2">Permisos</h2>
         <table>
           <thead>
             <tr>
-              <th>Permiso</th>
-              <th>Por Defecto</th>
-              <th>Descripción</th>
+              <th data-i18n="th_perm">Permiso</th>
+              <th data-i18n="th_default">Por Defecto</th>
+              <th data-i18n="th_desc">Descripción</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>motdengine.admin</code></td>
               <td>OP</td>
-              <td>Permite usar todos los comandos administrativos de /motd.</td>
+              <td data-i18n="me_p_admin">Permite usar todos los comandos administrativos de /motd.</td>
             </tr>
             <tr>
               <td><code>motdengine.maintenance.bypass</code></td>
               <td>OP</td>
-              <td>Permite conectarse y jugar en el servidor mientras el modo mantenimiento esté activado.</td>
+              <td data-i18n="me_p_bypass">Permite conectarse y jugar en el servidor mientras el modo mantenimiento esté activado.</td>
             </tr>
           </tbody>
         </table>
@@ -1409,7 +1201,7 @@ messages:
           <tbody>
             <tr>
               <td><code>2.0.0</code></td>
-              <td data-i18n="me_log_200">Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover multilínea.</td>
+              <td data-i18n="me_log_200">Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover personalizado.</td>
             </tr>
             <tr>
               <td><code>1.0.0</code></td>
@@ -1459,286 +1251,487 @@ messages:
 
   <script>
     const i18n = {
-      es: {
-        by: "por",
-        menu_general: "General",
-        menu_plugins: "Plugins",
-        menu_guides: "Guías",
-        tab_inicio: "Inicio",
-        tab_instalacion: "Instalación",
-        tab_formatos: "Formatos y Colores",
-        tab_faq: "FAQ",
-        theme_dark: "Oscuro",
-        theme_purple: "Morado",
-        theme_light: "Blanco",
-        inicio_h1: "Documentación de EnginePlugins",
-        inicio_sub: "Especificaciones técnicas y guía de configuración desarrollada por sasukelol21.",
-        inicio_p1: "EnginePlugins es una suite modular orientada al rendimiento para servidores Paper, Purpur y Spigot. El código está diseñado de forma asíncrona, preparado para Java 25 y compatible con Minecraft 1.21.x hasta 26.2.",
-        card_chat_desc: "Canales de chat, menciones directas con audio (@Player), filtros de moderación y formato RGB.",
-        card_gui_desc: "Motor base e interfaz de inventarios optimizado para la creación de menús interactivos.",
-        card_poll_desc: "Encuestas interactivas con interfaz gráfica (GUI), conteo en vivo y anuncio automático de ganadores.",
-        card_motd_desc: "Lista de servidores con rotación asíncrona, menú hover multilínea y modo mantenimiento.",
-        inicio_h2: "Estructura y Diseño",
-        inicio_li1: "<strong>Sin dependencias externas:</strong> Plugins autónomos listos para colocar en la carpeta <code>plugins/</code>.",
-        inicio_li2: "<strong>Formato universal:</strong> Soporte de sintaxis MiniMessage y códigos tradicionales con ampersand (&).",
-        inicio_li3: "<strong>Bajo consumo:</strong> Las tareas de parseo y cálculo corren fuera del hilo principal del servidor.",
-        inst_h1: "Instalación",
-        inst_sub: "Requisitos de entorno y proceso de despliegue.",
-        inst_h2_req: "Requisitos",
-        inst_h2_steps: "Instalación",
-        inst_step1: "Descarga el archivo <code>.jar</code> desde el repositorio oficial en Modrinth.",
-        inst_step2: "Mueve el archivo al directorio <code>plugins/</code> de tu servidor.",
-        inst_step3: "Inicia el servidor para generar los archivos de configuración predeterminados.",
-        inst_step4: "Modifica los archivos <code>config.yml</code> según las necesidades de tu red.",
-        inst_note_title: "Toolchain Java 25:",
-        inst_note_desc: "Compilado con bytecode version 69, garantizando compatibilidad nativa con Minecraft 26.2.",
-        chat_sub: "Gestor de chat con canales, menciones y moderación (v1.3.0).",
-        gui_sub: "Framework de interfaces de inventario y menús interactivos.",
-        gui_f1: "<strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.",
-        gui_f2: "<strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.",
-        gui_f3: "<strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.",
-        features: "Características",
-        commands: "Comandos",
-        chat_f1: "<strong>Canales:</strong> Soporte de ámbitos <code>GLOBAL</code>, <code>WORLD</code> o personalizados en <code>channels.yml</code>.",
-        chat_f2: "<strong>Menciones:</strong> Etiqueta jugadores con <code>@Nombre</code>, aplicando resaltado y alerta de sonido.",
-        chat_f3: "<strong>Filtros:</strong> Detección de enlaces, palabras restringidas y control de repetición.",
-        chat_f4: "<strong>LuckPerms:</strong> Consulta prefijos, sufijos y grupos primarios en tiempo real.",
-        th_cmd: "Comando",
-        th_perm: "Permiso",
-        th_desc: "Función",
-        chat_cmd_reload: "Recarga las configuraciones.",
-        chat_cmd_clear: "Limpia el chat del servidor.",
-        chat_cmd_mute: "Mutea o desmutea el chat global.",
-        chat_cmd_ch: "Cambia de canal o envía un mensaje rápido.",
-        poll_sub: "Sistema de encuestas interactivas con interfaz gráfica (v2.0.0).",
-        poll_h2_create: "Creación de Encuestas",
-        poll_cmd_vote: "Abre el menú interactivo para votar.",
-        poll_cmd_res: "Muestra el recuento de la encuesta actual o previa.",
-        poll_cmd_start: "Inicia una votación con temporizador.",
-        poll_cmd_end: "Cierra la encuesta y anuncia al ganador.",
-        poll_cmd_reload: "Recarga el archivo config.yml.",
-        motd_sub: "Personalizador de servidor, lista de jugadores y mantenimiento (v2.0.0).",
-        motd_h2_modes: "Modos de Operación",
-        motd_m1: "<strong>ROTATING:</strong> Rotación periódica asíncrona cada X segundos.",
-        motd_m2: "<strong>RANDOM:</strong> Selecciona un mensaje al azar en cada ping.",
-        motd_m3: "<strong>STATIC:</strong> Muestra un único mensaje fijo.",
-        motd_cmd_maint: "Activa o desactiva el mantenimiento.",
-        motd_cmd_prev: "Muestra en el chat el MOTD activo.",
-        motd_cmd_set: "Configura un mensaje estático directo.",
-        motd_cmd_rel: "Recarga configuraciones y mensajes.",
-        fmt_h1: "Formatos y Colores",
-        fmt_sub: "Sintaxis compatible entre todos los módulos.",
-        faq_h1: "Preguntas Frecuentes",
-        faq_sub: "Resolución de dudas frecuentes.",
-        faq_q1: "¿Cómo configurar el acceso durante el mantenimiento?",
-        faq_a1: "Asigna el permiso <code>motdengine.maintenance.bypass</code> mediante tu plugin de permisos al grupo de administradores.",
-        faq_q2: "¿Se puede permitir el cambio de voto?",
-        faq_a2: "Sí, la clave <code>allow-change-vote</code> en el archivo <code>config.yml</code> de PollEngine habilita o deshabilita esta opción.",
-        footer_docs: "Documentación Oficial",
-        dl_chatengine: "Descargar ChatEngine en Modrinth",
-        dl_guiengine: "Descargar GUIEngine en Modrinth",
-        dl_pollengine: "Descargar PollEngine en Modrinth",
-        dl_motdengine: "Descargar MotdEngine en Modrinth",
-        changelog_title: "Registro de Cambios (Logs)",
-        th_version: "Versión",
-        th_changes: "Detalles del Cambio",
-        ce_log_130: "Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.3. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.",
-        ce_log_121: "Integración nativa con LuckPerms y PlaceholderAPI. Soporte para formato MiniMessage y gradientes hexadecimales RGB.",
-        ce_log_110: "Soporte multicanal personalizable mediante channels.yml y rangos de chat por mundo.",
-        ce_log_100: "Versión inicial con moderación (/clearchat, /mutechat) y filtro anti-spam.",
-        ge_log_100: "Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.",
-        pe_log_200: "Reescritura completa para Java 25 y Paper 26.3. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.",
-        pe_log_100: "Versión inicial de encuestas por chat con temporizador básico.",
-        me_log_200: "Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover multilínea.",
-        me_log_100: "Lanzamiento inicial de gestor de mensajes MOTD para la lista de servidores."
-      },
-      en: {
-        by: "by",
-        menu_general: "General",
-        menu_plugins: "Plugins",
-        menu_guides: "Guides",
-        tab_inicio: "Home",
-        tab_instalacion: "Installation",
-        tab_formatos: "Formats & Colors",
-        tab_faq: "FAQ",
-        theme_dark: "Dark",
-        theme_purple: "Purple",
-        theme_light: "White",
-        inicio_h1: "EnginePlugins Documentation",
-        inicio_sub: "Technical specifications and configuration guide developed by sasukelol21.",
-        inicio_p1: "EnginePlugins is a performance-focused suite for Paper, Purpur, and Spigot servers. The codebase runs asynchronously, is compiled on Java 25, and supports Minecraft 1.21.x through 26.3.",
-        card_chat_desc: "Chat channels, direct audio mentions (@Player), auto-moderation filters, and RGB colors.",
-        card_gui_desc: "Core inventory framework optimized for creating interactive in-game menus.",
-        card_poll_desc: "Interactive inventory GUI polls, live vote tracking, and automatic winner announcements.",
-        card_motd_desc: "Server list ping handler with async rotation, custom multiline hover, and maintenance mode.",
-        inicio_h2: "Architecture",
-        inicio_li1: "<strong>Zero external dependencies:</strong> Standalone binaries ready for the <code>plugins/</code> folder.",
-        inicio_li2: "<strong>Universal syntax:</strong> Native MiniMessage formatting alongside classic ampersand (&) codes.",
-        inicio_li3: "<strong>Low overhead:</strong> String parsing and timer checks are executed outside the main server thread.",
-        inst_h1: "Installation",
-        inst_sub: "System requirements and deployment steps.",
-        inst_h2_req: "Requirements",
-        inst_h2_steps: "Setup",
-        inst_step1: "Download the <code>.jar</code> file from the official Modrinth repository.",
-        inst_step2: "Place the file into your server's <code>plugins/</code> folder.",
-        inst_step3: "Start the server to generate default configuration files.",
-        inst_step4: "Edit the <code>config.yml</code> files to fit your server setup.",
-        inst_note_title: "Java 25 Toolchain:",
-        inst_note_desc: "Compiled using bytecode version 69 for full compatibility with Minecraft 26.3.",
-        chat_sub: "Chat manager featuring channels, mentions, and filters (v1.3.0).",
-        gui_sub: "Inventory interface framework and interactive menu library.",
-        gui_f1: "<strong>Secure Menu Engine:</strong> Prevents item taking, duplication, or illegal inventory movement.",
-        gui_f2: "<strong>Component Rendering:</strong> Native Adventure and MiniMessage text support for titles and lore.",
-        gui_f3: "<strong>Modular:</strong> Built as the foundation for shop systems, gamemode selectors, and voting menus.",
-        features: "Features",
-        commands: "Commands",
-        chat_f1: "<strong>Channels:</strong> Supports <code>GLOBAL</code>, <code>WORLD</code>, or custom channels in <code>channels.yml</code>.",
-        chat_f2: "<strong>Mentions:</strong> Tag players using <code>@Username</code> with inline highlighting and sound alerts.",
-        chat_f3: "<strong>Filters:</strong> URL detection, blacklisted words, and message repetition limits.",
-        chat_f4: "<strong>LuckPerms:</strong> Reads prefixes, suffixes, and primary groups in real-time.",
-        th_cmd: "Command",
-        th_perm: "Permission",
-        th_desc: "Function",
-        chat_cmd_reload: "Reloads configuration files.",
-        chat_cmd_clear: "Clears global server chat.",
-        chat_cmd_mute: "Mutes or unmutes server-wide chat.",
-        chat_cmd_ch: "Switches channels or sends a quick message.",
-        poll_sub: "Interactive GUI voting and poll engine (v2.0.0).",
-        poll_h2_create: "Poll Creation",
-        poll_cmd_vote: "Opens the voting menu.",
-        poll_cmd_res: "Displays live or recent poll results.",
-        poll_cmd_start: "Starts a timed poll.",
-        poll_cmd_end: "Closes the poll and declares the winner.",
-        poll_cmd_reload: "Reloads config.yml.",
-        motd_sub: "Server list MOTD, player hover, and maintenance mode (v2.0.0).",
-        motd_h2_modes: "Modes",
-        motd_m1: "<strong>ROTATING:</strong> Periodic asynchronous rotation every X seconds.",
-        motd_m2: "<strong>RANDOM:</strong> Selects a random message on every server ping.",
-        motd_m3: "<strong>STATIC:</strong> Locks in a single static MOTD.",
-        motd_cmd_maint: "Toggles maintenance mode.",
-        motd_cmd_prev: "Previews the active MOTD in chat.",
-        motd_cmd_set: "Sets a static MOTD directly.",
-        motd_cmd_rel: "Reloads MOTD configurations.",
-        fmt_h1: "Formats & Colors",
-        fmt_sub: "Syntax supported across all plugin modules.",
-        faq_h1: "FAQ",
-        faq_sub: "Common questions and technical details.",
-        faq_q1: "How to allow admins in during maintenance?",
-        faq_a1: "Grant the permission <code>motdengine.maintenance.bypass</code> to the administrative group in your permissions plugin.",
-        faq_q2: "Can players change their vote?",
-        faq_a2: "Yes, the <code>allow-change-vote</code> setting in PollEngine's <code>config.yml</code> controls this.",
-        footer_docs: "Official Documentation",
-        dl_chatengine: "Download ChatEngine on Modrinth",
-        dl_guiengine: "Download GUIEngine on Modrinth",
-        dl_pollengine: "Download PollEngine on Modrinth",
-        dl_motdengine: "Download MotdEngine on Modrinth",
-        changelog_title: "Changelog (Logs)",
-        th_version: "Version",
-        th_changes: "Change Details",
-        ce_log_130: "Compiled and tuned for Java 25 (bytecode 69) and Minecraft 1.21.x-26.3. Async processing pipeline and improved @player mention system with audio cues.",
-        ce_log_121: "Native integration with LuckPerms and PlaceholderAPI. Support for MiniMessage tags and 24-bit RGB hex gradients.",
-        ce_log_110: "Custom channels configurable via channels.yml and per-world chat scopes.",
-        ce_log_100: "Initial release featuring moderation tools (/clearchat, /mutechat) and anti-spam filters.",
-        ge_log_100: "Initial core framework release. Comprehensive item theft/exploit protection, Adventure API support, and async click callbacks.",
-        pe_log_200: "Full refactor for Java 25 and Paper 26.3. Inventory GUI voting with live percentage tracking, vote change support, and broadcast announcements.",
-        pe_log_100: "Initial release of interactive chat-based voting with countdown timers.",
-        me_log_200: "Complete migration to Java 25 and Paper Profile API (ServerListPingEvent). ROTATING, RANDOM, and STATIC modes. Maintenance bypass permission and custom player hover tooltips.",
-        me_log_100: "Initial server list MOTD manager release."
-      },
-      pt: {
-        by: "por",
-        menu_general: "Geral",
-        menu_plugins: "Plugins",
-        menu_guides: "Guias",
-        tab_inicio: "Início",
-        tab_instalacion: "Instalação",
-        tab_formatos: "Formatos e Cores",
-        tab_faq: "FAQ",
-        theme_dark: "Escuro",
-        theme_purple: "Roxo",
-        theme_light: "Branco",
-        inicio_h1: "Documentação do EnginePlugins",
-        inicio_sub: "Especificações técnicas e guia de configuração por sasukelol21.",
-        inicio_p1: "EnginePlugins é uma suite focada em desempenho para servidores Paper, Purpur e Spigot. Executa de forma assíncrona, compilada em Java 25 para Minecraft 1.21.x até 26.3.",
-        card_chat_desc: "Canais de chat, menções com áudio (@Player), filtros de moderação e suporte RGB.",
-        card_gui_desc: "Framework base de inventários e menus interativos otimizado.",
-        card_poll_desc: "Enquetes com interface GUI de inventário, contagem ao vivo e anúncio de vencedores.",
-        card_motd_desc: "Lista de servidores com rotação assíncrona, hover de jogadores e modo manutenção.",
-        inicio_h2: "Estrutura",
-        inicio_li1: "<strong>Sem dependências externas:</strong> Binários autônomos para a pasta <code>plugins/</code>.",
-        inicio_li2: "<strong>Formato universal:</strong> Suporte a MiniMessage e códigos clássicos com ampersand (&).",
-        inicio_li3: "<strong>Baixo consumo:</strong> Processamento executado fora da thread principal do servidor.",
-        inst_h1: "Instalação",
-        inst_sub: "Requisitos de sistema e processo de instalação.",
-        inst_h2_req: "Requisitos",
-        inst_h2_steps: "Instalação",
-        inst_step1: "Baixe o arquivo <code>.jar</code> no repositório oficial no Modrinth.",
-        inst_step2: "Coloque o arquivo na pasta <code>plugins/</code> do servidor.",
-        inst_step3: "Inicie o servidor para gerar as configurações padrão.",
-        inst_step4: "Ajuste os arquivos <code>config.yml</code> conforme necessário.",
-        inst_note_title: "Java 25 Nativo:",
-        inst_note_desc: "Compilado com bytecode versão 69, pronto para o padrão do Minecraft 26.3.",
-        chat_sub: "Gerenciador de chat com canais, menções e moderação (v1.3.0).",
-        gui_sub: "Framework de interfaces de inventário e menus interativos.",
-        gui_f1: "<strong>Menu Seguro:</strong> Impede retirada, duplicação ou movimentação indevida de itens.",
-        gui_f2: "<strong>Componentes:</strong> Suporte nativo a Adventure e MiniMessage em títulos e descrições.",
-        gui_f3: "<strong>Modular:</strong> Base para sistemas de lojas, seleção de modos e votações.",
-        features: "Recursos",
-        commands: "Comandos",
-        chat_f1: "<strong>Canais:</strong> Suporta <code>GLOBAL</code>, <code>WORLD</code> ou personalizados em <code>channels.yml</code>.",
-        chat_f2: "<strong>Menções:</strong> Marque jogadores com <code>@Nome</code> com destaque e alerta sonoro.",
-        chat_f3: "<strong>Filtros:</strong> Detecção de links, palavras censuradas e controle de repetição.",
-        chat_f4: "<strong>LuckPerms:</strong> Lê prefixos, sufixos e grupos primários em tempo real.",
-        th_cmd: "Comando",
-        th_perm: "Permissão",
-        th_desc: "Função",
-        chat_cmd_reload: "Recarrega as configurações.",
-        chat_cmd_clear: "Limpa o chat do servidor.",
-        chat_cmd_mute: "Muta ou desmuta o chat global.",
-        chat_cmd_ch: "Muda de canal ou envia mensagem rápida.",
-        poll_sub: "Sistema de enquetes interativas por GUI de inventário (v2.0.0).",
-        poll_h2_create: "Criação de Enquetes",
-        poll_cmd_vote: "Abre o menu interativo para votar.",
-        poll_cmd_res: "Exibe o resultado da votação atual ou anterior.",
-        poll_cmd_start: "Inicia uma votação com tempo.",
-        poll_cmd_end: "Encerra a enquete e anuncia o vencedor.",
-        poll_cmd_reload: "Recarrega o arquivo config.yml.",
-        motd_sub: "Personalizador de lista de servidores e manutenção (v2.0.0).",
-        motd_h2_modes: "Modos de Operación",
-        motd_m1: "<strong>ROTATING:</strong> Rotação periódica assíncrona a cada X segundos.",
-        motd_m2: "<strong>RANDOM:</strong> Seleciona uma mensagem aleatória em cada ping.",
-        motd_m3: "<strong>STATIC:</strong> Mantém uma única mensagem fixa.",
-        motd_cmd_maint: "Ativa ou desativa a manutenção.",
-        motd_cmd_prev: "Exibe no chat o MOTD ativo.",
-        motd_cmd_set: "Define uma mensagem estática diretamente.",
-        motd_cmd_rel: "Recarrega configurações e mensagens.",
-        fmt_h1: "Formatos e Cores",
-        fmt_sub: "Sintaxe suportada em todos os módulos.",
-        faq_h1: "FAQ",
-        faq_sub: "Dúvidas técnicas comuns.",
-        faq_q1: "Como permitir acesso durante a manutenção?",
-        faq_a1: "Atribua a permissão <code>motdengine.maintenance.bypass</code> ao grupo administrativo.",
-        faq_q2: "É possível permitir mudança de voto?",
-        faq_a2: "Sim, a opção <code>allow-change-vote</code> no <code>config.yml</code> do PollEngine controla isso.",
-        footer_docs: "Documentação Oficial",
-        dl_chatengine: "Baixar ChatEngine no Modrinth",
-        dl_guiengine: "Baixar GUIEngine no Modrinth",
-        dl_pollengine: "Baixar PollEngine no Modrinth",
-        dl_motdengine: "Baixar MotdEngine no Modrinth",
-        changelog_title: "Registro de Alterações (Logs)",
-        th_version: "Versão",
-        th_changes: "Detalhes da Alteração",
-        ce_log_130: "Compilado e ajustado para Java 25 (bytecode 69) e Minecraft 1.21.x-26.3. Pipeline de chat assíncrono e sistema aprimorado de menções @player com aviso sonoro.",
-        ce_log_121: "Integração nativa com LuckPerms e PlaceholderAPI. Suporte a tags MiniMessage e gradientes RGB.",
-        ce_log_110: "Canais personalizados via channels.yml e escopos por mundo.",
-        ce_log_100: "Lançamento inicial com moderação (/clearchat, /mutechat) e filtros anti-spam.",
-        ge_log_100: "Lançamento do framework central. Proteção contra furto de itens em GUI, suporte Adventure API e callbacks assíncronos.",
-        pe_log_200: "Refatoração completa para Java 25 e Paper 26.3. Votação em GUI com contagem ao vivo, suporte para alterar voto e anúncio de vencedor.",
-        pe_log_100: "Lançamento inicial de votações pelo chat com temporizador.",
-        me_log_200: "Migração completa para Java 25 e Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM e STATIC. Permissão de bypass na manutenção e tooltips de jogadores.",
-        me_log_100: "Lançamento inicial do gerenciador de MOTD."
-      }
-    };
+  "es": {
+    "by": "por",
+    "menu_general": "General",
+    "menu_plugins": "Plugins",
+    "menu_guides": "Guías",
+    "tab_inicio": "Inicio",
+    "tab_instalacion": "Instalación",
+    "tab_formatos": "Formatos y Colores",
+    "tab_faq": "FAQ",
+    "theme_dark": "Oscuro",
+    "theme_purple": "Morado",
+    "theme_light": "Blanco",
+    "inicio_h1": "Documentación de EnginePlugins",
+    "inicio_sub": "Especificaciones técnicas y guía de configuración desarrollada por sasukelol21.",
+    "inicio_p1": "EnginePlugins es una suite modular orientada al rendimiento para servidores Paper, Purpur y Spigot. El código está diseñado de forma asíncrona, preparado para Java 25 y compatible con Minecraft 1.21.x hasta 26.3.",
+    "card_chat_desc": "Canales de chat, menciones directas con audio (@Player), filtros de moderación y formato RGB.",
+    "card_gui_desc": "Motor base e interfaz de inventarios optimizado para la creación de menús interactivos.",
+    "card_poll_desc": "Encuestas interactivas con interfaz gráfica (GUI), conteo en vivo y anuncio automático de ganadores.",
+    "card_motd_desc": "Lista de servidores con rotación asíncrona, menú hover multilínea y modo mantenimiento.",
+    "inicio_h2": "Estructura y Diseño",
+    "inicio_li1": "<strong>Sin dependencias externas:</strong> Plugins autónomos listos para colocar en la carpeta <code>plugins/</code>.",
+    "inicio_li2": "<strong>Formato universal:</strong> Soporte de sintaxis MiniMessage y códigos tradicionales con ampersand (&amp;).",
+    "inicio_li3": "<strong>Bajo consumo:</strong> Las tareas de parseo y cálculo corren fuera del hilo principal del servidor.",
+    "inst_h1": "Instalación",
+    "inst_sub": "Requisitos de entorno y proceso de despliegue.",
+    "inst_h2_req": "Requisitos",
+    "inst_h2_steps": "Instalación",
+    "inst_step1": "Descarga el archivo <code>.jar</code> desde el repositorio oficial en Modrinth.",
+    "inst_step2": "Mueve el archivo al directorio <code>plugins/</code> de tu servidor.",
+    "inst_step3": "Inicia el servidor para generar los archivos de configuración predeterminados.",
+    "inst_step4": "Modifica los archivos <code>config.yml</code> según las necesidades de tu red.",
+    "inst_note_title": "Toolchain Java 25:",
+    "inst_note_desc": "Compilado con bytecode version 69, garantizando compatibilidad nativa con Minecraft 26.3.",
+    "features": "Características",
+    "commands": "Comandos",
+    "th_cmd": "Comando",
+    "th_perm": "Permiso",
+    "th_desc": "Función",
+    "th_default": "Por Defecto",
+    "th_placeholder": "Placeholder",
+    "th_plugin_version": "Versión Plugin",
+    "th_mc_versions": "Versiones Minecraft Soportadas",
+    "th_java_version": "Java",
+    "th_status": "Estado",
+    "status_stable": "Estable",
+    "status_supported": "Soportada",
+    "status_legacy": "Heredada",
+    "status_deprecated": "Descontinuada",
+    "badge_latest": "Última",
+    "compat_h2": "Compatibilidad de Versiones",
+    "dl_chatengine": "Descargar ChatEngine en Modrinth",
+    "dl_guiengine": "Descargar GUIEngine en Modrinth",
+    "dl_pollengine": "Descargar PollEngine en Modrinth",
+    "dl_motdengine": "Descargar MotdEngine en Modrinth",
+    "changelog_title": "Registro de Cambios (Logs)",
+    "th_version": "Versión",
+    "th_changes": "Detalles del Cambio",
+    "chat_sub": "Gestor de chat con canales, menciones y moderación (v1.3.0).",
+    "chat_f1": "<strong>Canales:</strong> Soporte de ámbitos <code>GLOBAL</code>, <code>WORLD</code> o personalizados en <code>channels.yml</code>.",
+    "chat_f2": "<strong>Menciones:</strong> Etiqueta jugadores con <code>@Nombre</code>, aplicando resaltado y alerta de sonido.",
+    "chat_f3": "<strong>Filtros:</strong> Detección de enlaces, palabras restringidas y control de repetición.",
+    "chat_f4": "<strong>LuckPerms:</strong> Consulta prefijos, sufijos y grupos primarios en tiempo real.",
+    "chat_f5": "<strong>Java 25 Nativo:</strong> Arquitectura asíncrona compatible con Minecraft 1.21.x hasta 26.3.",
+    "chat_cmd_reload": "Recarga las configuraciones y canales.",
+    "chat_cmd_clear": "Limpia el chat del servidor para todos los jugadores.",
+    "chat_cmd_mute": "Mutea o desmutea el chat global.",
+    "chat_cmd_ch": "Cambia de canal activo o envía un mensaje rápido.",
+    "ce_config_h2": "Configuración Principal (config.yml)",
+    "ce_config_p": "Archivo de configuración generado automáticamente en <code>plugins/ChatEngine/config.yml</code>:",
+    "ce_channels_h2": "Configuración de Canales (channels.yml)",
+    "ce_channels_p": "Permite definir canales de chat independientes en <code>plugins/ChatEngine/channels.yml</code>:",
+    "ce_perms_h2": "Lista Completa de Permisos",
+    "ce_p_admin": "Acceso total a todos los comandos de ChatEngine.",
+    "ce_p_reload": "Permite recargar archivos de configuración.",
+    "ce_p_clearchat": "Permite limpiar el chat global.",
+    "ce_p_mutechat": "Permite silenciar o habilitar el chat global.",
+    "ce_p_bp_cooldown": "Omite el tiempo de espera entre mensajes.",
+    "ce_p_bp_repeat": "Omite el bloqueo de mensajes repetidos.",
+    "ce_p_bp_mod": "Omite los filtros de palabras y enlaces prohibidos.",
+    "ce_p_mentions": "Permite mencionar a otros usuarios con @Jugador.",
+    "ce_p_c_legacy": "Permite usar códigos clásicos (&amp;0-&amp;f).",
+    "ce_p_c_hex": "Permite usar colores hexadecimales (&amp;#RRGGBB).",
+    "ce_ph_h2": "Placeholders Soportados",
+    "ce_ph_player": "Nombre del jugador que envía el mensaje.",
+    "ce_ph_prefix": "Prefijo del jugador obtenido de LuckPerms o Vault.",
+    "ce_ph_suffix": "Sufijo del jugador obtenido de LuckPerms o Vault.",
+    "ce_ph_world": "Nombre del mundo en el que se encuentra el jugador.",
+    "ce_ph_message": "Contenido del mensaje enviado.",
+    "ce_ph_papi": "Soporte total para cualquier placeholder de PAPI.",
+    "ce_log_130": "Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.3. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.",
+    "ce_log_121": "Integración nativa con LuckPerms y PlaceholderAPI. Soporte para formato MiniMessage y gradientes hexadecimales RGB.",
+    "ce_log_110": "Soporte multicanal personalizable mediante channels.yml y rangos de chat por mundo.",
+    "ce_log_100": "Versión inicial con moderación (/clearchat, /mutechat) y filtro anti-spam.",
+    "ce_code_config": "# ==========================================\n# ChatEngine - Configuración Principal (config.yml)\n# ==========================================\n\nchat:\n  # Canal por defecto al que se conectan los jugadores al entrar\n  default-channel: global\n\n  # Cancela el chat vanilla de Bukkit para procesarlo mediante ChatEngine\n  cancel-vanilla-chat: true\n\n  # Formatos de chat (Prioridad: by-group &gt; by-world &gt; default)\n  formats:\n    # Formato general por defecto\n    default: &quot;{prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n    # Formatos específicos por mundo (usa el nombre interno del mundo)\n    by-world:\n      world: &quot;&amp;7[&amp;aSurvival&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      world_nether: &quot;&amp;7[&amp;cNether&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      world_the_end: &quot;&amp;7[&amp;dTheEnd&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n    # Formatos por grupo de LuckPerms (usa el grupo primario)\n    by-group:\n      default: &quot;&amp;7[&amp;fUsuario&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      vip: &quot;&amp;7[&amp;aVIP&amp;7] &lt;gradient:#00FFAA:#00A2FF&gt;{player}&lt;/gradient&gt;{suffix}&amp;7: &amp;f{message}&quot;\n      admin: &quot;&amp;7[&amp;cAdmin&amp;7] &lt;gradient:#FF5555:#FFAA00&gt;{player}&lt;/gradient&gt;{suffix}&amp;7: &amp;f{message}&quot;\n\n  # Control de permisos para colores en el chat\n  colors:\n    use-permissions: true      # Si es false, cualquiera puede usar colores\n    allow-magic: false         # Desactiva &amp;k para evitar abusos visuales\n\n    legacy:\n      enabled: true\n      permission: &quot;chatcolor.color.legacy&quot; # &amp;0-&amp;f\n\n    hex:\n      enabled: true\n      permission: &quot;chatcolor.color.hex&quot;    # &amp;#RRGGBB o &lt;#RRGGBB&gt;\n\n    formats:\n      bold:\n        enabled: true\n        permission: &quot;chatcolor.format.bold&quot;      # &amp;l\n      italic:\n        enabled: true\n        permission: &quot;chatcolor.format.italic&quot;    # &amp;o\n      underline:\n        enabled: true\n        permission: &quot;chatcolor.format.underline&quot; # &amp;n\n      strikethrough:\n        enabled: true\n        permission: &quot;chatcolor.format.strike&quot;    # &amp;m\n      magic:\n        enabled: false\n        permission: &quot;chatcolor.format.magic&quot;     # &amp;k\n\n# Módulo de protección Anti-Spam\nspam:\n  enabled: true\n  cooldown-seconds: 2          # Segundos mínimos entre cada mensaje\n  repeat-window-seconds: 5     # Ventana para bloquear el envío del mismo mensaje\n\n  bypass-permissions:\n    cooldown: &quot;chatengine.bypass.cooldown&quot;\n    repeat: &quot;chatengine.bypass.repeat&quot;",
+    "ce_code_channels": "# ==========================================\n# ChatEngine - Canales (channels.yml)\n# ==========================================\n\nchannels:\n  global:\n    # Ámbito: GLOBAL (todo el servidor) o WORLD (solo jugadores en el mismo mundo)\n    scope: GLOBAL\n    permission-speak: &quot;chatengine.channel.global.speak&quot;\n    permission-view: &quot;chatengine.channel.global.view&quot;\n    format: &quot;&amp;7[&amp;aGlobal&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n  world:\n    scope: WORLD\n    permission-speak: &quot;chatengine.channel.world.speak&quot;\n    permission-view: &quot;chatengine.channel.world.view&quot;\n    format: &quot;&amp;7[&amp;b{world}&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n  staff:\n    scope: GLOBAL\n    permission-speak: &quot;chatengine.channel.staff.speak&quot;\n    permission-view: &quot;chatengine.channel.staff.view&quot;\n    format: &quot;&amp;c[StaffChat] &amp;f{player}&amp;7: &amp;e{message}&quot;",
+    "gui_sub": "Framework de interfaces de inventario y menús interactivos.",
+    "gui_f1": "<strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.",
+    "gui_f2": "<strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.",
+    "gui_f3": "<strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.",
+    "gui_f4": "<strong>Gestión de Eventos Automática:</strong> Cancelación de eventos no deseados en clics rápidos o atajos de teclado.",
+    "ge_sec_h2": "Seguridad y Protección Antidupe",
+    "ge_sec_p": "GUIEngine implementa una capa estricta de validación sobre el ciclo de vida de los inventarios:",
+    "ge_sec_li1": "<strong>Cancelación Obligatoria:</strong> <code>InventoryClickEvent</code> y <code>InventoryDragEvent</code> están blindados contra robos de ítems.",
+    "ge_sec_li2": "<strong>Control de Cierre:</strong> Manejo seguro con <code>InventoryCloseEvent</code> para limpieza de memoria.",
+    "ge_sec_li3": "<strong>Prevención de Clicks Fantasma:</strong> Verificación por identificador único (UUID) en cada sesión.",
+    "ge_api_h2": "Ejemplo de Integración (API para Desarrolladores)",
+    "ge_api_p": "Ejemplo de creación de un menú interactivo protegido con callbacks usando la API de GUIEngine:",
+    "ge_log_100": "Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.",
+    "ge_code_api": "// Creación de un menú de 27 slots (3 filas)\nGUIEngineMenu menu = new GUIEngineMenu(&quot;Menú Principal&quot;, 27);\n\n// Configuración de un botón interactivo\nItemStack item = new ItemBuilder(Material.COMPASS)\n    .name(&quot;&amp;a&amp;lSelector de Modalidades&quot;)\n    .lore(&quot;&amp;7Haz clic para abrir el menú de servidores.&quot;)\n    .build();\n\nmenu.setItem(13, item, (player, clickType) -&gt; {\n    player.sendMessage(&quot;§aAbriendo servidor Survival...&quot;);\n    player.closeInventory();\n});\n\n// Relleno estético de bordes\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// Apertura segura para el jugador\nmenu.open(player);",
+    "poll_sub": "Sistema de encuestas interactivas con interfaz gráfica (v2.0.0).",
+    "poll_f1": "<strong>Interfaz GUI Interactiva:</strong> Los usuarios votan haciendo clic en el menú sin tener que escribir comandos complejos.",
+    "poll_f2": "<strong>Temporizador y Anuncio Automático:</strong> Cuenta atrás configurable con anuncio en el chat y pantalla al terminar.",
+    "poll_f3": "<strong>Cambio de Voto Flexible:</strong> Opción para permitir a los jugadores rectificar su elección mientras la encuesta siga activa.",
+    "poll_f4": "<strong>Recuento en Vivo:</strong> Consulta los porcentajes y votos totales en cualquier momento con <code>/poll results</code>.",
+    "pe_config_h2": "Configuración Principal (config.yml)",
+    "pe_config_p": "Configuración completa con soporte de sonidos, mensajes y temporizador en <code>plugins/PollEngine/config.yml</code>:",
+    "poll_h2_create": "Creación de Encuestas",
+    "pe_create_p": "Sintaxis del comando para administradores:",
+    "poll_cmd_vote": "Abre el menú interactivo para votar.",
+    "poll_cmd_res": "Muestra el recuento de la encuesta actual o previa.",
+    "poll_cmd_start": "Inicia una votación con temporizador.",
+    "poll_cmd_end": "Cierra la encuesta y anuncia al ganador.",
+    "poll_cmd_reload": "Recarga el archivo config.yml.",
+    "pe_perms_h2": "Permisos",
+    "pe_p_vote": "Permite abrir el menú y emitir un voto en encuestas activas.",
+    "pe_p_admin": "Acceso administrativo completo a PollEngine.",
+    "pe_p_start": "Permite iniciar nuevas encuestas.",
+    "pe_p_end": "Permite finalizar manualmente una encuesta activa.",
+    "pe_p_reload": "Permite recargar la configuración del plugin.",
+    "pe_log_200": "Reescritura completa para Java 25 y Paper 26.3. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.",
+    "pe_log_100": "Versión inicial de encuestas por chat con temporizador básico.",
+    "pe_code_config": "# ==========================================\n# PollEngine - Configuración Principal (config.yml)\n# ==========================================\n\nsettings:\n  # Título que se muestra en la interfaz gráfica del menú de votación\n  # Admite etiquetas MiniMessage (&lt;gradient&gt;, &lt;bold&gt;, etc.)\n  gui-title: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;PollEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;Votación&quot;\n  \n  # Duración predeterminada de la encuesta en segundos al crearla sin especificar tiempo\n  # (0 = duración ilimitada, se cierra manualmente con /poll end)\n  default-duration-seconds: 120\n  \n  # Si es true, los jugadores pueden cambiar su voto mientras la votación siga abierta\n  allow-change-vote: true\n  \n  # Efectos de sonido en acciones (nombres de sonidos de Bukkit, dejar vacío para desactivar)\n  sounds:\n    open-menu: &quot;BLOCK_CHEST_OPEN&quot;\n    vote-success: &quot;ENTITY_PLAYER_LEVELUP&quot;\n    vote-already: &quot;ENTITY_VILLAGER_NO&quot;\n    poll-start: &quot;ENTITY_EXPERIENCE_ORB_PICKUP&quot;\n    poll-end: &quot;UI_TOAST_CHALLENGE_COMPLETE&quot;\n\n# Mensajes del sistema\nmessages:\n  prefix: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;PollEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;&quot;\n  no-permission: &quot;&lt;red&gt;No tienes permiso para ejecutar este comando.&quot;\n  no-active-poll: &quot;&lt;yellow&gt;No hay ninguna encuesta activa en este momento.&quot;\n  already-voted: &quot;&lt;yellow&gt;Ya has votado por: &lt;white&gt;{option}&lt;yellow&gt;.&quot;\n  vote-changed: &quot;&lt;green&gt;Tu voto ha sido actualizado a: &lt;white&gt;{option}&lt;green&gt;.&quot;\n  vote-registered: &quot;&lt;green&gt;¡Gracias por votar! Tu opción: &lt;white&gt;{option}&lt;green&gt;.&quot;\n  poll-created: &quot;&lt;green&gt;¡Una nueva encuesta ha comenzado!&lt;newline&gt;&lt;gray&gt;Pregunta: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Usa &lt;gold&gt;/poll&lt;gray&gt; para votar.&quot;\n  poll-ended-broadcast: &quot;&lt;gold&gt;&lt;bold&gt;¡Encuesta Finalizada!&lt;/bold&gt;&lt;newline&gt;&lt;gray&gt;Pregunta: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Ganador: &lt;green&gt;{winner} &lt;dark_gray&gt;({winner_votes} votos)&quot;\n  poll-results-header: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;--- Resultados de la Encuesta ---&lt;/bold&gt;&lt;/gradient&gt;&lt;newline&gt;&lt;gray&gt;Pregunta: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Total de votos: &lt;white&gt;{total_votes}&quot;\n  poll-results-entry: &quot;&lt;gray&gt;  &lt;white&gt;{option}: &lt;gold&gt;{votes} votos &lt;dark_gray&gt;({percent}%)&quot;\n  config-reloaded: &quot;&lt;green&gt;Configuración de PollEngine recargada correctamente.&quot;",
+    "pe_code_usage": "/poll start &lt;Pregunta&gt; | &lt;Opción 1&gt; | &lt;Opción 2&gt; ... [segundos]\n\n# Ejemplo con 2 opciones y 60 segundos:\n/poll start ¿Reiniciar el mundo Nether? | Sí | No 60\n\n# Ejemplo con 3 opciones y 120 segundos:\n/poll start ¿Qué evento prefieres el sábado? | PvP Arena | Parkour | Spleef 120",
+    "motd_sub": "Personalizador de servidor, lista de jugadores y mantenimiento (v2.0.0).",
+    "motd_h2_modes": "Modos de Operación",
+    "motd_m1": "<strong>ROTATING:</strong> Rotación periódica asíncrona cada X segundos.",
+    "motd_m2": "<strong>RANDOM:</strong> Selecciona un mensaje al azar en cada ping.",
+    "motd_m3": "<strong>STATIC:</strong> Muestra un único mensaje fijo.",
+    "me_config_h2": "Configuración Principal (config.yml)",
+    "me_config_p": "Configuración completa para MOTD, hover de jugadores y mantenimiento en <code>plugins/MotdEngine/config.yml</code>:",
+    "motd_cmd_maint": "Activa o desactiva el mantenimiento.",
+    "motd_cmd_prev": "Muestra en el chat el MOTD activo.",
+    "motd_cmd_set": "Configura un mensaje estático directo.",
+    "motd_cmd_rel": "Recarga configuraciones y mensajes.",
+    "me_perms_h2": "Permisos",
+    "me_p_admin": "Permite usar todos los comandos administrativos de /motd.",
+    "me_p_bypass": "Permite conectarse y jugar en el servidor mientras el modo mantenimiento esté activado.",
+    "me_log_200": "Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover personalizado.",
+    "me_log_100": "Lanzamiento inicial de gestor de mensajes MOTD para la lista de servidores.",
+    "me_code_config": "# ==========================================\n# MotdEngine - Configuración Principal (config.yml)\n# ==========================================\n\n# Configuración del mensaje en la lista de servidores\nmotd:\n  # Modos disponibles:\n  # - &quot;ROTATING&quot;: Rota cíclicamente los mensajes cada X segundos\n  # - &quot;RANDOM&quot;: Elige un mensaje al azar en cada ping de un jugador\n  # - &quot;STATIC&quot;: Muestra siempre el primer mensaje de la lista\n  mode: &quot;ROTATING&quot;\n\n  # Intervalo de rotación en segundos cuando el modo es ROTATING\n  rotation-interval-seconds: 15\n\n  # Lista de mensajes MOTD (Usa \\n o &lt;newline&gt; para separar línea 1 y línea 2)\n  # Soporta MiniMessage (&lt;gradient&gt;, &lt;rainbow&gt;, &lt;bold&gt;) y códigos clásicos (&amp;a-&amp;f)\n  messages:\n    - &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;¡Bienvenido a Nuestro Servidor!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Survival Custom, Minijuegos &amp; Creativo &lt;dark_gray&gt;• &lt;yellow&gt;¡Únete ya!&quot;\n    - &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;La Mejor Experiencia Minecraft&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Eventos especiales de fin de semana activos &lt;dark_gray&gt;• &lt;green&gt;Juega con amigos&quot;\n    - &quot;&lt;gradient:#FF55FF:#AA00AA&gt;&lt;bold&gt;Actualizado a la última versión 26.3!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Rendimiento óptimo sin lag &lt;dark_gray&gt;• &lt;aqua&gt;¡Te esperamos!&quot;\n\n# Personalización del recuento de jugadores y slots\nplayer-count:\n  # Si es true, sobrescribe el límite de jugadores del server.properties\n  override-max-players: false\n  # Límite estático de jugadores (si override-max-players es true y dynamic-max es false)\n  max-players: 100\n  # Si es true, el máximo siempre será (jugadores_conectados + dynamic-addition)\n  dynamic-max: true\n  dynamic-addition: 1\n\n# Menú emergente al pasar el ratón sobre el recuento de jugadores\nplayer-hover:\n  enabled: true\n  lines:\n    - &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;--- INFORMACIÓN DEL SERVIDOR ---&lt;/bold&gt;&lt;/gradient&gt;&quot;\n    - &quot;&lt;gray&gt;Jugadores en línea: &lt;yellow&gt;{online} &lt;dark_gray&gt;/ &lt;yellow&gt;{max}&quot;\n    - &quot;&lt;gray&gt;Comunidad Discord: &lt;aqua&gt;discord.gg/tuservidor&quot;\n    - &quot;&lt;gray&gt;Tienda Oficial: &lt;gold&gt;tienda.tuservidor.net&quot;\n    - &quot;&lt;green&gt;¡Que disfrutes de tu estancia!&quot;\n\n# Sistema de Modo Mantenimiento\nmaintenance:\n  enabled: false\n  # MOTD mostrado cuando el mantenimiento está activo\n  motd: &quot;&lt;gradient:#FF0000:#FF5555&gt;&lt;bold&gt;SERVIDOR EN MANTENIMIENTO&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Volveremos en breve. Consulta nuestro Discord para más noticias.&quot;\n  # Mensaje de desconexión al intentar entrar sin permiso de bypass\n  kick-message: &quot;&lt;red&gt;&lt;bold&gt;¡El servidor se encuentra actualmente en mantenimiento!&lt;/bold&gt;&lt;/red&gt;&lt;newline&gt;&lt;gray&gt;Por favor, inténtalo más tarde o visita nuestro Discord.&quot;\n  # Texto que reemplaza el número de versión en el cliente de Minecraft\n  custom-version-text: &quot;&lt;red&gt;Mantenimiento&quot;\n\n# Mensajes del plugin\nmessages:\n  prefix: &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;MotdEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;&quot;\n  no-permission: &quot;&lt;red&gt;No tienes permiso para ejecutar este comando.&quot;\n  config-reloaded: &quot;&lt;green&gt;¡Configuración de MotdEngine recargada correctamente!&quot;\n  maintenance-toggled: &quot;&lt;yellow&gt;El modo mantenimiento ahora está: {status}&quot;\n  maintenance-on: &quot;&lt;red&gt;&lt;bold&gt;ACTIVADO&lt;/bold&gt;&lt;/red&gt;&quot;\n  maintenance-off: &quot;&lt;green&gt;&lt;bold&gt;DESACTIVADO&lt;/bold&gt;&lt;/green&gt;&quot;\n  motd-set: &quot;&lt;green&gt;MOTD estático establecido: &lt;white&gt;{motd}&quot;",
+    "fmt_h1": "Formatos y Colores",
+    "fmt_sub": "Sintaxis compatible entre todos los módulos.",
+    "faq_h1": "Preguntas Frecuentes",
+    "faq_sub": "Resolución de dudas frecuentes.",
+    "faq_q1": "¿Cómo configurar el acceso durante el mantenimiento?",
+    "faq_a1": "Asigna el permiso <code>motdengine.maintenance.bypass</code> mediante tu plugin de permisos al grupo de administradores.",
+    "faq_q2": "¿Se puede permitir el cambio de voto?",
+    "faq_a2": "Sí, la clave <code>allow-change-vote</code> en el archivo <code>config.yml</code> de PollEngine habilita o deshabilita esta opción.",
+    "footer_docs": "Documentación Oficial"
+  },
+  "en": {
+    "by": "by",
+    "menu_general": "General",
+    "menu_plugins": "Plugins",
+    "menu_guides": "Guides",
+    "tab_inicio": "Home",
+    "tab_instalacion": "Installation",
+    "tab_formatos": "Formats & Colors",
+    "tab_faq": "FAQ",
+    "theme_dark": "Dark",
+    "theme_purple": "Purple",
+    "theme_light": "White",
+    "inicio_h1": "EnginePlugins Documentation",
+    "inicio_sub": "Technical specifications and configuration guide developed by sasukelol21.",
+    "inicio_p1": "EnginePlugins is a performance-focused suite for Paper, Purpur, and Spigot servers. The codebase runs asynchronously, is compiled on Java 25, and supports Minecraft 1.21.x through 26.3.",
+    "card_chat_desc": "Chat channels, direct audio mentions (@Player), auto-moderation filters, and RGB colors.",
+    "card_gui_desc": "Core inventory framework optimized for creating interactive in-game menus.",
+    "card_poll_desc": "Interactive inventory GUI polls, live vote tracking, and automatic winner announcements.",
+    "card_motd_desc": "Server list ping handler with async rotation, custom multiline hover, and maintenance mode.",
+    "inicio_h2": "Architecture",
+    "inicio_li1": "<strong>Zero external dependencies:</strong> Standalone binaries ready for the <code>plugins/</code> folder.",
+    "inicio_li2": "<strong>Universal syntax:</strong> Native MiniMessage formatting alongside classic ampersand (&amp;) codes.",
+    "inicio_li3": "<strong>Low overhead:</strong> String parsing and timer checks are executed outside the main server thread.",
+    "inst_h1": "Installation",
+    "inst_sub": "System requirements and deployment steps.",
+    "inst_h2_req": "Requirements",
+    "inst_h2_steps": "Setup",
+    "inst_step1": "Download the <code>.jar</code> file from the official Modrinth repository.",
+    "inst_step2": "Place the file into your server's <code>plugins/</code> folder.",
+    "inst_step3": "Start the server to generate default configuration files.",
+    "inst_step4": "Edit the <code>config.yml</code> files to fit your server setup.",
+    "inst_note_title": "Java 25 Toolchain:",
+    "inst_note_desc": "Compiled using bytecode version 69 for full compatibility with Minecraft 26.3.",
+    "features": "Features",
+    "commands": "Commands",
+    "th_cmd": "Command",
+    "th_perm": "Permission",
+    "th_desc": "Function",
+    "th_default": "Default",
+    "th_placeholder": "Placeholder",
+    "th_plugin_version": "Plugin Version",
+    "th_mc_versions": "Supported Minecraft Versions",
+    "th_java_version": "Java",
+    "th_status": "Status",
+    "status_stable": "Stable",
+    "status_supported": "Supported",
+    "status_legacy": "Legacy",
+    "status_deprecated": "Deprecated",
+    "badge_latest": "Latest",
+    "compat_h2": "Version Compatibility",
+    "dl_chatengine": "Download ChatEngine on Modrinth",
+    "dl_guiengine": "Download GUIEngine on Modrinth",
+    "dl_pollengine": "Download PollEngine on Modrinth",
+    "dl_motdengine": "Download MotdEngine on Modrinth",
+    "changelog_title": "Changelog (Logs)",
+    "th_version": "Version",
+    "th_changes": "Change Details",
+    "chat_sub": "Chat manager featuring channels, mentions, and filters (v1.3.0).",
+    "chat_f1": "<strong>Channels:</strong> Supports <code>GLOBAL</code>, <code>WORLD</code>, or custom channels in <code>channels.yml</code>.",
+    "chat_f2": "<strong>Mentions:</strong> Tag players using <code>@Username</code> with inline highlighting and sound alerts.",
+    "chat_f3": "<strong>Filters:</strong> URL detection, blacklisted words, and message repetition limits.",
+    "chat_f4": "<strong>LuckPerms:</strong> Reads prefixes, suffixes, and primary groups in real-time.",
+    "chat_f5": "<strong>Native Java 25:</strong> Asynchronous pipeline supporting Minecraft 1.21.x through 26.3.",
+    "chat_cmd_reload": "Reloads configuration files and channels.",
+    "chat_cmd_clear": "Clears global server chat for all players.",
+    "chat_cmd_mute": "Mutes or unmutes server-wide chat.",
+    "chat_cmd_ch": "Switches channels or sends a quick message.",
+    "ce_config_h2": "Main Configuration (config.yml)",
+    "ce_config_p": "Configuration file automatically generated at <code>plugins/ChatEngine/config.yml</code>:",
+    "ce_channels_h2": "Channel Configuration (channels.yml)",
+    "ce_channels_p": "Define independent chat channels in <code>plugins/ChatEngine/channels.yml</code>:",
+    "ce_perms_h2": "Complete Permissions List",
+    "ce_p_admin": "Full access to all ChatEngine commands.",
+    "ce_p_reload": "Allows reloading configuration files.",
+    "ce_p_clearchat": "Allows clearing global server chat.",
+    "ce_p_mutechat": "Allows muting or unmuting global chat.",
+    "ce_p_bp_cooldown": "Bypasses anti-spam cooldown between messages.",
+    "ce_p_bp_repeat": "Bypasses repeated message blocking.",
+    "ce_p_bp_mod": "Bypasses word and URL moderation filters.",
+    "ce_p_mentions": "Allows mentioning other players using @Player.",
+    "ce_p_c_legacy": "Allows using legacy formatting codes (&amp;0-&amp;f).",
+    "ce_p_c_hex": "Allows using RGB hex color codes (&amp;#RRGGBB).",
+    "ce_ph_h2": "Supported Placeholders",
+    "ce_ph_player": "Username of the player sending the message.",
+    "ce_ph_prefix": "Player prefix retrieved from LuckPerms or Vault.",
+    "ce_ph_suffix": "Player suffix retrieved from LuckPerms or Vault.",
+    "ce_ph_world": "World name where the player is currently located.",
+    "ce_ph_message": "Content of the sent message.",
+    "ce_ph_papi": "Full support for any PlaceholderAPI placeholder.",
+    "ce_log_130": "Compiled and tuned for Java 25 (bytecode 69) and Minecraft 1.21.x-26.3. Async processing pipeline and improved @player mention system with audio cues.",
+    "ce_log_121": "Native integration with LuckPerms and PlaceholderAPI. Support for MiniMessage tags and 24-bit RGB hex gradients.",
+    "ce_log_110": "Custom channels configurable via channels.yml and per-world chat scopes.",
+    "ce_log_100": "Initial release featuring moderation tools (/clearchat, /mutechat) and anti-spam filters.",
+    "ce_code_config": "# ==========================================\n# ChatEngine - Main Configuration (config.yml)\n# ==========================================\n\nchat:\n  # Default channel players join when connecting\n  default-channel: global\n\n  # Cancels vanilla Bukkit chat to process through ChatEngine\n  cancel-vanilla-chat: true\n\n  # Chat formats (Priority: by-group &gt; by-world &gt; default)\n  formats:\n    # General fallback format\n    default: &quot;{prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n    # World-specific formats (uses world folder name)\n    by-world:\n      world: &quot;&amp;7[&amp;aSurvival&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      world_nether: &quot;&amp;7[&amp;cNether&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      world_the_end: &quot;&amp;7[&amp;dTheEnd&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n    # LuckPerms group formats (uses primary group)\n    by-group:\n      default: &quot;&amp;7[&amp;fMember&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      vip: &quot;&amp;7[&amp;aVIP&amp;7] &lt;gradient:#00FFAA:#00A2FF&gt;{player}&lt;/gradient&gt;{suffix}&amp;7: &amp;f{message}&quot;\n      admin: &quot;&amp;7[&amp;cAdmin&amp;7] &lt;gradient:#FF5555:#FFAA00&gt;{player}&lt;/gradient&gt;{suffix}&amp;7: &amp;f{message}&quot;\n\n  # Chat color permissions control\n  colors:\n    use-permissions: true      # If false, anyone can use allowed colors\n    allow-magic: false         # Disables &amp;k to prevent visual spam\n\n    legacy:\n      enabled: true\n      permission: &quot;chatcolor.color.legacy&quot; # &amp;0-&amp;f\n\n    hex:\n      enabled: true\n      permission: &quot;chatcolor.color.hex&quot;    # &amp;#RRGGBB or &lt;#RRGGBB&gt;\n\n    formats:\n      bold:\n        enabled: true\n        permission: &quot;chatcolor.format.bold&quot;      # &amp;l\n      italic:\n        enabled: true\n        permission: &quot;chatcolor.format.italic&quot;    # &amp;o\n      underline:\n        enabled: true\n        permission: &quot;chatcolor.format.underline&quot; # &amp;n\n      strikethrough:\n        enabled: true\n        permission: &quot;chatcolor.format.strike&quot;    # &amp;m\n      magic:\n        enabled: false\n        permission: &quot;chatcolor.format.magic&quot;     # &amp;k\n\n# Anti-Spam protection module\nspam:\n  enabled: true\n  cooldown-seconds: 2          # Minimum seconds between messages\n  repeat-window-seconds: 5     # Time window preventing repeated text\n\n  bypass-permissions:\n    cooldown: &quot;chatengine.bypass.cooldown&quot;\n    repeat: &quot;chatengine.bypass.repeat&quot;",
+    "ce_code_channels": "# ==========================================\n# ChatEngine - Channels (channels.yml)\n# ==========================================\n\nchannels:\n  global:\n    # Scope: GLOBAL (entire server) or WORLD (same world only)\n    scope: GLOBAL\n    permission-speak: &quot;chatengine.channel.global.speak&quot;\n    permission-view: &quot;chatengine.channel.global.view&quot;\n    format: &quot;&amp;7[&amp;aGlobal&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n  world:\n    scope: WORLD\n    permission-speak: &quot;chatengine.channel.world.speak&quot;\n    permission-view: &quot;chatengine.channel.world.view&quot;\n    format: &quot;&amp;7[&amp;b{world}&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n  staff:\n    scope: GLOBAL\n    permission-speak: &quot;chatengine.channel.staff.speak&quot;\n    permission-view: &quot;chatengine.channel.staff.view&quot;\n    format: &quot;&amp;c[StaffChat] &amp;f{player}&amp;7: &amp;e{message}&quot;",
+    "gui_sub": "Inventory interface framework and interactive menu library.",
+    "gui_f1": "<strong>Secure Menu Engine:</strong> Prevents item taking, duplication, or illegal inventory movement.",
+    "gui_f2": "<strong>Component Rendering:</strong> Native Adventure and MiniMessage text support for titles and lore.",
+    "gui_f3": "<strong>Modular:</strong> Built as the foundation for shop systems, gamemode selectors, and voting menus.",
+    "gui_f4": "<strong>Automatic Event Handling:</strong> Robust cancellation of illegal click shortcuts (hotbar numbers, drop Q, shift-clicks).",
+    "ge_sec_h2": "Security & Anti-Dupe Protection",
+    "ge_sec_p": "GUIEngine enforces strict validation across the Spigot/Paper inventory lifecycle:",
+    "ge_sec_li1": "<strong>Mandatory Cancellation:</strong> <code>InventoryClickEvent</code> and <code>InventoryDragEvent</code> are secured to prevent players from taking UI items.",
+    "ge_sec_li2": "<strong>Clean Closure:</strong> Handled via <code>InventoryCloseEvent</code> for garbage collection and listener cleanup.",
+    "ge_sec_li3": "<strong>Ghost Click Prevention:</strong> Unique session UUID verification per opened menu.",
+    "ge_api_h2": "Integration Example (Developer API)",
+    "ge_api_p": "Example of creating an interactive protected menu with callbacks using the GUIEngine API:",
+    "ge_log_100": "Initial core framework release. Comprehensive item theft/exploit protection, Adventure API support, and async click callbacks.",
+    "ge_code_api": "// Create a 27-slot menu (3 rows)\nGUIEngineMenu menu = new GUIEngineMenu(&quot;Main Menu&quot;, 27);\n\n// Configure an interactive button\nItemStack item = new ItemBuilder(Material.COMPASS)\n    .name(&quot;&amp;a&amp;lServer Selector&quot;)\n    .lore(&quot;&amp;7Click to open the gamemodes menu.&quot;)\n    .build();\n\nmenu.setItem(13, item, (player, clickType) -&gt; {\n    player.sendMessage(&quot;§aConnecting to Survival...&quot;);\n    player.closeInventory();\n});\n\n// Cosmetic border filling\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// Open safely for the player\nmenu.open(player);",
+    "poll_sub": "Interactive GUI voting and poll engine (v2.0.0).",
+    "poll_f1": "<strong>Interactive Inventory GUI:</strong> Players vote by clicking items in the menu without memorizing commands.",
+    "poll_f2": "<strong>Timer & Automatic Broadcast:</strong> Configurable countdown with automatic chat and title announcements on conclusion.",
+    "poll_f3": "<strong>Flexible Vote Changing:</strong> Option permitting players to modify their vote while the poll is running.",
+    "poll_f4": "<strong>Live Vote Tracking:</strong> View instant vote counts and percentages at any time using <code>/poll results</code>.",
+    "pe_config_h2": "Main Configuration (config.yml)",
+    "pe_config_p": "Full configuration supporting sound effects, custom messages, and timers in <code>plugins/PollEngine/config.yml</code>:",
+    "poll_h2_create": "Poll Creation",
+    "pe_create_p": "Command syntax for server administrators:",
+    "poll_cmd_vote": "Opens the voting menu.",
+    "poll_cmd_res": "Displays live or recent poll results.",
+    "poll_cmd_start": "Starts a timed poll.",
+    "poll_cmd_end": "Closes the poll and declares the winner.",
+    "poll_cmd_reload": "Reloads config.yml.",
+    "pe_perms_h2": "Permissions",
+    "pe_p_vote": "Allows opening the voting GUI and casting a vote in active polls.",
+    "pe_p_admin": "Full administrative access to PollEngine.",
+    "pe_p_start": "Allows starting new polls.",
+    "pe_p_end": "Allows manually ending an active poll.",
+    "pe_p_reload": "Allows reloading the plugin configuration.",
+    "pe_log_200": "Full refactor for Java 25 and Paper 26.3. Inventory GUI voting with live percentage tracking, vote change support, and broadcast announcements.",
+    "pe_log_100": "Initial release of interactive chat-based voting with countdown timers.",
+    "pe_code_config": "# ==========================================\n# PollEngine - Main Configuration (config.yml)\n# ==========================================\n\nsettings:\n  # Title shown in the GUI menu (supports MiniMessage &lt;gradient&gt;, &lt;bold&gt;, etc.)\n  gui-title: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;PollEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;Voting&quot;\n  \n  # Default poll duration in seconds when creating without duration (0 = unlimited)\n  default-duration-seconds: 120\n  \n  # Allow players to change their vote while the poll is active\n  allow-change-vote: true\n  \n  # Sound effects on actions (Bukkit sound names, leave empty to disable)\n  sounds:\n    open-menu: &quot;BLOCK_CHEST_OPEN&quot;\n    vote-success: &quot;ENTITY_PLAYER_LEVELUP&quot;\n    vote-already: &quot;ENTITY_VILLAGER_NO&quot;\n    poll-start: &quot;ENTITY_EXPERIENCE_ORB_PICKUP&quot;\n    poll-end: &quot;UI_TOAST_CHALLENGE_COMPLETE&quot;\n\n# System messages\nmessages:\n  prefix: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;PollEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;&quot;\n  no-permission: &quot;&lt;red&gt;You don&#39;t have permission to execute this command.&quot;\n  no-active-poll: &quot;&lt;yellow&gt;There is no active poll right now.&quot;\n  already-voted: &quot;&lt;yellow&gt;You have already voted for: &lt;white&gt;{option}&lt;yellow&gt;.&quot;\n  vote-changed: &quot;&lt;green&gt;Your vote was updated to: &lt;white&gt;{option}&lt;green&gt;.&quot;\n  vote-registered: &quot;&lt;green&gt;Thank you for voting! Your vote: &lt;white&gt;{option}&lt;green&gt;.&quot;\n  poll-created: &quot;&lt;green&gt;A new poll has started!&lt;newline&gt;&lt;gray&gt;Question: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Use &lt;gold&gt;/poll&lt;gray&gt; to vote.&quot;\n  poll-ended-broadcast: &quot;&lt;gold&gt;&lt;bold&gt;Poll Ended!&lt;/bold&gt;&lt;newline&gt;&lt;gray&gt;Question: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Winner: &lt;green&gt;{winner} &lt;dark_gray&gt;({winner_votes} votes)&quot;\n  poll-results-header: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;--- Poll Results ---&lt;/bold&gt;&lt;/gradient&gt;&lt;newline&gt;&lt;gray&gt;Question: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Total Votes: &lt;white&gt;{total_votes}&quot;\n  poll-results-entry: &quot;&lt;gray&gt;  &lt;white&gt;{option}: &lt;gold&gt;{votes} votes &lt;dark_gray&gt;({percent}%)&quot;\n  config-reloaded: &quot;&lt;green&gt;Configuration reloaded successfully.&quot;",
+    "pe_code_usage": "/poll start &lt;Question&gt; | &lt;Option 1&gt; | &lt;Option 2&gt; ... [seconds]\n\n# Example with 2 options and 60 seconds:\n/poll start Reset the Nether world? | Yes | No 60\n\n# Example with 3 options and 120 seconds:\n/poll start Which event do you prefer on Saturday? | PvP Arena | Parkour | Spleef 120",
+    "motd_sub": "Server list MOTD, player hover, and maintenance mode (v2.0.0).",
+    "motd_h2_modes": "Modes",
+    "motd_m1": "<strong>ROTATING:</strong> Periodic asynchronous rotation every X seconds.",
+    "motd_m2": "<strong>RANDOM:</strong> Selects a random message on every server ping.",
+    "motd_m3": "<strong>STATIC:</strong> Locks in a single static MOTD.",
+    "me_config_h2": "Main Configuration (config.yml)",
+    "me_config_p": "Full configuration for MOTD messages, player hover list, and maintenance mode in <code>plugins/MotdEngine/config.yml</code>:",
+    "motd_cmd_maint": "Toggles maintenance mode.",
+    "motd_cmd_prev": "Previews the active MOTD in chat.",
+    "motd_cmd_set": "Sets a static MOTD directly.",
+    "motd_cmd_rel": "Reloads MOTD configurations.",
+    "me_perms_h2": "Permissions",
+    "me_p_admin": "Allows using all administrative /motd commands.",
+    "me_p_bypass": "Allows players to bypass maintenance mode and join the server.",
+    "me_log_200": "Complete migration to Java 25 and Paper Profile API (ServerListPingEvent). ROTATING, RANDOM, and STATIC modes. Maintenance bypass permission and custom player hover tooltips.",
+    "me_log_100": "Initial server list MOTD manager release.",
+    "me_code_config": "# ==========================================\n# MotdEngine - Main Configuration (config.yml)\n# ==========================================\n\n# Server list MOTD settings\nmotd:\n  # Available rotation modes:\n  # - &quot;ROTATING&quot;: Sequentially rotates messages at the specified interval\n  # - &quot;RANDOM&quot;: Selects a random MOTD on every player ping\n  # - &quot;STATIC&quot;: Always uses the first message in the list\n  mode: &quot;ROTATING&quot;\n\n  # Interval in seconds when mode is ROTATING\n  rotation-interval-seconds: 15\n\n  # List of MOTD messages displayed in the server list\n  # Use \\n or &lt;newline&gt; to split between line 1 and line 2\n  messages:\n    - &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;Welcome to our Minecraft Server!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Survival, Minigames &amp; Creative &lt;dark_gray&gt;• &lt;yellow&gt;Join Now!&quot;\n    - &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;The Ultimate Minecraft Experience!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Special Weekend Events Active &lt;dark_gray&gt;• &lt;green&gt;Play with friends!&quot;\n    - &quot;&lt;gradient:#FF55FF:#AA00AA&gt;&lt;bold&gt;Updated for Latest Minecraft 26.3!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;High performance &amp; lag-free gameplay &lt;dark_gray&gt;• &lt;aqua&gt;Welcome!&quot;\n\n# Player count and slot customization\nplayer-count:\n  # Enable custom player slot overrides\n  override-max-players: false\n  # Static max players value (if override-max-players is true and dynamic-max is false)\n  max-players: 100\n  # If true, max-players will always be (online_players + dynamic-addition)\n  dynamic-max: true\n  dynamic-addition: 1\n\n# Player hover list (sample text shown when hovering mouse over player count)\nplayer-hover:\n  enabled: true\n  lines:\n    - &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;--- Server Information ---&lt;/bold&gt;&lt;/gradient&gt;&quot;\n    - &quot;&lt;gray&gt;Online Players: &lt;yellow&gt;{online} &lt;dark_gray&gt;/ &lt;yellow&gt;{max}&quot;\n    - &quot;&lt;gray&gt;Discord: &lt;aqua&gt;discord.gg/yourserver&quot;\n    - &quot;&lt;gray&gt;Store: &lt;gold&gt;store.yourserver.net&quot;\n    - &quot;&lt;green&gt;Enjoy your stay and have fun!&quot;\n\n# Maintenance Mode\nmaintenance:\n  enabled: false\n  # MOTD shown when maintenance is active\n  motd: &quot;&lt;gradient:#FF0000:#FF5555&gt;&lt;bold&gt;SERVER UNDER MAINTENANCE&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;We will be back shortly! Join our Discord for updates.&quot;\n  # Kick message when players attempt to connect without bypass\n  kick-message: &quot;&lt;red&gt;&lt;bold&gt;Server is currently under maintenance!&lt;/bold&gt;&lt;/red&gt;&lt;newline&gt;&lt;gray&gt;Please check back later or visit our Discord for news.&quot;\n  # Version text replacing the Minecraft version string\n  custom-version-text: &quot;&lt;red&gt;Maintenance&quot;\n\n# System messages\nmessages:\n  prefix: &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;MotdEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;&quot;\n  no-permission: &quot;&lt;red&gt;You don&#39;t have permission to execute this command.&quot;\n  config-reloaded: &quot;&lt;green&gt;MotdEngine configuration reloaded successfully!&quot;\n  maintenance-toggled: &quot;&lt;yellow&gt;Maintenance mode is now: {status}&quot;\n  maintenance-on: &quot;&lt;red&gt;&lt;bold&gt;ENABLED&lt;/bold&gt;&lt;/red&gt;&quot;\n  maintenance-off: &quot;&lt;green&gt;&lt;bold&gt;DISABLED&lt;/bold&gt;&lt;/green&gt;&quot;\n  motd-set: &quot;&lt;green&gt;Custom MOTD set: &lt;white&gt;{motd}&quot;",
+    "fmt_h1": "Formats & Colors",
+    "fmt_sub": "Syntax supported across all plugin modules.",
+    "faq_h1": "FAQ",
+    "faq_sub": "Common questions and technical details.",
+    "faq_q1": "How to allow admins in during maintenance?",
+    "faq_a1": "Grant the permission <code>motdengine.maintenance.bypass</code> to the administrative group in your permissions plugin.",
+    "faq_q2": "Can players change their vote?",
+    "faq_a2": "Yes, the <code>allow-change-vote</code> setting in PollEngine's <code>config.yml</code> controls this.",
+    "footer_docs": "Official Documentation"
+  },
+  "pt": {
+    "by": "por",
+    "menu_general": "Geral",
+    "menu_plugins": "Plugins",
+    "menu_guides": "Guias",
+    "tab_inicio": "Início",
+    "tab_instalacion": "Instalação",
+    "tab_formatos": "Formatos e Cores",
+    "tab_faq": "FAQ",
+    "theme_dark": "Escuro",
+    "theme_purple": "Roxo",
+    "theme_light": "Branco",
+    "inicio_h1": "Documentação do EnginePlugins",
+    "inicio_sub": "Especificações técnicas e guia de configuração por sasukelol21.",
+    "inicio_p1": "EnginePlugins é uma suite focada em desempenho para servidores Paper, Purpur e Spigot. Executa de forma assíncrona, compilada em Java 25 para Minecraft 1.21.x até 26.3.",
+    "card_chat_desc": "Canais de chat, menções com áudio (@Player), filtros de moderação e suporte RGB.",
+    "card_gui_desc": "Framework base de inventários e menus interativos otimizado.",
+    "card_poll_desc": "Enquetes com interface GUI de inventário, contagem ao vivo e anúncio de vencedores.",
+    "card_motd_desc": "Lista de servidores com rotação assíncrona, hover de jogadores e modo manutenção.",
+    "inicio_h2": "Estrutura",
+    "inicio_li1": "<strong>Sem dependências externas:</strong> Binários autônomos para a pasta <code>plugins/</code>.",
+    "inicio_li2": "<strong>Formato universal:</strong> Suporte a MiniMessage e códigos clássicos com ampersand (&amp;).",
+    "inicio_li3": "<strong>Baixo consumo:</strong> Processamento executado fora da thread principal do servidor.",
+    "inst_h1": "Instalação",
+    "inst_sub": "Requisitos de sistema e processo de instalação.",
+    "inst_h2_req": "Requisitos",
+    "inst_h2_steps": "Instalação",
+    "inst_step1": "Baixe o arquivo <code>.jar</code> no repositório oficial no Modrinth.",
+    "inst_step2": "Coloque o arquivo na pasta <code>plugins/</code> do servidor.",
+    "inst_step3": "Inicie o servidor para gerar as configurações padrão.",
+    "inst_step4": "Ajuste os arquivos <code>config.yml</code> conforme necessário.",
+    "inst_note_title": "Java 25 Nativo:",
+    "inst_note_desc": "Compilado com bytecode versão 69, pronto para o padrão do Minecraft 26.3.",
+    "features": "Recursos",
+    "commands": "Comandos",
+    "th_cmd": "Comando",
+    "th_perm": "Permissão",
+    "th_desc": "Função",
+    "th_default": "Padrão",
+    "th_placeholder": "Placeholder",
+    "th_plugin_version": "Versão do Plugin",
+    "th_mc_versions": "Versões do Minecraft Suportadas",
+    "th_java_version": "Java",
+    "th_status": "Status",
+    "status_stable": "Estável",
+    "status_supported": "Suportada",
+    "status_legacy": "Legada",
+    "status_deprecated": "Descontinuada",
+    "badge_latest": "Mais Recente",
+    "compat_h2": "Compatibilidade de Versões",
+    "dl_chatengine": "Baixar ChatEngine no Modrinth",
+    "dl_guiengine": "Baixar GUIEngine no Modrinth",
+    "dl_pollengine": "Baixar PollEngine no Modrinth",
+    "dl_motdengine": "Baixar MotdEngine no Modrinth",
+    "changelog_title": "Registro de Alterações (Logs)",
+    "th_version": "Versão",
+    "th_changes": "Detalhes da Alteração",
+    "chat_sub": "Gerenciador de chat com canais, menções e moderação (v1.3.0).",
+    "chat_f1": "<strong>Canais:</strong> Suporta <code>GLOBAL</code>, <code>WORLD</code> ou personalizados em <code>channels.yml</code>.",
+    "chat_f2": "<strong>Menções:</strong> Marque jogadores com <code>@Nome</code> com destaque e alerta sonoro.",
+    "chat_f3": "<strong>Filtros:</strong> Detecção de links, palavras censuradas e controle de repetição.",
+    "chat_f4": "<strong>LuckPerms:</strong> Lê prefixos, sufixos e grupos primários em tempo real.",
+    "chat_f5": "<strong>Java 25 Nativo:</strong> Arquitetura assíncrona compatível com Minecraft 1.21.x até 26.3.",
+    "chat_cmd_reload": "Recarrega as configurações e canais.",
+    "chat_cmd_clear": "Limpa o chat do servidor para todos os jogadores.",
+    "chat_cmd_mute": "Muta ou desmuta o chat global.",
+    "chat_cmd_ch": "Muda de canal ativo ou envia mensagem rápida.",
+    "ce_config_h2": "Configuração Principal (config.yml)",
+    "ce_config_p": "Arquivo de configuração gerado automaticamente em <code>plugins/ChatEngine/config.yml</code>:",
+    "ce_channels_h2": "Configuração de Canais (channels.yml)",
+    "ce_channels_p": "Permite definir canais de chat independentes em <code>plugins/ChatEngine/channels.yml</code>:",
+    "ce_perms_h2": "Lista Completa de Permissões",
+    "ce_p_admin": "Acesso total a todos os comandos do ChatEngine.",
+    "ce_p_reload": "Permite recarregar arquivos de configuração.",
+    "ce_p_clearchat": "Permite limpar o chat global.",
+    "ce_p_mutechat": "Permite silenciar ou reativar o chat global.",
+    "ce_p_bp_cooldown": "Ignora o tempo de espera entre mensagens.",
+    "ce_p_bp_repeat": "Ignora o bloqueio de mensagens repetidas.",
+    "ce_p_bp_mod": "Ignora filtros de moderação de palavras e links.",
+    "ce_p_mentions": "Permite mencionar outros jogadores com @Jogador.",
+    "ce_p_c_legacy": "Permite usar códigos clássicos (&amp;0-&amp;f).",
+    "ce_p_c_hex": "Permite usar cores hexadecimais (&amp;#RRGGBB).",
+    "ce_ph_h2": "Placeholders Suportados",
+    "ce_ph_player": "Nome do jogador que envia a mensagem.",
+    "ce_ph_prefix": "Prefixo do jogador obtido do LuckPerms ou Vault.",
+    "ce_ph_suffix": "Sufixo do jogador obtido do LuckPerms ou Vault.",
+    "ce_ph_world": "Nome do mundo onde o jogador está localizado.",
+    "ce_ph_message": "Conteúdo da mensagem enviada.",
+    "ce_ph_papi": "Suporte total para qualquer placeholder do PAPI.",
+    "ce_log_130": "Compilado e ajustado para Java 25 (bytecode 69) e Minecraft 1.21.x-26.3. Pipeline de chat assíncrono e sistema aprimorado de menções @player com aviso sonoro.",
+    "ce_log_121": "Integração nativa com LuckPerms e PlaceholderAPI. Suporte a tags MiniMessage e gradientes RGB.",
+    "ce_log_110": "Canais personalizados via channels.yml e escopos por mundo.",
+    "ce_log_100": "Lançamento inicial com moderação (/clearchat, /mutechat) e filtros anti-spam.",
+    "ce_code_config": "# ==========================================\n# ChatEngine - Configuração Principal (config.yml)\n# ==========================================\n\nchat:\n  # Canal padrão que os jogadores entram ao conectar\n  default-channel: global\n\n  # Cancela o chat vanilla para processar pelo ChatEngine\n  cancel-vanilla-chat: true\n\n  # Formatos de chat (Prioridade: by-group &gt; by-world &gt; default)\n  formats:\n    # Formato padrão geral\n    default: &quot;{prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n    # Formatos por mundo (usa o nome da pasta do mundo)\n    by-world:\n      world: &quot;&amp;7[&amp;aSurvival&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      world_nether: &quot;&amp;7[&amp;cNether&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      world_the_end: &quot;&amp;7[&amp;dTheEnd&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n    # Formatos por grupo do LuckPerms (usa o grupo primário)\n    by-group:\n      default: &quot;&amp;7[&amp;fMembro&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n      vip: &quot;&amp;7[&amp;aVIP&amp;7] &lt;gradient:#00FFAA:#00A2FF&gt;{player}&lt;/gradient&gt;{suffix}&amp;7: &amp;f{message}&quot;\n      admin: &quot;&amp;7[&amp;cAdmin&amp;7] &lt;gradient:#FF5555:#FFAA00&gt;{player}&lt;/gradient&gt;{suffix}&amp;7: &amp;f{message}&quot;\n\n  # Controle de permissões para cores no chat\n  colors:\n    use-permissions: true      # Se false, todos usam cores\n    allow-magic: false         # Desativa &amp;k para evitar spam\n\n    legacy:\n      enabled: true\n      permission: &quot;chatcolor.color.legacy&quot; # &amp;0-&amp;f\n\n    hex:\n      enabled: true\n      permission: &quot;chatcolor.color.hex&quot;    # &amp;#RRGGBB ou &lt;#RRGGBB&gt;\n\n    formats:\n      bold:\n        enabled: true\n        permission: &quot;chatcolor.format.bold&quot;      # &amp;l\n      italic:\n        enabled: true\n        permission: &quot;chatcolor.format.italic&quot;    # &amp;o\n      underline:\n        enabled: true\n        permission: &quot;chatcolor.format.underline&quot; # &amp;n\n      strikethrough:\n        enabled: true\n        permission: &quot;chatcolor.format.strike&quot;    # &amp;m\n      magic:\n        enabled: false\n        permission: &quot;chatcolor.format.magic&quot;     # &amp;k\n\n# Módulo de proteção Anti-Spam\nspam:\n  enabled: true\n  cooldown-seconds: 2          # Segundos mínimos entre mensagens\n  repeat-window-seconds: 5     # Janela para bloquear mensagens repetidas\n\n  bypass-permissions:\n    cooldown: &quot;chatengine.bypass.cooldown&quot;\n    repeat: &quot;chatengine.bypass.repeat&quot;",
+    "ce_code_channels": "# ==========================================\n# ChatEngine - Canais (channels.yml)\n# ==========================================\n\nchannels:\n  global:\n    # Escopo: GLOBAL (todo o servidor) ou WORLD (mesmo mundo)\n    scope: GLOBAL\n    permission-speak: &quot;chatengine.channel.global.speak&quot;\n    permission-view: &quot;chatengine.channel.global.view&quot;\n    format: &quot;&amp;7[&amp;aGlobal&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n  world:\n    scope: WORLD\n    permission-speak: &quot;chatengine.channel.world.speak&quot;\n    permission-view: &quot;chatengine.channel.world.view&quot;\n    format: &quot;&amp;7[&amp;b{world}&amp;7] {prefix}{player}{suffix}&amp;7: &amp;f{message}&quot;\n\n  staff:\n    scope: GLOBAL\n    permission-speak: &quot;chatengine.channel.staff.speak&quot;\n    permission-view: &quot;chatengine.channel.staff.view&quot;\n    format: &quot;&amp;c[StaffChat] &amp;f{player}&amp;7: &amp;e{message}&quot;",
+    "gui_sub": "Framework de interfaces de inventário e menus interativos.",
+    "gui_f1": "<strong>Menu Seguro:</strong> Impede retirada, duplicação ou movimentação indevida de itens.",
+    "gui_f2": "<strong>Componentes:</strong> Suporte nativo a Adventure e MiniMessage em títulos e descrições.",
+    "gui_f3": "<strong>Modular:</strong> Base para sistemas de lojas, seleção de modos e votações.",
+    "gui_f4": "<strong>Gerenciamento Automático de Eventos:</strong> Cancelamento seguro de atalhos ilegais.",
+    "ge_sec_h2": "Segurança e Proteção Antidupe",
+    "ge_sec_p": "O GUIEngine implementa uma camada rigorosa de validação sobre o ciclo de vida dos inventários:",
+    "ge_sec_li1": "<strong>Cancelamento Obrigatório:</strong> <code>InventoryClickEvent</code> e <code>InventoryDragEvent</code> são blindados contra roubo de itens.",
+    "ge_sec_li2": "<strong>Fechamento Seguro:</strong> Gerenciado com <code>InventoryCloseEvent</code> para liberação de memória.",
+    "ge_sec_li3": "<strong>Prevenção de Cliques Fantasmas:</strong> Verificação por UUID único em cada sessão.",
+    "ge_api_h2": "Exemplo de Integração (API para Desenvolvedores)",
+    "ge_api_p": "Exemplo de criação de menu interativo protegido com callbacks usando a API do GUIEngine:",
+    "ge_log_100": "Lançamento do framework central. Proteção contra furto de itens em GUI, suporte Adventure API e callbacks assíncronos.",
+    "ge_code_api": "// Criação de um menu de 27 slots (3 fileiras)\nGUIEngineMenu menu = new GUIEngineMenu(&quot;Menu Principal&quot;, 27);\n\n// Configuração de botão interativo\nItemStack item = new ItemBuilder(Material.COMPASS)\n    .name(&quot;&amp;a&amp;lSeletor de Modos&quot;)\n    .lore(&quot;&amp;7Clique para abrir o menu de servidores.&quot;)\n    .build();\n\nmenu.setItem(13, item, (player, clickType) -&gt; {\n    player.sendMessage(&quot;§aAbrindo servidor Survival...&quot;);\n    player.closeInventory();\n});\n\n// Preenchimento de bordas\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// Abertura segura para o jogador\nmenu.open(player);",
+    "poll_sub": "Sistema de enquetes interativas por GUI de inventário (v2.0.0).",
+    "poll_f1": "<strong>Interface GUI Interativa:</strong> Jogadores votam clicando no menu sem comandos complexos.",
+    "poll_f2": "<strong>Temporizador e Anúncio Automático:</strong> Contagem regressiva com anúncio no chat e tela ao finalizar.",
+    "poll_f3": "<strong>Mudança de Voto Flexível:</strong> Opção permitindo aos jogadores alterar o voto enquanto a enquete estiver ativa.",
+    "poll_f4": "<strong>Contagem ao Vivo:</strong> Acompanhe porcentagens e votos em tempo real com <code>/poll results</code>.",
+    "pe_config_h2": "Configuração Principal (config.yml)",
+    "pe_config_p": "Configuração completa com efeitos sonoros, mensagens e temporizador em <code>plugins/PollEngine/config.yml</code>:",
+    "poll_h2_create": "Criação de Enquetes",
+    "pe_create_p": "Sintaxe do comando para administradores:",
+    "poll_cmd_vote": "Abre o menu interativo para votar.",
+    "poll_cmd_res": "Exibe o resultado da votação atual ou anterior.",
+    "poll_cmd_start": "Inicia uma votação com tempo.",
+    "poll_cmd_end": "Encerra a enquete e anuncia o vencedor.",
+    "poll_cmd_reload": "Recarrega o arquivo config.yml.",
+    "pe_perms_h2": "Permissões",
+    "pe_p_vote": "Permite abrir o menu e votar em enquetes ativas.",
+    "pe_p_admin": "Acesso administrativo completo ao PollEngine.",
+    "pe_p_start": "Permite iniciar novas enquetes.",
+    "pe_p_end": "Permite encerrar manualmente uma enquete ativa.",
+    "pe_p_reload": "Permite recarregar a configuração do plugin.",
+    "pe_log_200": "Refatoração completa para Java 25 e Paper 26.3. Votação em GUI com contagem ao vivo, suporte para alterar voto e anúncio de vencedor.",
+    "pe_log_100": "Lançamento inicial de votações pelo chat com temporizador.",
+    "pe_code_config": "# ==========================================\n# PollEngine - Configuração Principal (config.yml)\n# ==========================================\n\nsettings:\n  # Título exibido no menu GUI (suporta MiniMessage &lt;gradient&gt;, &lt;bold&gt;, etc.)\n  gui-title: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;PollEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;Votação&quot;\n  \n  # Duração padrão em segundos (0 = ilimitado)\n  default-duration-seconds: 120\n  \n  # Permitir jogadores alterarem o voto enquanto a votação estiver aberta\n  allow-change-vote: true\n  \n  # Efeitos sonoros (nomes de som do Bukkit, deixe vazio para desativar)\n  sounds:\n    open-menu: &quot;BLOCK_CHEST_OPEN&quot;\n    vote-success: &quot;ENTITY_PLAYER_LEVELUP&quot;\n    vote-already: &quot;ENTITY_VILLAGER_NO&quot;\n    poll-start: &quot;ENTITY_EXPERIENCE_ORB_PICKUP&quot;\n    poll-end: &quot;UI_TOAST_CHALLENGE_COMPLETE&quot;\n\n# Mensagens do sistema\nmessages:\n  prefix: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;PollEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;&quot;\n  no-permission: &quot;&lt;red&gt;Você não tem permissão para executar este comando.&quot;\n  no-active-poll: &quot;&lt;yellow&gt;Não há nenhuma enquete ativa no momento.&quot;\n  already-voted: &quot;&lt;yellow&gt;Você já votou em: &lt;white&gt;{option}&lt;yellow&gt;.&quot;\n  vote-changed: &quot;&lt;green&gt;Seu voto foi atualizado para: &lt;white&gt;{option}&lt;green&gt;.&quot;\n  vote-registered: &quot;&lt;green&gt;Obrigado por votar! Sua opção: &lt;white&gt;{option}&lt;green&gt;.&quot;\n  poll-created: &quot;&lt;green&gt;Uma nova enquete começou!&lt;newline&gt;&lt;gray&gt;Pergunta: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Use &lt;gold&gt;/poll&lt;gray&gt; para votar.&quot;\n  poll-ended-broadcast: &quot;&lt;gold&gt;&lt;bold&gt;Enquete Encerrada!&lt;/bold&gt;&lt;newline&gt;&lt;gray&gt;Pergunta: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Vencedor: &lt;green&gt;{winner} &lt;dark_gray&gt;({winner_votes} votos)&quot;\n  poll-results-header: &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;--- Resultados da Enquete ---&lt;/bold&gt;&lt;/gradient&gt;&lt;newline&gt;&lt;gray&gt;Pergunta: &lt;yellow&gt;{question}&lt;newline&gt;&lt;gray&gt;Total de votos: &lt;white&gt;{total_votes}&quot;\n  poll-results-entry: &quot;&lt;gray&gt;  &lt;white&gt;{option}: &lt;gold&gt;{votes} votos &lt;dark_gray&gt;({percent}%)&quot;\n  config-reloaded: &quot;&lt;green&gt;Configuração do PollEngine recarregada com sucesso.&quot;",
+    "pe_code_usage": "/poll start &lt;Pergunta&gt; | &lt;Opção 1&gt; | &lt;Opção 2&gt; ... [segundos]\n\n# Exemplo com 2 opções e 60 segundos:\n/poll start Reiniciar o mundo Nether? | Sim | Não 60\n\n# Exemplo com 3 opções e 120 segundos:\n/poll start Qual evento prefere no sábado? | PvP Arena | Parkour | Spleef 120",
+    "motd_sub": "Personalizador de lista de servidores e manutenção (v2.0.0).",
+    "motd_h2_modes": "Modos de Operación",
+    "motd_m1": "<strong>ROTATING:</strong> Rotação periódica assíncrona a cada X segundos.",
+    "motd_m2": "<strong>RANDOM:</strong> Seleciona uma mensagem aleatória em cada ping.",
+    "motd_m3": "<strong>STATIC:</strong> Mantém uma única mensagem fixa.",
+    "me_config_h2": "Configuração Principal (config.yml)",
+    "me_config_p": "Configuração completa para mensagens MOTD, hover de jogadores e manutenção em <code>plugins/MotdEngine/config.yml</code>:",
+    "motd_cmd_maint": "Ativa ou desativa a manutenção.",
+    "motd_cmd_prev": "Exibe no chat o MOTD ativo.",
+    "motd_cmd_set": "Define uma mensagem estática diretamente.",
+    "motd_cmd_rel": "Recarrega configurações e mensagens.",
+    "me_perms_h2": "Permissões",
+    "me_p_admin": "Permite usar todos os comandos administrativos de /motd.",
+    "me_p_bypass": "Permite entrar no servidor enquanto a manutenção estiver ativada.",
+    "me_log_200": "Migração completa para Java 25 e Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM e STATIC. Permissão de bypass na manutenção e tooltips de jogadores.",
+    "me_log_100": "Lançamento inicial do gerenciador de MOTD.",
+    "me_code_config": "# ==========================================\n# MotdEngine - Configuração Principal (config.yml)\n# ==========================================\n\n# Configuração da mensagem na lista de servidores\nmotd:\n  # Modos disponíveis:\n  # - &quot;ROTATING&quot;: Rotação periódica a cada X segundos\n  # - &quot;RANDOM&quot;: Escolhe mensagem aleatória a cada ping\n  # - &quot;STATIC&quot;: Mostra sempre a primeira mensagem\n  mode: &quot;ROTATING&quot;\n\n  # Intervalo de rotação em segundos\n  rotation-interval-seconds: 15\n\n  # Lista de mensagens MOTD (Use \\n ou &lt;newline&gt; para quebrar linha)\n  messages:\n    - &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;Bem-vindo ao Nosso Servidor!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Survival Custom, Minigames &amp; Criativo &lt;dark_gray&gt;• &lt;yellow&gt;Entre agora!&quot;\n    - &quot;&lt;gradient:#FFAA00:#FF5500&gt;&lt;bold&gt;A Melhor Experiência Minecraft&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Eventos especiais de fim de semana ativos &lt;dark_gray&gt;• &lt;green&gt;Jogue com amigos&quot;\n    - &quot;&lt;gradient:#FF55FF:#AA00AA&gt;&lt;bold&gt;Atualizado para Minecraft 26.3!&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Desempenho máximo sem lag &lt;dark_gray&gt;• &lt;aqua&gt;Seja bem-vindo!&quot;\n\n# Personalização de slots e contagem de jogadores\nplayer-count:\n  override-max-players: false\n  max-players: 100\n  dynamic-max: true\n  dynamic-addition: 1\n\n# Menu hover na contagem de jogadores\nplayer-hover:\n  enabled: true\n  lines:\n    - &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;--- INFORMAÇÕES DO SERVIDOR ---&lt;/bold&gt;&lt;/gradient&gt;&quot;\n    - &quot;&lt;gray&gt;Jogadores online: &lt;yellow&gt;{online} &lt;dark_gray&gt;/ &lt;yellow&gt;{max}&quot;\n    - &quot;&lt;gray&gt;Discord: &lt;aqua&gt;discord.gg/seuservidor&quot;\n    - &quot;&lt;gray&gt;Loja Oficial: &lt;gold&gt;loja.seuservidor.net&quot;\n    - &quot;&lt;green&gt;Divirta-se jogando conosco!&quot;\n\n# Modo de Manutenção\nmaintenance:\n  enabled: false\n  motd: &quot;&lt;gradient:#FF0000:#FF5555&gt;&lt;bold&gt;SERVIDOR EM MANUTENÇÃO&lt;/bold&gt;&lt;/gradient&gt;\\n&lt;gray&gt;Voltaremos em breve! Acesse nosso Discord para novidades.&quot;\n  kick-message: &quot;&lt;red&gt;&lt;bold&gt;O servidor está atualmente em manutenção!&lt;/bold&gt;&lt;/red&gt;&lt;newline&gt;&lt;gray&gt;Tente novamente mais tarde ou veja notícias no Discord.&quot;\n  custom-version-text: &quot;&lt;red&gt;Manutenção&quot;\n\n# Mensagens do plugin\nmessages:\n  prefix: &quot;&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;MotdEngine&lt;/bold&gt;&lt;/gradient&gt; &lt;dark_gray&gt;| &lt;gray&gt;&quot;\n  no-permission: &quot;&lt;red&gt;Você não tem permissão para executar este comando.&quot;\n  config-reloaded: &quot;&lt;green&gt;Configuração do MotdEngine recarregada com sucesso!&quot;\n  maintenance-toggled: &quot;&lt;yellow&gt;O modo manutenção agora está: {status}&quot;\n  maintenance-on: &quot;&lt;red&gt;&lt;bold&gt;ATIVADO&lt;/bold&gt;&lt;/red&gt;&quot;\n  maintenance-off: &quot;&lt;green&gt;&lt;bold&gt;DESATIVADO&lt;/bold&gt;&lt;/green&gt;&quot;\n  motd-set: &quot;&lt;green&gt;MOTD estático definido: &lt;white&gt;{motd}&quot;",
+    "fmt_h1": "Formatos e Cores",
+    "fmt_sub": "Sintaxe suportada em todos os módulos.",
+    "faq_h1": "FAQ",
+    "faq_sub": "Dúvidas técnicas comuns.",
+    "faq_q1": "Como permitir acesso durante a manutenção?",
+    "faq_a1": "Atribua a permissão <code>motdengine.maintenance.bypass</code> ao grupo administrativo.",
+    "faq_q2": "É possível permitir mudança de voto?",
+    "faq_a2": "Sim, a opção <code>allow-change-vote</code> no <code>config.yml</code> do PollEngine controla isso.",
+    "footer_docs": "Documentação Oficial"
+  }
+};
 
     let currentLang = localStorage.getItem('ep_doc_lang') || 'es';
     let currentTab = 'inicio';
