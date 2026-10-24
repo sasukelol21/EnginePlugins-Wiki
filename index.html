@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnginePlugins Documentation — sasukelol21</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* 1. DARK REAL (Pure Black) */
+    :root, [data-theme="dark"] {
+      --bg: #000000;
+      --sidebar: #050505;
+      --card: #0a0a0a;
+      --border: #1a1a1a;
+      --border-focus: #333333;
+      --text: #ededed;
+      --text-muted: #888888;
+      --text-dim: #555555;
+      --accent: #ededed;
+      --accent-soft: #141414;
+      --code-bg: #0d0d0d;
+      --table-th: #0f0f0f;
+      --header-bg: rgba(0, 0, 0, 0.85);
+      --btn-bg: #141414;
+      --btn-border: #2a2a2a;
+    }
+
+    /* 2. PURPLE */
+    [data-theme="purple"] {
+      --bg: #09040e;
+      --sidebar: #0f0717;
+      --card: #150a21;
+      --border: #28143f;
+      --border-focus: #492573;
+      --text: #f5edfc;
+      --text-muted: #c09de5;
+      --text-dim: #8252b9;
+      --accent: #c084fc;
+      --accent-soft: rgba(192, 132, 252, 0.12);
+      --code-bg: #12081d;
+      --table-th: #1a0c2b;
+      --header-bg: rgba(9, 4, 14, 0.85);
+      --btn-bg: #1c0e2e;
+      --btn-border: #3b195c;
+    }
+
+    /* 3. LIGHT */
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --sidebar: #fafafa;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --border-focus: #cccccc;
+      --text: #111111;
+      --text-muted: #666666;
+      --text-dim: #999999;
+      --accent: #111111;
+      --accent-soft: #f4f4f5;
+      --code-bg: #f5f5f5;
+      --table-th: #f9f9f9;
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --btn-bg: #f4f4f5;
+      --btn-border: #e4e4e7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* SIDEBAR */
+    aside {
+      width: 260px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      padding: 20px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .brand-author {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .brand-author span {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .sidebar-menu {
+      padding: 14px 10px 30px 10px;
+      flex-grow: 1;
+    }
+
+    .menu-heading {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 600;
+      padding: 16px 12px 6px 12px;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+
+    .tab-btn img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      border-radius: 3px;
+    }
+
+    .tab-btn:hover {
+      background: var(--accent-soft);
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-soft);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .tab-btn .badge {
+      margin-left: auto;
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+    }
+
+    /* CONTENEDOR */
+    .viewport {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    header {
+      padding: 12px 40px;
+      background: var(--header-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      gap: 12px;
+    }
+
+    .location-bar {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .location-bar strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-group {
+      display: flex;
+      background: var(--sidebar);
+      border: 1px solid var(--border);
+      padding: 2px;
+      border-radius: 6px;
+    }
+
+    .ctrl-opt {
+      background: none;
+      border: none;
+      padding: 4px 9px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .ctrl-opt:hover {
+      color: var(--text);
+    }
+
+    .ctrl-opt.active {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* ENLACES Y BOTONES DE DESCARGA */
+    .download-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      transition: all 0.15s ease;
+    }
+
+    .download-link-btn:hover {
+      border-color: var(--border-focus);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .download-link-btn span {
+      color: var(--text-dim);
+      font-size: 0.75rem;
+    }
+
+    /* CONTENIDO */
+    main {
+      padding: 36px 56px 80px 56px;
+      max-width: 900px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .plugin-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .plugin-header img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .plugin-header-info h1 {
+      margin-bottom: 2px;
+      font-size: 1.7rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin: 28px 0 12px 0;
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 20px 0 6px 0;
+      color: var(--text);
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    ul, ol {
+      margin: 8px 0 16px 20px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    /* TABLAS */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px 0;
+      font-size: 0.84rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    th {
+      background: var(--table-th);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* CÓDIGO */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--text);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 14px 0 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* NOTAS */
+    .note {
+      border-left: 2px solid var(--border-focus);
+      background: var(--card);
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 18px 0;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .note strong {
+      color: var(--text);
+    }
+
+    /* CARDS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 16px 0 24px 0;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .card h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h4 img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .card p {
+      font-size: 0.82rem;
+      margin-bottom: 0;
+      color: var(--text-muted);
+    }
+
+    footer {
+      margin-top: 50px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 800px) {
+      body { flex-direction: column; }
+      aside { width: 100%; height: auto; position: static; }
+      .viewport { height: auto; }
+      main { padding: 24px 18px; }
+      header { padding: 10px 18px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA LATERAL -->
+  <aside>
+    <div class="brand">
+      <img src="logo.png" alt="EP">
+      <div>
+        <div class="brand-title">EnginePlugins</div>
+        <div class="brand-author"><span data-i18n="by">por</span> <span>sasukelol21</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-heading" data-i18n="menu_general">General</div>
+      <button class="tab-btn active" onclick="openTab('inicio')">
+        <span data-i18n="tab_inicio">Inicio</span>
+      </button>
+      <button class="tab-btn" onclick="openTab('instalacion')">
+        <span data-i18n="tab_instalacion">Instalación</span>
+      </button>
+
+      <div class="menu-heading" data-i18n="menu_plugins">Plugins</div>
+      <button class="tab-btn" onclick="openTab('chatengine')">
+        <img src="chatengine.png" alt="CE">
+        <span>ChatEngine</span>
+        <span class="badge">1.3.0</span>
+      </button>
+      <button class="tab-btn" onclick="openTab('guiengine')">
+        <img src="guiengine.png" alt="GE">
+        <span>GUIEngine</span>
+        <span class="badge">Core</span>
+      </button>
+      <button class="tab-btn" onclick="openTab('pollengine')">
+        <img src="pollengine.png" alt="PE">
+        <span>PollEngine</span>
+        <span class="badge">2.0.0</span>
+      </button>
+      <button class="tab-btn" onclick="openTab('motdengine')">
+        <img src="motdengine.png" alt="ME">
+        <span>MotdEngine</span>
+        <span class="badge">2.0.0</span>
+      </button>
+
+      <div class="menu-heading" data-i18n="menu_guides">Guías</div>
+      <button class="tab-btn" onclick="openTab('formatos')">
+        <span data-i18n="tab_formatos">Formatos y Colores</span>
+      </button>
+      <button class="tab-btn" onclick="openTab('faq')">
+        <span data-i18n="tab_faq">FAQ</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="viewport">
+    <header>
+      <div class="location-bar">
+        Docs / <strong id="section-crumb" data-i18n="tab_inicio">Inicio</strong>
+      </div>
+      <div class="header-controls">
+        <!-- Idiomas -->
+        <div class="control-group">
+          <button class="ctrl-opt active" data-lang="es" onclick="setLang('es')">ES</button>
+          <button class="ctrl-opt" data-lang="en" onclick="setLang('en')">EN</button>
+          <button class="ctrl-opt" data-lang="pt" onclick="setLang('pt')">PT</button>
+        </div>
+        <!-- Temas -->
+        <div class="control-group">
+          <button class="ctrl-opt active" data-theme-btn="dark" onclick="setTheme('dark')" data-i18n="theme_dark">Oscuro</button>
+          <button class="ctrl-opt" data-theme-btn="purple" onclick="setTheme('purple')" data-i18n="theme_purple">Morado</button>
+          <button class="ctrl-opt" data-theme-btn="light" onclick="setTheme('light')" data-i18n="theme_light">Blanco</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- APARTADO 1: INICIO -->
+      <div id="tab-inicio" class="tab-content active">
+        <h1 data-i18n="inicio_h1">Documentación de EnginePlugins</h1>
+        <div class="subtitle" data-i18n="inicio_sub">Especificaciones técnicas y guía de configuración desarrollada por sasukelol21.</div>
+
+        <p data-i18n="inicio_p1">EnginePlugins es una suite modular orientada al rendimiento para servidores Paper, Purpur y Spigot. El código está diseñado de forma asíncrona, preparado para Java 25 y compatible con Minecraft 1.21.x hasta 26.2.</p>
+
+        <div class="grid">
+          <div class="card">
+            <h4><img src="chatengine.png" alt="CE"> ChatEngine (v1.3.0)</h4>
+            <p data-i18n="card_chat_desc">Canales de chat, menciones directas con audio (@Player), filtros de moderación y formato RGB.</p>
+          </div>
+          <div class="card">
+            <h4><img src="guiengine.png" alt="GE"> GUIEngine</h4>
+            <p data-i18n="card_gui_desc">Motor base e interfaz de inventarios optimizado para la creación de menús interactivos.</p>
+          </div>
+          <div class="card">
+            <h4><img src="pollengine.png" alt="PE"> PollEngine (v2.0.0)</h4>
+            <p data-i18n="card_poll_desc">Encuestas interactivas con interfaz gráfica (GUI), conteo en vivo y anuncio automático de ganadores.</p>
+          </div>
+          <div class="card">
+            <h4><img src="motdengine.png" alt="ME"> MotdEngine (v2.0.0)</h4>
+            <p data-i18n="card_motd_desc">Lista de servidores con rotación asíncrona, menú hover multilínea y modo mantenimiento.</p>
+          </div>
+        </div>
+
+        <h2 data-i18n="inicio_h2">Estructura y Diseño</h2>
+        <ul>
+          <li data-i18n="inicio_li1"><strong>Sin dependencias externas:</strong> Plugins autónomos listos para colocar en la carpeta <code>plugins/</code>.</li>
+          <li data-i18n="inicio_li2"><strong>Formato universal:</strong> Soporte de sintaxis MiniMessage y códigos tradicionales con ampersand (&).</li>
+          <li data-i18n="inicio_li3"><strong>Bajo consumo:</strong> Las tareas de parseo y cálculo corren fuera del hilo principal del servidor.</li>
+        </ul>
+      </div>
+
+      <!-- APARTADO 2: INSTALACIÓN -->
+      <div id="tab-instalacion" class="tab-content">
+        <h1 data-i18n="inst_h1">Instalación</h1>
+        <div class="subtitle" data-i18n="inst_sub">Requisitos de entorno y proceso de despliegue.</div>
+
+        <h2 data-i18n="inst_h2_req">Requisitos</h2>
+        <ul>
+          <li><strong>Minecraft:</strong> 1.21.x – 26.2</li>
+          <li><strong>Software:</strong> Paper (recomendado), Purpur, Spigot</li>
+          <li><strong>Java Runtime:</strong> Java 25 (o Java 21)</li>
+        </ul>
+
+        <h2 data-i18n="inst_h2_steps">Instalación</h2>
+        <ol>
+          <li data-i18n="inst_step1">Descarga el archivo <code>.jar</code> desde el repositorio oficial en Modrinth.</li>
+          <li data-i18n="inst_step2">Mueve el archivo al directorio <code>plugins/</code> de tu servidor.</li>
+          <li data-i18n="inst_step3">Inicia el servidor para generar los archivos de configuración predeterminados.</li>
+          <li data-i18n="inst_step4">Modifica los archivos <code>config.yml</code> según las necesidades de tu red.</li>
+        </ol>
+
+        <div class="note">
+          <strong data-i18n="inst_note_title">Toolchain Java 25:</strong> <span data-i18n="inst_note_desc">Compilado con bytecode version 69, garantizando compatibilidad nativa con Minecraft 26.2.</span>
+        </div>
+      </div>
+
+      <!-- APARTADO 3: CHATENGINE -->
+      <div id="tab-chatengine" class="tab-content">
+        <div class="plugin-header">
+          <img src="chatengine.png" alt="ChatEngine">
+          <div class="plugin-header-info">
+            <h1>ChatEngine</h1>
+            <div class="subtitle" data-i18n="chat_sub">Gestor de chat con canales, menciones y moderación (v1.3.0).</div>
+          </div>
+        </div>
+
+        <a href="https://modrinth.com/plugin/chatengine" target="_blank" rel="noopener noreferrer" class="download-link-btn">
+          <span data-i18n="dl_chatengine">Descargar ChatEngine en Modrinth</span> <span>↗</span>
+        </a>
+
+        <h2 data-i18n="features">Características</h2>
+        <ul>
+          <li data-i18n="chat_f1"><strong>Canales:</strong> Soporte de ámbitos <code>GLOBAL</code>, <code>WORLD</code> o personalizados en <code>channels.yml</code>.</li>
+          <li data-i18n="chat_f2"><strong>Menciones:</strong> Etiqueta jugadores con <code>@Nombre</code>, aplicando resaltado y alerta de sonido.</li>
+          <li data-i18n="chat_f3"><strong>Filtros:</strong> Detección de enlaces, palabras restringidas y control de repetición.</li>
+          <li data-i18n="chat_f4"><strong>LuckPerms:</strong> Consulta prefijos, sufijos y grupos primarios en tiempo real.</li>
+        </ul>
+
+        <h2 data-i18n="commands">Comandos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="th_cmd">Comando</th>
+              <th data-i18n="th_perm">Permiso</th>
+              <th data-i18n="th_desc">Función</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/chatengine reload</code></td>
+              <td><code>chatengine.admin.reload</code></td>
+              <td data-i18n="chat_cmd_reload">Recarga las configuraciones.</td>
+            </tr>
+            <tr>
+              <td><code>/chatengine clearchat</code></td>
+              <td><code>chatengine.admin.clearchat</code></td>
+              <td data-i18n="chat_cmd_clear">Limpia el chat del servidor.</td>
+            </tr>
+            <tr>
+              <td><code>/chatengine mutechat</code></td>
+              <td><code>chatengine.admin.mutechat</code></td>
+              <td data-i18n="chat_cmd_mute">Mutea o desmutea el chat global.</td>
+            </tr>
+            <tr>
+              <td><code>/channel [canal] [mensaje]</code></td>
+              <td>Variable</td>
+              <td data-i18n="chat_cmd_ch">Cambia de canal o envía un mensaje rápido.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 100px;" data-i18n="th_version">Versión</th>
+              <th data-i18n="th_changes">Detalles del Cambio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>1.3.0</code></td>
+              <td data-i18n="ce_log_130">Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.2. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.</td>
+            </tr>
+            <tr>
+              <td><code>1.2.1</code></td>
+              <td data-i18n="ce_log_121">Integración nativa con LuckPerms y PlaceholderAPI. Soporte para formato MiniMessage y gradientes hexadecimales RGB.</td>
+            </tr>
+            <tr>
+              <td><code>1.1.0</code></td>
+              <td data-i18n="ce_log_110">Soporte multicanal personalizable mediante channels.yml y rangos de chat por mundo.</td>
+            </tr>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td data-i18n="ce_log_100">Versión inicial con moderación (/clearchat, /mutechat) y filtro anti-spam.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- APARTADO GUIENGINE -->
+      <div id="tab-guiengine" class="tab-content">
+        <div class="plugin-header">
+          <img src="guiengine.png" alt="GUIEngine">
+          <div class="plugin-header-info">
+            <h1>GUIEngine</h1>
+            <div class="subtitle" data-i18n="gui_sub">Framework de interfaces de inventario y menús interactivos.</div>
+          </div>
+        </div>
+
+        <a href="https://modrinth.com/plugin/gui-engine" target="_blank" rel="noopener noreferrer" class="download-link-btn">
+          <span data-i18n="dl_guiengine">Descargar GUIEngine en Modrinth</span> <span>↗</span>
+        </a>
+
+        <h2 data-i18n="features">Características</h2>
+        <ul>
+          <li data-i18n="gui_f1"><strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.</li>
+          <li data-i18n="gui_f2"><strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.</li>
+          <li data-i18n="gui_f3"><strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.</li>
+        </ul>
+
+        <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 100px;" data-i18n="th_version">Versión</th>
+              <th data-i18n="th_changes">Detalles del Cambio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td data-i18n="ge_log_100">Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- APARTADO 4: POLLENGINE -->
+      <div id="tab-pollengine" class="tab-content">
+        <div class="plugin-header">
+          <img src="pollengine.png" alt="PollEngine">
+          <div class="plugin-header-info">
+            <h1>PollEngine</h1>
+            <div class="subtitle" data-i18n="poll_sub">Sistema de encuestas interactivas con interfaz gráfica (v2.0.0).</div>
+          </div>
+        </div>
+
+        <a href="https://modrinth.com/plugin/pollengine" target="_blank" rel="noopener noreferrer" class="download-link-btn">
+          <span data-i18n="dl_pollengine">Descargar PollEngine en Modrinth</span> <span>↗</span>
+        </a>
+
+        <h2 data-i18n="poll_h2_create">Creación de Encuestas</h2>
+        <pre><code>/poll start &lt;Pregunta&gt; | &lt;Opción 1&gt; | &lt;Opción 2&gt; ... [segundos]
+
+# Ejemplo de uso:
+/poll start ¿Reiniciar el mundo Nether? | Sí | No | Más tarde 120</code></pre>
+
+        <h2 data-i18n="commands">Comandos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="th_cmd">Comando</th>
+              <th data-i18n="th_perm">Permiso</th>
+              <th data-i18n="th_desc">Función</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/poll</code> (o <code>/poll vote</code>)</td>
+              <td><code>pollengine.vote</code></td>
+              <td data-i18n="poll_cmd_vote">Abre el menú interactivo para votar.</td>
+            </tr>
+            <tr>
+              <td><code>/poll results</code></td>
+              <td>Todos</td>
+              <td data-i18n="poll_cmd_res">Muestra el recuento de la encuesta actual o previa.</td>
+            </tr>
+            <tr>
+              <td><code>/poll start &lt;...&gt;</code></td>
+              <td><code>pollengine.admin.start</code></td>
+              <td data-i18n="poll_cmd_start">Inicia una votación con temporizador.</td>
+            </tr>
+            <tr>
+              <td><code>/poll end</code></td>
+              <td><code>pollengine.admin.end</code></td>
+              <td data-i18n="poll_cmd_end">Cierra la encuesta y anuncia al ganador.</td>
+            </tr>
+            <tr>
+              <td><code>/poll reload</code></td>
+              <td><code>pollengine.admin.reload</code></td>
+              <td data-i18n="poll_cmd_reload">Recarga el archivo config.yml.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 100px;" data-i18n="th_version">Versión</th>
+              <th data-i18n="th_changes">Detalles del Cambio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>2.0.0</code></td>
+              <td data-i18n="pe_log_200">Reescritura completa para Java 25 y Paper 26.2. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.</td>
+            </tr>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td data-i18n="pe_log_100">Versión inicial de encuestas por chat con temporizador básico.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- APARTADO 5: MOTDENGINE -->
+      <div id="tab-motdengine" class="tab-content">
+        <div class="plugin-header">
+          <img src="motdengine.png" alt="MotdEngine">
+          <div class="plugin-header-info">
+            <h1>MotdEngine</h1>
+            <div class="subtitle" data-i18n="motd_sub">Personalizador de servidor, lista de jugadores y mantenimiento (v2.0.0).</div>
+          </div>
+        </div>
+
+        <a href="https://modrinth.com/plugin/motdengine" target="_blank" rel="noopener noreferrer" class="download-link-btn">
+          <span data-i18n="dl_motdengine">Descargar MotdEngine en Modrinth</span> <span>↗</span>
+        </a>
+
+        <h2 data-i18n="motd_h2_modes">Modos de Operación</h2>
+        <ul>
+          <li data-i18n="motd_m1"><strong>ROTATING:</strong> Rotación periódica asíncrona cada X segundos.</li>
+          <li data-i18n="motd_m2"><strong>RANDOM:</strong> Selecciona un mensaje al azar en cada ping.</li>
+          <li data-i18n="motd_m3"><strong>STATIC:</strong> Muestra un único mensaje fijo.</li>
+        </ul>
+
+        <h2 data-i18n="commands">Comandos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="th_cmd">Comando</th>
+              <th data-i18n="th_perm">Permiso</th>
+              <th data-i18n="th_desc">Función</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/motd maintenance [on|off]</code></td>
+              <td><code>motdengine.admin</code></td>
+              <td data-i18n="motd_cmd_maint">Activa o desactiva el mantenimiento.</td>
+            </tr>
+            <tr>
+              <td><code>/motd preview</code></td>
+              <td><code>motdengine.admin</code></td>
+              <td data-i18n="motd_cmd_prev">Muestra en el chat el MOTD activo.</td>
+            </tr>
+            <tr>
+              <td><code>/motd set &lt;mensaje&gt;</code></td>
+              <td><code>motdengine.admin</code></td>
+              <td data-i18n="motd_cmd_set">Configura un mensaje estático directo.</td>
+            </tr>
+            <tr>
+              <td><code>/motd reload</code></td>
+              <td><code>motdengine.admin</code></td>
+              <td data-i18n="motd_cmd_rel">Recarga configuraciones y mensajes.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 100px;" data-i18n="th_version">Versión</th>
+              <th data-i18n="th_changes">Detalles del Cambio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>2.0.0</code></td>
+              <td data-i18n="me_log_200">Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover multilínea.</td>
+            </tr>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td data-i18n="me_log_100">Lanzamiento inicial de gestor de mensajes MOTD para la lista de servidores.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- APARTADO 6: FORMATOS -->
+      <div id="tab-formatos" class="tab-content">
+        <h1 data-i18n="fmt_h1">Formatos y Colores</h1>
+        <div class="subtitle" data-i18n="fmt_sub">Sintaxis compatible entre todos los módulos.</div>
+
+        <pre><code># Gradientes RGB (MiniMessage)
+&lt;gradient:#00FFAA:#00A2FF&gt;Texto con degradado suave&lt;/gradient&gt;
+
+# Colores Hexadecimales
+&lt;#FFAA00&gt;Texto Naranja Hex o &#FFAA00
+
+# Efecto Rainbow
+&lt;rainbow&gt;Texto con ciclo de color continuo&lt;/rainbow&gt;
+
+# Códigos tradicionales
+&amp;aVerde &amp;bAqua &amp;cRojo &amp;eAmarillo
+&amp;lNegrita &amp;oCursiva &amp;nSubrayado &amp;rReset</code></pre>
+      </div>
+
+      <!-- APARTADO 7: FAQ -->
+      <div id="tab-faq" class="tab-content">
+        <h1 data-i18n="faq_h1">Preguntas Frecuentes</h1>
+        <div class="subtitle" data-i18n="faq_sub">Resolución de dudas frecuentes.</div>
+
+        <h3 data-i18n="faq_q1">¿Cómo configurar el acceso durante el mantenimiento?</h3>
+        <p data-i18n="faq_a1">Asigna el permiso <code>motdengine.maintenance.bypass</code> mediante tu plugin de permisos al grupo de administradores.</p>
+
+        <h3 data-i18n="faq_q2">¿Se puede permitir el cambio de voto?</h3>
+        <p data-i18n="faq_a2">Sí, la clave <code>allow-change-vote</code> en el archivo <code>config.yml</code> de PollEngine habilita o deshabilita esta opción.</p>
+      </div>
+
+      <footer>
+        <div>EnginePlugins © 2026 — sasukelol21</div>
+        <div data-i18n="footer_docs">Documentación Oficial</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const i18n = {
+      es: {
+        by: "por",
+        menu_general: "General",
+        menu_plugins: "Plugins",
+        menu_guides: "Guías",
+        tab_inicio: "Inicio",
+        tab_instalacion: "Instalación",
+        tab_formatos: "Formatos y Colores",
+        tab_faq: "FAQ",
+        theme_dark: "Oscuro",
+        theme_purple: "Morado",
+        theme_light: "Blanco",
+        inicio_h1: "Documentación de EnginePlugins",
+        inicio_sub: "Especificaciones técnicas y guía de configuración desarrollada por sasukelol21.",
+        inicio_p1: "EnginePlugins es una suite modular orientada al rendimiento para servidores Paper, Purpur y Spigot. El código está diseñado de forma asíncrona, preparado para Java 25 y compatible con Minecraft 1.21.x hasta 26.2.",
+        card_chat_desc: "Canales de chat, menciones directas con audio (@Player), filtros de moderación y formato RGB.",
+        card_gui_desc: "Motor base e interfaz de inventarios optimizado para la creación de menús interactivos.",
+        card_poll_desc: "Encuestas interactivas con interfaz gráfica (GUI), conteo en vivo y anuncio automático de ganadores.",
+        card_motd_desc: "Lista de servidores con rotación asíncrona, menú hover multilínea y modo mantenimiento.",
+        inicio_h2: "Estructura y Diseño",
+        inicio_li1: "<strong>Sin dependencias externas:</strong> Plugins autónomos listos para colocar en la carpeta <code>plugins/</code>.",
+        inicio_li2: "<strong>Formato universal:</strong> Soporte de sintaxis MiniMessage y códigos tradicionales con ampersand (&).",
+        inicio_li3: "<strong>Bajo consumo:</strong> Las tareas de parseo y cálculo corren fuera del hilo principal del servidor.",
+        inst_h1: "Instalación",
+        inst_sub: "Requisitos de entorno y proceso de despliegue.",
+        inst_h2_req: "Requisitos",
+        inst_h2_steps: "Instalación",
+        inst_step1: "Descarga el archivo <code>.jar</code> desde el repositorio oficial en Modrinth.",
+        inst_step2: "Mueve el archivo al directorio <code>plugins/</code> de tu servidor.",
+        inst_step3: "Inicia el servidor para generar los archivos de configuración predeterminados.",
+        inst_step4: "Modifica los archivos <code>config.yml</code> según las necesidades de tu red.",
+        inst_note_title: "Toolchain Java 25:",
+        inst_note_desc: "Compilado con bytecode version 69, garantizando compatibilidad nativa con Minecraft 26.2.",
+        chat_sub: "Gestor de chat con canales, menciones y moderación (v1.3.0).",
+        gui_sub: "Framework de interfaces de inventario y menús interactivos.",
+        gui_f1: "<strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.",
+        gui_f2: "<strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.",
+        gui_f3: "<strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.",
+        features: "Características",
+        commands: "Comandos",
+        chat_f1: "<strong>Canales:</strong> Soporte de ámbitos <code>GLOBAL</code>, <code>WORLD</code> o personalizados en <code>channels.yml</code>.",
+        chat_f2: "<strong>Menciones:</strong> Etiqueta jugadores con <code>@Nombre</code>, aplicando resaltado y alerta de sonido.",
+        chat_f3: "<strong>Filtros:</strong> Detección de enlaces, palabras restringidas y control de repetición.",
+        chat_f4: "<strong>LuckPerms:</strong> Consulta prefijos, sufijos y grupos primarios en tiempo real.",
+        th_cmd: "Comando",
+        th_perm: "Permiso",
+        th_desc: "Función",
+        chat_cmd_reload: "Recarga las configuraciones.",
+        chat_cmd_clear: "Limpia el chat del servidor.",
+        chat_cmd_mute: "Mutea o desmutea el chat global.",
+        chat_cmd_ch: "Cambia de canal o envía un mensaje rápido.",
+        poll_sub: "Sistema de encuestas interactivas con interfaz gráfica (v2.0.0).",
+        poll_h2_create: "Creación de Encuestas",
+        poll_cmd_vote: "Abre el menú interactivo para votar.",
+        poll_cmd_res: "Muestra el recuento de la encuesta actual o previa.",
+        poll_cmd_start: "Inicia una votación con temporizador.",
+        poll_cmd_end: "Cierra la encuesta y anuncia al ganador.",
+        poll_cmd_reload: "Recarga el archivo config.yml.",
+        motd_sub: "Personalizador de servidor, lista de jugadores y mantenimiento (v2.0.0).",
+        motd_h2_modes: "Modos de Operación",
+        motd_m1: "<strong>ROTATING:</strong> Rotación periódica asíncrona cada X segundos.",
+        motd_m2: "<strong>RANDOM:</strong> Selecciona un mensaje al azar en cada ping.",
+        motd_m3: "<strong>STATIC:</strong> Muestra un único mensaje fijo.",
+        motd_cmd_maint: "Activa o desactiva el mantenimiento.",
+        motd_cmd_prev: "Muestra en el chat el MOTD activo.",
+        motd_cmd_set: "Configura un mensaje estático directo.",
+        motd_cmd_rel: "Recarga configuraciones y mensajes.",
+        fmt_h1: "Formatos y Colores",
+        fmt_sub: "Sintaxis compatible entre todos los módulos.",
+        faq_h1: "Preguntas Frecuentes",
+        faq_sub: "Resolución de dudas frecuentes.",
+        faq_q1: "¿Cómo configurar el acceso durante el mantenimiento?",
+        faq_a1: "Asigna el permiso <code>motdengine.maintenance.bypass</code> mediante tu plugin de permisos al grupo de administradores.",
+        faq_q2: "¿Se puede permitir el cambio de voto?",
+        faq_a2: "Sí, la clave <code>allow-change-vote</code> en el archivo <code>config.yml</code> de PollEngine habilita o deshabilita esta opción.",
+        footer_docs: "Documentación Oficial",
+        dl_chatengine: "Descargar ChatEngine en Modrinth",
+        dl_guiengine: "Descargar GUIEngine en Modrinth",
+        dl_pollengine: "Descargar PollEngine en Modrinth",
+        dl_motdengine: "Descargar MotdEngine en Modrinth",
+        changelog_title: "Registro de Cambios (Logs)",
+        th_version: "Versión",
+        th_changes: "Detalles del Cambio",
+        ce_log_130: "Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.2. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.",
+        ce_log_121: "Integración nativa con LuckPerms y PlaceholderAPI. Soporte para formato MiniMessage y gradientes hexadecimales RGB.",
+        ce_log_110: "Soporte multicanal personalizable mediante channels.yml y rangos de chat por mundo.",
+        ce_log_100: "Versión inicial con moderación (/clearchat, /mutechat) y filtro anti-spam.",
+        ge_log_100: "Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.",
+        pe_log_200: "Reescritura completa para Java 25 y Paper 26.2. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.",
+        pe_log_100: "Versión inicial de encuestas por chat con temporizador básico.",
+        me_log_200: "Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover multilínea.",
+        me_log_100: "Lanzamiento inicial de gestor de mensajes MOTD para la lista de servidores."
+      },
+      en: {
+        by: "by",
+        menu_general: "General",
+        menu_plugins: "Plugins",
+        menu_guides: "Guides",
+        tab_inicio: "Home",
+        tab_instalacion: "Installation",
+        tab_formatos: "Formats & Colors",
+        tab_faq: "FAQ",
+        theme_dark: "Dark",
+        theme_purple: "Purple",
+        theme_light: "White",
+        inicio_h1: "EnginePlugins Documentation",
+        inicio_sub: "Technical specifications and configuration guide developed by sasukelol21.",
+        inicio_p1: "EnginePlugins is a performance-focused suite for Paper, Purpur, and Spigot servers. The codebase runs asynchronously, is compiled on Java 25, and supports Minecraft 1.21.x through 26.2.",
+        card_chat_desc: "Chat channels, direct audio mentions (@Player), auto-moderation filters, and RGB colors.",
+        card_gui_desc: "Core inventory framework optimized for creating interactive in-game menus.",
+        card_poll_desc: "Interactive inventory GUI polls, live vote tracking, and automatic winner announcements.",
+        card_motd_desc: "Server list ping handler with async rotation, custom multiline hover, and maintenance mode.",
+        inicio_h2: "Architecture",
+        inicio_li1: "<strong>Zero external dependencies:</strong> Standalone binaries ready for the <code>plugins/</code> folder.",
+        inicio_li2: "<strong>Universal syntax:</strong> Native MiniMessage formatting alongside classic ampersand (&) codes.",
+        inicio_li3: "<strong>Low overhead:</strong> String parsing and timer checks are executed outside the main server thread.",
+        inst_h1: "Installation",
+        inst_sub: "System requirements and deployment steps.",
+        inst_h2_req: "Requirements",
+        inst_h2_steps: "Setup",
+        inst_step1: "Download the <code>.jar</code> file from the official Modrinth repository.",
+        inst_step2: "Place the file into your server's <code>plugins/</code> folder.",
+        inst_step3: "Start the server to generate default configuration files.",
+        inst_step4: "Edit the <code>config.yml</code> files to fit your server setup.",
+        inst_note_title: "Java 25 Toolchain:",
+        inst_note_desc: "Compiled using bytecode version 69 for full compatibility with Minecraft 26.2.",
+        chat_sub: "Chat manager featuring channels, mentions, and filters (v1.3.0).",
+        gui_sub: "Inventory interface framework and interactive menu library.",
+        gui_f1: "<strong>Secure Menu Engine:</strong> Prevents item taking, duplication, or illegal inventory movement.",
+        gui_f2: "<strong>Component Rendering:</strong> Native Adventure and MiniMessage text support for titles and lore.",
+        gui_f3: "<strong>Modular:</strong> Built as the foundation for shop systems, gamemode selectors, and voting menus.",
+        features: "Features",
+        commands: "Commands",
+        chat_f1: "<strong>Channels:</strong> Supports <code>GLOBAL</code>, <code>WORLD</code>, or custom channels in <code>channels.yml</code>.",
+        chat_f2: "<strong>Mentions:</strong> Tag players using <code>@Username</code> with inline highlighting and sound alerts.",
+        chat_f3: "<strong>Filters:</strong> URL detection, blacklisted words, and message repetition limits.",
+        chat_f4: "<strong>LuckPerms:</strong> Reads prefixes, suffixes, and primary groups in real-time.",
+        th_cmd: "Command",
+        th_perm: "Permission",
+        th_desc: "Function",
+        chat_cmd_reload: "Reloads configuration files.",
+        chat_cmd_clear: "Clears global server chat.",
+        chat_cmd_mute: "Mutes or unmutes server-wide chat.",
+        chat_cmd_ch: "Switches channels or sends a quick message.",
+        poll_sub: "Interactive GUI voting and poll engine (v2.0.0).",
+        poll_h2_create: "Poll Creation",
+        poll_cmd_vote: "Opens the voting menu.",
+        poll_cmd_res: "Displays live or recent poll results.",
+        poll_cmd_start: "Starts a timed poll.",
+        poll_cmd_end: "Closes the poll and declares the winner.",
+        poll_cmd_reload: "Reloads config.yml.",
+        motd_sub: "Server list MOTD, player hover, and maintenance mode (v2.0.0).",
+        motd_h2_modes: "Modes",
+        motd_m1: "<strong>ROTATING:</strong> Periodic asynchronous rotation every X seconds.",
+        motd_m2: "<strong>RANDOM:</strong> Selects a random message on every server ping.",
+        motd_m3: "<strong>STATIC:</strong> Locks in a single static MOTD.",
+        motd_cmd_maint: "Toggles maintenance mode.",
+        motd_cmd_prev: "Previews the active MOTD in chat.",
+        motd_cmd_set: "Sets a static MOTD directly.",
+        motd_cmd_rel: "Reloads MOTD configurations.",
+        fmt_h1: "Formats & Colors",
+        fmt_sub: "Syntax supported across all plugin modules.",
+        faq_h1: "FAQ",
+        faq_sub: "Common questions and technical details.",
+        faq_q1: "How to allow admins in during maintenance?",
+        faq_a1: "Grant the permission <code>motdengine.maintenance.bypass</code> to the administrative group in your permissions plugin.",
+        faq_q2: "Can players change their vote?",
+        faq_a2: "Yes, the <code>allow-change-vote</code> setting in PollEngine's <code>config.yml</code> controls this.",
+        footer_docs: "Official Documentation",
+        dl_chatengine: "Download ChatEngine on Modrinth",
+        dl_guiengine: "Download GUIEngine on Modrinth",
+        dl_pollengine: "Download PollEngine on Modrinth",
+        dl_motdengine: "Download MotdEngine on Modrinth",
+        changelog_title: "Changelog (Logs)",
+        th_version: "Version",
+        th_changes: "Change Details",
+        ce_log_130: "Compiled and tuned for Java 25 (bytecode 69) and Minecraft 1.21.x-26.2. Async processing pipeline and improved @player mention system with audio cues.",
+        ce_log_121: "Native integration with LuckPerms and PlaceholderAPI. Support for MiniMessage tags and 24-bit RGB hex gradients.",
+        ce_log_110: "Custom channels configurable via channels.yml and per-world chat scopes.",
+        ce_log_100: "Initial release featuring moderation tools (/clearchat, /mutechat) and anti-spam filters.",
+        ge_log_100: "Initial core framework release. Comprehensive item theft/exploit protection, Adventure API support, and async click callbacks.",
+        pe_log_200: "Full refactor for Java 25 and Paper 26.2. Inventory GUI voting with live percentage tracking, vote change support, and broadcast announcements.",
+        pe_log_100: "Initial release of interactive chat-based voting with countdown timers.",
+        me_log_200: "Complete migration to Java 25 and Paper Profile API (ServerListPingEvent). ROTATING, RANDOM, and STATIC modes. Maintenance bypass permission and custom player hover tooltips.",
+        me_log_100: "Initial server list MOTD manager release."
+      },
+      pt: {
+        by: "por",
+        menu_general: "Geral",
+        menu_plugins: "Plugins",
+        menu_guides: "Guias",
+        tab_inicio: "Início",
+        tab_instalacion: "Instalação",
+        tab_formatos: "Formatos e Cores",
+        tab_faq: "FAQ",
+        theme_dark: "Escuro",
+        theme_purple: "Roxo",
+        theme_light: "Branco",
+        inicio_h1: "Documentação do EnginePlugins",
+        inicio_sub: "Especificações técnicas e guia de configuração por sasukelol21.",
+        inicio_p1: "EnginePlugins é uma suite focada em desempenho para servidores Paper, Purpur e Spigot. Executa de forma assíncrona, compilada em Java 25 para Minecraft 1.21.x até 26.2.",
+        card_chat_desc: "Canais de chat, menções com áudio (@Player), filtros de moderação e suporte RGB.",
+        card_gui_desc: "Framework base de inventários e menus interativos otimizado.",
+        card_poll_desc: "Enquetes com interface GUI de inventário, contagem ao vivo e anúncio de vencedores.",
+        card_motd_desc: "Lista de servidores com rotação assíncrona, hover de jogadores e modo manutenção.",
+        inicio_h2: "Estrutura",
+        inicio_li1: "<strong>Sem dependências externas:</strong> Binários autônomos para a pasta <code>plugins/</code>.",
+        inicio_li2: "<strong>Formato universal:</strong> Suporte a MiniMessage e códigos clássicos com ampersand (&).",
+        inicio_li3: "<strong>Baixo consumo:</strong> Processamento executado fora da thread principal do servidor.",
+        inst_h1: "Instalação",
+        inst_sub: "Requisitos de sistema e processo de instalação.",
+        inst_h2_req: "Requisitos",
+        inst_h2_steps: "Instalação",
+        inst_step1: "Baixe o arquivo <code>.jar</code> no repositório oficial no Modrinth.",
+        inst_step2: "Coloque o arquivo na pasta <code>plugins/</code> do servidor.",
+        inst_step3: "Inicie o servidor para gerar as configurações padrão.",
+        inst_step4: "Ajuste os arquivos <code>config.yml</code> conforme necessário.",
+        inst_note_title: "Java 25 Nativo:",
+        inst_note_desc: "Compilado com bytecode versão 69, pronto para o padrão do Minecraft 26.2.",
+        chat_sub: "Gerenciador de chat com canais, menções e moderação (v1.3.0).",
+        gui_sub: "Framework de interfaces de inventário e menus interativos.",
+        gui_f1: "<strong>Menu Seguro:</strong> Impede retirada, duplicação ou movimentação indevida de itens.",
+        gui_f2: "<strong>Componentes:</strong> Suporte nativo a Adventure e MiniMessage em títulos e descrições.",
+        gui_f3: "<strong>Modular:</strong> Base para sistemas de lojas, seleção de modos e votações.",
+        features: "Recursos",
+        commands: "Comandos",
+        chat_f1: "<strong>Canais:</strong> Suporta <code>GLOBAL</code>, <code>WORLD</code> ou personalizados em <code>channels.yml</code>.",
+        chat_f2: "<strong>Menções:</strong> Marque jogadores com <code>@Nome</code> com destaque e alerta sonoro.",
+        chat_f3: "<strong>Filtros:</strong> Detecção de links, palavras censuradas e controle de repetição.",
+        chat_f4: "<strong>LuckPerms:</strong> Lê prefixos, sufixos e grupos primários em tempo real.",
+        th_cmd: "Comando",
+        th_perm: "Permissão",
+        th_desc: "Função",
+        chat_cmd_reload: "Recarrega as configurações.",
+        chat_cmd_clear: "Limpa o chat do servidor.",
+        chat_cmd_mute: "Muta ou desmuta o chat global.",
+        chat_cmd_ch: "Muda de canal ou envia mensagem rápida.",
+        poll_sub: "Sistema de enquetes interativas por GUI de inventário (v2.0.0).",
+        poll_h2_create: "Criação de Enquetes",
+        poll_cmd_vote: "Abre o menu interativo para votar.",
+        poll_cmd_res: "Exibe o resultado da votação atual ou anterior.",
+        poll_cmd_start: "Inicia uma votação com tempo.",
+        poll_cmd_end: "Encerra a enquete e anuncia o vencedor.",
+        poll_cmd_reload: "Recarrega o arquivo config.yml.",
+        motd_sub: "Personalizador de lista de servidores e manutenção (v2.0.0).",
+        motd_h2_modes: "Modos de Operación",
+        motd_m1: "<strong>ROTATING:</strong> Rotação periódica assíncrona a cada X segundos.",
+        motd_m2: "<strong>RANDOM:</strong> Seleciona uma mensagem aleatória em cada ping.",
+        motd_m3: "<strong>STATIC:</strong> Mantém uma única mensagem fixa.",
+        motd_cmd_maint: "Ativa ou desativa a manutenção.",
+        motd_cmd_prev: "Exibe no chat o MOTD ativo.",
+        motd_cmd_set: "Define uma mensagem estática diretamente.",
+        motd_cmd_rel: "Recarrega configurações e mensagens.",
+        fmt_h1: "Formatos e Cores",
+        fmt_sub: "Sintaxe suportada em todos os módulos.",
+        faq_h1: "FAQ",
+        faq_sub: "Dúvidas técnicas comuns.",
+        faq_q1: "Como permitir acesso durante a manutenção?",
+        faq_a1: "Atribua a permissão <code>motdengine.maintenance.bypass</code> ao grupo administrativo.",
+        faq_q2: "É possível permitir mudança de voto?",
+        faq_a2: "Sim, a opção <code>allow-change-vote</code> no <code>config.yml</code> do PollEngine controla isso.",
+        footer_docs: "Documentação Oficial",
+        dl_chatengine: "Baixar ChatEngine no Modrinth",
+        dl_guiengine: "Baixar GUIEngine no Modrinth",
+        dl_pollengine: "Baixar PollEngine no Modrinth",
+        dl_motdengine: "Baixar MotdEngine no Modrinth",
+        changelog_title: "Registro de Alterações (Logs)",
+        th_version: "Versão",
+        th_changes: "Detalhes da Alteração",
+        ce_log_130: "Compilado e ajustado para Java 25 (bytecode 69) e Minecraft 1.21.x-26.2. Pipeline de chat assíncrono e sistema aprimorado de menções @player com aviso sonoro.",
+        ce_log_121: "Integração nativa com LuckPerms e PlaceholderAPI. Suporte a tags MiniMessage e gradientes RGB.",
+        ce_log_110: "Canais personalizados via channels.yml e escopos por mundo.",
+        ce_log_100: "Lançamento inicial com moderação (/clearchat, /mutechat) e filtros anti-spam.",
+        ge_log_100: "Lançamento do framework central. Proteção contra furto de itens em GUI, suporte Adventure API e callbacks assíncronos.",
+        pe_log_200: "Refatoração completa para Java 25 e Paper 26.2. Votação em GUI com contagem ao vivo, suporte para alterar voto e anúncio de vencedor.",
+        pe_log_100: "Lançamento inicial de votações pelo chat com temporizador.",
+        me_log_200: "Migração completa para Java 25 e Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM e STATIC. Permissão de bypass na manutenção e tooltips de jogadores.",
+        me_log_100: "Lançamento inicial do gerenciador de MOTD."
+      }
+    };
+
+    let currentLang = localStorage.getItem('ep_doc_lang') || 'es';
+    let currentTab = 'inicio';
+
+    function setLang(lang) {
+      if (!i18n[lang]) return;
+      currentLang = lang;
+      localStorage.setItem('ep_doc_lang', lang);
+
+      document.querySelectorAll('[data-lang]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang][key]) {
+          el.innerHTML = i18n[lang][key];
+        }
+      });
+
+      updateCrumb();
+    }
+
+    function openTab(tabId) {
+      currentTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      updateCrumb();
+      document.querySelector('.viewport').scrollTop = 0;
+    }
+
+    function updateCrumb() {
+      const crumbEl = document.getElementById('section-crumb');
+      const tabKey = 'tab_' + currentTab;
+      if (i18n[currentLang][tabKey]) {
+        crumbEl.innerText = i18n[currentLang][tabKey];
+      } else {
+        crumbEl.innerText = currentTab.charAt(0).toUpperCase() + currentTab.slice(1);
+      }
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('ep_doc_theme', theme);
+
+      document.querySelectorAll('[data-theme-btn]').forEach(opt => {
+        opt.classList.toggle('active', opt.getAttribute('data-theme-btn') === theme);
+      });
+    }
+
+    const savedTheme = localStorage.getItem('ep_doc_theme') || 'dark';
+    setTheme(savedTheme);
+    setLang(currentLang);
+  </script>
+</body>
+</html>
