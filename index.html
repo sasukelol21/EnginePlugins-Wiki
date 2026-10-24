@@ -575,7 +575,7 @@
         <h1 data-i18n="inicio_h1">Documentación de EnginePlugins</h1>
         <div class="subtitle" data-i18n="inicio_sub">Especificaciones técnicas y guía de configuración desarrollada por sasukelol21.</div>
 
-        <p data-i18n="inicio_p1">EnginePlugins es una suite modular orientada al rendimiento para servidores Paper, Purpur y Spigot. El código está diseñado de forma asíncrona, preparado para Java 25 y compatible con Minecraft 1.21.x hasta 26.2.</p>
+        <p data-i18n="inicio_p1">EnginePlugins es una suite modular orientada al rendimiento para servidores Paper, Purpur y Spigot. El código está diseñado de forma asíncrona, preparado para Java 25 y compatible con Minecraft 1.21.x hasta 26.3.</p>
 
         <div class="grid">
           <div class="card">
@@ -611,7 +611,7 @@
 
         <h2 data-i18n="inst_h2_req">Requisitos</h2>
         <ul>
-          <li><strong>Minecraft:</strong> 1.21.x – 26.2</li>
+          <li><strong>Minecraft:</strong> 1.21.x – 26.3</li>
           <li><strong>Software:</strong> Paper (recomendado), Purpur, Spigot</li>
           <li><strong>Java Runtime:</strong> Java 25 (o Java 21)</li>
         </ul>
@@ -625,7 +625,7 @@
         </ol>
 
         <div class="note">
-          <strong data-i18n="inst_note_title">Toolchain Java 25:</strong> <span data-i18n="inst_note_desc">Compilado con bytecode version 69, garantizando compatibilidad nativa con Minecraft 26.2.</span>
+          <strong data-i18n="inst_note_title">Toolchain Java 25:</strong> <span data-i18n="inst_note_desc">Compilado con bytecode version 69, garantizando compatibilidad nativa con Minecraft 26.3.</span>
         </div>
       </div>
 
@@ -649,7 +649,46 @@
           <li data-i18n="chat_f2"><strong>Menciones:</strong> Etiqueta jugadores con <code>@Nombre</code>, aplicando resaltado y alerta de sonido.</li>
           <li data-i18n="chat_f3"><strong>Filtros:</strong> Detección de enlaces, palabras restringidas y control de repetición.</li>
           <li data-i18n="chat_f4"><strong>LuckPerms:</strong> Consulta prefijos, sufijos y grupos primarios en tiempo real.</li>
+          <li><strong>Java 25 Nativo:</strong> Arquitectura asíncrona compatible con Minecraft 1.21.x hasta 26.3.</li>
         </ul>
+
+        <h2>Compatibilidad de Versiones</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 140px;">Versión Plugin</th>
+              <th>Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;">Java</th>
+              <th style="width: 110px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>1.3.0</code> (Última)</td>
+              <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
+              <td>Java 21 – 25+</td>
+              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+            </tr>
+            <tr>
+              <td><code>1.2.1</code></td>
+              <td>1.21.0 – 1.21.4</td>
+              <td>Java 21</td>
+              <td>Soportada</td>
+            </tr>
+            <tr>
+              <td><code>1.1.0</code></td>
+              <td>1.21.0 – 1.21.1</td>
+              <td>Java 21</td>
+              <td>Heredada</td>
+            </tr>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td>1.20.4 – 1.21.0</td>
+              <td>Java 17 – 21</td>
+              <td>Descontinuada</td>
+            </tr>
+          </tbody>
+        </table>
 
         <h2 data-i18n="commands">Comandos</h2>
         <table>
@@ -662,14 +701,14 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>/chatengine reload</code></td>
+              <td><code>/chatengine reload</code> (o <code>/ce reload</code>)</td>
               <td><code>chatengine.admin.reload</code></td>
-              <td data-i18n="chat_cmd_reload">Recarga las configuraciones.</td>
+              <td data-i18n="chat_cmd_reload">Recarga las configuraciones y canales.</td>
             </tr>
             <tr>
               <td><code>/chatengine clearchat</code></td>
               <td><code>chatengine.admin.clearchat</code></td>
-              <td data-i18n="chat_cmd_clear">Limpia el chat del servidor.</td>
+              <td data-i18n="chat_cmd_clear">Limpia el chat del servidor para todos los jugadores.</td>
             </tr>
             <tr>
               <td><code>/chatengine mutechat</code></td>
@@ -677,9 +716,204 @@
               <td data-i18n="chat_cmd_mute">Mutea o desmutea el chat global.</td>
             </tr>
             <tr>
-              <td><code>/channel [canal] [mensaje]</code></td>
-              <td>Variable</td>
-              <td data-i18n="chat_cmd_ch">Cambia de canal o envía un mensaje rápido.</td>
+              <td><code>/channel [canal] [mensaje]</code> (o <code>/ch</code>)</td>
+              <td>Variable por canal</td>
+              <td data-i18n="chat_cmd_ch">Cambia de canal activo o envía un mensaje rápido.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Configuración Principal (config.yml)</h2>
+        <p>Archivo de configuración generado automáticamente en <code>plugins/ChatEngine/config.yml</code>:</p>
+        <pre><code># ==========================================
+# ChatEngine - Configuración Principal (config.yml)
+# ==========================================
+
+chat:
+  # Canal por defecto al que se conectan los jugadores al entrar
+  default-channel: global
+
+  # Cancela el chat vanilla de Bukkit para procesarlo mediante ChatEngine
+  cancel-vanilla-chat: true
+
+  # Formatos de chat (Prioridad: by-group > by-world > default)
+  formats:
+    # Formato general por defecto
+    default: "{prefix}{player}{suffix}&7: &f{message}"
+
+    # Formatos específicos por mundo (usa el nombre interno de la carpeta del mundo)
+    by-world:
+      world: "&7[&aSurvival&7] {prefix}{player}{suffix}&7: &f{message}"
+      world_nether: "&7[&cNether&7] {prefix}{player}{suffix}&7: &f{message}"
+      world_the_end: "&7[&dTheEnd&7] {prefix}{player}{suffix}&7: &f{message}"
+
+    # Formatos por grupo de LuckPerms (usa el primary group del jugador)
+    by-group:
+      default: "&7[&fUsuario&7] {prefix}{player}{suffix}&7: &f{message}"
+      vip: "&7[&aVIP&7] <gradient:#00FFAA:#00A2FF>{player}</gradient>{suffix}&7: &f{message}"
+      admin: "&7[&cAdmin&7] <gradient:#FF5555:#FFAA00>{player}</gradient>{suffix}&7: &f{message}"
+
+  # Control de permisos para colores en el chat
+  colors:
+    use-permissions: true      # Si es false, cualquiera puede usar colores
+    allow-magic: false         # Desactiva &k para evitar abusos visuales
+
+    legacy:
+      enabled: true
+      permission: "chatcolor.color.legacy" # &0-&f
+
+    hex:
+      enabled: true
+      permission: "chatcolor.color.hex"    # &#RRGGBB o <#RRGGBB>
+
+    formats:
+      bold:
+        enabled: true
+        permission: "chatcolor.format.bold"      # &l
+      italic:
+        enabled: true
+        permission: "chatcolor.format.italic"    # &o
+      underline:
+        enabled: true
+        permission: "chatcolor.format.underline" # &n
+      strikethrough:
+        enabled: true
+        permission: "chatcolor.format.strike"    # &m
+      magic:
+        enabled: false
+        permission: "chatcolor.format.magic"     # &k
+
+# Módulo de protección Anti-Spam
+spam:
+  enabled: true
+  cooldown-seconds: 2          # Segundos mínimos entre cada mensaje
+  repeat-window-seconds: 5     # Ventana para bloquear el envío del mismo mensaje
+
+  bypass-permissions:
+    cooldown: "chatengine.bypass.cooldown"
+    repeat: "chatengine.bypass.repeat"</code></pre>
+
+        <h2>Configuración de Canales (channels.yml)</h2>
+        <p>Permite definir canales de chat independientes en <code>plugins/ChatEngine/channels.yml</code>:</p>
+        <pre><code># ==========================================
+# ChatEngine - Canales (channels.yml)
+# ==========================================
+
+channels:
+  global:
+    # Ámbito: GLOBAL (todo el servidor) o WORLD (solo jugadores en el mismo mundo)
+    scope: GLOBAL
+    permission-speak: "chatengine.channel.global.speak"
+    permission-view: "chatengine.channel.global.view"
+    format: "&7[&aGlobal&7] {prefix}{player}{suffix}&7: &f{message}"
+
+  world:
+    scope: WORLD
+    permission-speak: "chatengine.channel.world.speak"
+    permission-view: "chatengine.channel.world.view"
+    format: "&7[&b{world}&7] {prefix}{player}{suffix}&7: &f{message}"
+
+  staff:
+    scope: GLOBAL
+    permission-speak: "chatengine.channel.staff.speak"
+    permission-view: "chatengine.channel.staff.view"
+    format: "&c[StaffChat] &f{player}&7: &e{message}"</code></pre>
+
+        <h2>Lista Completa de Permisos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Permiso</th>
+              <th>Por Defecto</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>chatengine.admin</code></td>
+              <td>OP</td>
+              <td>Acceso total a todos los comandos de ChatEngine.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.admin.reload</code></td>
+              <td>OP</td>
+              <td>Permite recargar archivos de configuración.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.admin.clearchat</code></td>
+              <td>OP</td>
+              <td>Permite limpiar el chat global.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.admin.mutechat</code></td>
+              <td>OP</td>
+              <td>Permite silenciar o habilitar el chat global.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.bypass.cooldown</code></td>
+              <td>OP</td>
+              <td>Omite el tiempo de espera entre mensajes.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.bypass.repeat</code></td>
+              <td>OP</td>
+              <td>Omite el bloqueo de mensajes repetidos.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.bypass.moderation</code></td>
+              <td>OP</td>
+              <td>Omite los filtros de palabras y enlaces prohibidos.</td>
+            </tr>
+            <tr>
+              <td><code>chatengine.mentions</code></td>
+              <td>true</td>
+              <td>Permite mencionar a otros usuarios con @Jugador.</td>
+            </tr>
+            <tr>
+              <td><code>chatcolor.color.legacy</code></td>
+              <td>OP</td>
+              <td>Permite usar códigos clásicos (&0-&f).</td>
+            </tr>
+            <tr>
+              <td><code>chatcolor.color.hex</code></td>
+              <td>OP</td>
+              <td>Permite usar colores hexadecimales (&#RRGGBB).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Placeholders Soportados</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Placeholder</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>{player}</code></td>
+              <td>Nombre del jugador que envía el mensaje.</td>
+            </tr>
+            <tr>
+              <td><code>{prefix}</code></td>
+              <td>Prefijo del jugador obtenido de LuckPerms o Vault.</td>
+            </tr>
+            <tr>
+              <td><code>{suffix}</code></td>
+              <td>Sufijo del jugador obtenido de LuckPerms o Vault.</td>
+            </tr>
+            <tr>
+              <td><code>{world}</code></td>
+              <td>Nombre del mundo en el que se encuentra el jugador.</td>
+            </tr>
+            <tr>
+              <td><code>{message}</code></td>
+              <td>Contenido del mensaje enviado.</td>
+            </tr>
+            <tr>
+              <td><code>PlaceholderAPI</code></td>
+              <td>Soporte total para cualquier placeholder de PAPI (ej. <code>%vault_eco_balance%</code>).</td>
             </tr>
           </tbody>
         </table>
@@ -695,7 +929,7 @@
           <tbody>
             <tr>
               <td><code>1.3.0</code></td>
-              <td data-i18n="ce_log_130">Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.2. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.</td>
+              <td data-i18n="ce_log_130">Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.3. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.</td>
             </tr>
             <tr>
               <td><code>1.2.1</code></td>
@@ -732,7 +966,58 @@
           <li data-i18n="gui_f1"><strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.</li>
           <li data-i18n="gui_f2"><strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.</li>
           <li data-i18n="gui_f3"><strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.</li>
+          <li><strong>Gestión de Eventos Automática:</strong> Cancelación de eventos no deseados en clics rápidos o atajos de teclado (números del hotbar, drop, shift-click).</li>
         </ul>
+
+        <h2>Compatibilidad de Versiones</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 140px;">Versión Plugin</th>
+              <th>Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;">Java</th>
+              <th style="width: 110px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>1.0.0</code> (Core)</td>
+              <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
+              <td>Java 21 – 25+</td>
+              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Seguridad y Protección Antidupe</h2>
+        <p>GUIEngine implementa una capa estricta de validación sobre el ciclo de vida de los inventarios de Spigot/Paper:</p>
+        <ul>
+          <li><strong>Cancelación Obligatoria:</strong> <code>InventoryClickEvent</code> y <code>InventoryDragEvent</code> están blindados para evitar que los jugadores saquen ítems decorativos.</li>
+          <li><strong>Control de Cierre:</strong> Manejo seguro con <code>InventoryCloseEvent</code> para limpieza de memoria y eliminación de listeners temporales.</li>
+          <li><strong>Prevención de Clicks Fantasma:</strong> Verificación de identificadores únicos (UUID) por sesión de menú.</li>
+        </ul>
+
+        <h2>Ejemplo de Integración (API para Desarrolladores)</h2>
+        <p>Ejemplo de creación de un menú interactivo protegido con callbacks usando la API de GUIEngine:</p>
+        <pre><code>// Creación de un menú de 27 slots (3 filas)
+GUIEngineMenu menu = new GUIEngineMenu("Menú Principal", 27);
+
+// Configuración de un botón interactivo
+ItemStack item = new ItemBuilder(Material.COMPASS)
+    .name("&a&lSelector de Modalidades")
+    .lore("&7Haz clic para abrir el menú de servidores.")
+    .build();
+
+menu.setItem(13, item, (player, clickType) -> {
+    player.sendMessage("§aAbriendo servidor Survival...");
+    player.closeInventory();
+});
+
+// Relleno estético de bordes
+menu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);
+
+// Apertura segura para el jugador
+menu.open(player);</code></pre>
 
         <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
         <table>
@@ -765,11 +1050,89 @@
           <span data-i18n="dl_pollengine">Descargar PollEngine en Modrinth</span> <span>↗</span>
         </a>
 
+        <h2 data-i18n="features">Características</h2>
+        <ul>
+          <li><strong>Interfaz GUI Interactiva:</strong> Los usuarios votan haciendo clic en el menú sin tener que escribir comandos complejos.</li>
+          <li><strong>Temporizador y Anuncio Automático:</strong> Cuenta atrás configurable con anuncio en el chat y pantalla al terminar.</li>
+          <li><strong>Cambio de Voto Flexible:</strong> Opción para permitir a los jugadores rectificar su elección mientras la encuesta siga activa.</li>
+          <li><strong>Recuento en Vivo:</strong> Consulta los porcentajes y votos totales en cualquier momento con <code>/poll results</code>.</li>
+        </ul>
+
+        <h2>Compatibilidad de Versiones</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 140px;">Versión Plugin</th>
+              <th>Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;">Java</th>
+              <th style="width: 110px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>2.0.0</code> (Última)</td>
+              <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
+              <td>Java 21 – 25+</td>
+              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+            </tr>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td>1.20.x – 1.21.2</td>
+              <td>Java 17 – 21</td>
+              <td>Descontinuada</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Configuración Principal (config.yml)</h2>
+        <p>Configuración completa con soporte de sonidos, mensajes y temporizador en <code>plugins/PollEngine/config.yml</code>:</p>
+        <pre><code># ==========================================
+# PollEngine - Configuración Principal (config.yml)
+# ==========================================
+
+settings:
+  # Título que se muestra en la interfaz gráfica del menú de votación
+  # Admite etiquetas MiniMessage (<gradient>, <bold>, etc.)
+  gui-title: "<gradient:#FFAA00:#FF5500><bold>PollEngine</bold></gradient> <dark_gray>| <gray>Votación"
+  
+  # Duración predeterminada de la encuesta en segundos al crearla sin especificar tiempo
+  # (0 = duración ilimitada, se cierra manualmente con /poll end)
+  default-duration-seconds: 120
+  
+  # Si es true, los jugadores pueden cambiar su voto mientras la votación siga abierta
+  allow-change-vote: true
+  
+  # Efectos de sonido en acciones (nombres de sonidos de Bukkit, dejar vacío para desactivar)
+  sounds:
+    open-menu: "BLOCK_CHEST_OPEN"
+    vote-success: "ENTITY_PLAYER_LEVELUP"
+    vote-already: "ENTITY_VILLAGER_NO"
+    poll-start: "ENTITY_EXPERIENCE_ORB_PICKUP"
+    poll-end: "UI_TOAST_CHALLENGE_COMPLETE"
+
+# Mensajes del sistema
+messages:
+  prefix: "<gradient:#FFAA00:#FF5500><bold>PollEngine</bold></gradient> <dark_gray>| <gray>"
+  no-permission: "<red>No tienes permiso para ejecutar este comando."
+  no-active-poll: "<yellow>No hay ninguna encuesta activa en este momento."
+  already-voted: "<yellow>Ya has votado por: <white>{option}<yellow>."
+  vote-changed: "<green>Tu voto ha sido actualizado a: <white>{option}<green>."
+  vote-registered: "<green>¡Gracias por votar! Tu opción: <white>{option}<green>."
+  poll-created: "<green>¡Una nueva encuesta ha comenzado!<newline><gray>Pregunta: <yellow>{question}<newline><gray>Usa <gold>/poll<gray> para votar."
+  poll-ended-broadcast: "<gold><bold>¡Encuesta Finalizada!</bold><newline><gray>Pregunta: <yellow>{question}<newline><gray>Ganador: <green>{winner} <dark_gray>({winner_votes} votos)"
+  poll-results-header: "<gradient:#FFAA00:#FF5500><bold>--- Resultados de la Encuesta ---</bold></gradient><newline><gray>Pregunta: <yellow>{question}<newline><gray>Total de votos: <white>{total_votes}"
+  poll-results-entry: "<gray>  <white>{option}: <gold>{votes} votos <dark_gray>({percent}%)"
+  config-reloaded: "<green>Configuración de PollEngine recargada correctamente."</code></pre>
+
         <h2 data-i18n="poll_h2_create">Creación de Encuestas</h2>
+        <p>Sintaxis del comando para administradores:</p>
         <pre><code>/poll start &lt;Pregunta&gt; | &lt;Opción 1&gt; | &lt;Opción 2&gt; ... [segundos]
 
-# Ejemplo de uso:
-/poll start ¿Reiniciar el mundo Nether? | Sí | No | Más tarde 120</code></pre>
+# Ejemplo con 2 opciones y 60 segundos:
+/poll start ¿Reiniciar el mundo Nether? | Sí | No 60
+
+# Ejemplo con 3 opciones y 120 segundos:
+/poll start ¿Qué evento prefieres el sábado? | PvP Arena | Parkour | Spleef 120</code></pre>
 
         <h2 data-i18n="commands">Comandos</h2>
         <table>
@@ -809,6 +1172,44 @@
           </tbody>
         </table>
 
+        <h2>Permisos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Permiso</th>
+              <th>Por Defecto</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>pollengine.vote</code></td>
+              <td>true (todos)</td>
+              <td>Permite abrir el menú y emitir un voto en encuestas activas.</td>
+            </tr>
+            <tr>
+              <td><code>pollengine.admin</code></td>
+              <td>OP</td>
+              <td>Acceso administrativo completo a PollEngine.</td>
+            </tr>
+            <tr>
+              <td><code>pollengine.admin.start</code></td>
+              <td>OP</td>
+              <td>Permite iniciar nuevas encuestas.</td>
+            </tr>
+            <tr>
+              <td><code>pollengine.admin.end</code></td>
+              <td>OP</td>
+              <td>Permite finalizar manualmente una encuesta activa.</td>
+            </tr>
+            <tr>
+              <td><code>pollengine.admin.reload</code></td>
+              <td>OP</td>
+              <td>Permite recargar la configuración del plugin.</td>
+            </tr>
+          </tbody>
+        </table>
+
         <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
         <table>
           <thead>
@@ -820,7 +1221,7 @@
           <tbody>
             <tr>
               <td><code>2.0.0</code></td>
-              <td data-i18n="pe_log_200">Reescritura completa para Java 25 y Paper 26.2. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.</td>
+              <td data-i18n="pe_log_200">Reescritura completa para Java 25 y Paper 26.3. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.</td>
             </tr>
             <tr>
               <td><code>1.0.0</code></td>
@@ -851,6 +1252,96 @@
           <li data-i18n="motd_m3"><strong>STATIC:</strong> Muestra un único mensaje fijo.</li>
         </ul>
 
+        <h2>Compatibilidad de Versiones</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 140px;">Versión Plugin</th>
+              <th>Versiones Minecraft Soportadas</th>
+              <th style="width: 110px;">Java</th>
+              <th style="width: 110px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>2.0.0</code> (Última)</td>
+              <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
+              <td>Java 21 – 25+</td>
+              <td><span style="color: #4ade80; font-weight: 600;">Estable</span></td>
+            </tr>
+            <tr>
+              <td><code>1.0.0</code></td>
+              <td>1.20.x – 1.21.1</td>
+              <td>Java 17 – 21</td>
+              <td>Descontinuada</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Configuración Principal (config.yml)</h2>
+        <p>Configuración completa para MOTD, hover de jugadores y mantenimiento en <code>plugins/MotdEngine/config.yml</code>:</p>
+        <pre><code># ==========================================
+# MotdEngine - Configuración Principal (config.yml)
+# ==========================================
+
+# Configuración del mensaje en la lista de servidores
+motd:
+  # Modos disponibles:
+  # - "ROTATING": Rota cíclicamente los mensajes cada X segundos
+  # - "RANDOM": Elige un mensaje al azar en cada ping de un jugador
+  # - "STATIC": Muestra siempre el primer mensaje de la lista
+  mode: "ROTATING"
+
+  # Intervalo de rotación en segundos cuando el modo es ROTATING
+  rotation-interval-seconds: 15
+
+  # Lista de mensajes MOTD (Usa \n o <newline> para separar línea 1 y línea 2)
+  # Soporta MiniMessage (<gradient>, <rainbow>, <bold>) y códigos clásicos (&a-&f)
+  messages:
+    - "<gradient:#00FFAA:#00A2FF><bold>¡Bienvenido a Nuestro Servidor!</bold></gradient>\n<gray>Survival Custom, Minijuegos & Creativo <dark_gray>• <yellow>¡Únete ya!"
+    - "<gradient:#FFAA00:#FF5500><bold>La Mejor Experiencia Minecraft</bold></gradient>\n<gray>Eventos especiales de fin de semana activos <dark_gray>• <green>Juega con amigos"
+    - "<gradient:#FF55FF:#AA00AA><bold>Actualizado a la última versión 26.3!</bold></gradient>\n<gray>Rendimiento óptimo sin lag <dark_gray>• <aqua>¡Te esperamos!"
+
+# Personalización del recuento de jugadores y slots
+player-count:
+  # Si es true, sobrescribe el límite de jugadores del server.properties
+  override-max-players: false
+  # Límite estático de jugadores (si override-max-players es true y dynamic-max es false)
+  max-players: 100
+  # Si es true, el máximo siempre será (jugadores_conectados + dynamic-addition)
+  dynamic-max: true
+  dynamic-addition: 1
+
+# Menú emergente al pasar el ratón sobre el recuento de jugadores
+player-hover:
+  enabled: true
+  lines:
+    - "<gradient:#00FFAA:#00A2FF><bold>--- INFORMACIÓN DEL SERVIDOR ---</bold></gradient>"
+    - "<gray>Jugadores en línea: <yellow>{online} <dark_gray>/ <yellow>{max}"
+    - "<gray>Comunidad Discord: <aqua>discord.gg/tuservidor"
+    - "<gray>Tienda Oficial: <gold>tienda.tuservidor.net"
+    - "<green>¡Que disfrutes de tu estancia!"
+
+# Sistema de Modo Mantenimiento
+maintenance:
+  enabled: false
+  # MOTD mostrado cuando el mantenimiento está activo
+  motd: "<gradient:#FF0000:#FF5555><bold>SERVIDOR EN MANTENIMIENTO</bold></gradient>\n<gray>Volveremos en breve. Consulta nuestro Discord para más noticias."
+  # Mensaje de desconexión al intentar entrar sin permiso de bypass
+  kick-message: "<red><bold>¡El servidor se encuentra actualmente en mantenimiento!</bold></red><newline><gray>Por favor, inténtalo más tarde o visita nuestro Discord."
+  # Texto que reemplaza el número de versión en el cliente de Minecraft
+  custom-version-text: "<red>Mantenimiento"
+
+# Mensajes del plugin
+messages:
+  prefix: "<gradient:#00FFAA:#00A2FF><bold>MotdEngine</bold></gradient> <dark_gray>| <gray>"
+  no-permission: "<red>No tienes permiso para ejecutar este comando."
+  config-reloaded: "<green>¡Configuración de MotdEngine recargada correctamente!"
+  maintenance-toggled: "<yellow>El modo mantenimiento ahora está: {status}"
+  maintenance-on: "<red><bold>ACTIVADO</bold></red>"
+  maintenance-off: "<green><bold>DESACTIVADO</bold></green>"
+  motd-set: "<green>MOTD estático establecido: <white>{motd}"</code></pre>
+
         <h2 data-i18n="commands">Comandos</h2>
         <table>
           <thead>
@@ -880,6 +1371,29 @@
               <td><code>/motd reload</code></td>
               <td><code>motdengine.admin</code></td>
               <td data-i18n="motd_cmd_rel">Recarga configuraciones y mensajes.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Permisos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Permiso</th>
+              <th>Por Defecto</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>motdengine.admin</code></td>
+              <td>OP</td>
+              <td>Permite usar todos los comandos administrativos de /motd.</td>
+            </tr>
+            <tr>
+              <td><code>motdengine.maintenance.bypass</code></td>
+              <td>OP</td>
+              <td>Permite conectarse y jugar en el servidor mientras el modo mantenimiento esté activado.</td>
             </tr>
           </tbody>
         </table>
@@ -1028,12 +1542,12 @@
         changelog_title: "Registro de Cambios (Logs)",
         th_version: "Versión",
         th_changes: "Detalles del Cambio",
-        ce_log_130: "Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.2. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.",
+        ce_log_130: "Compilado y optimizado para Java 25 (bytecode 69) y Minecraft 1.21.x-26.3. Pipeline de procesamiento asíncrono y sistema de menciones @player con alertas sonoras.",
         ce_log_121: "Integración nativa con LuckPerms y PlaceholderAPI. Soporte para formato MiniMessage y gradientes hexadecimales RGB.",
         ce_log_110: "Soporte multicanal personalizable mediante channels.yml y rangos de chat por mundo.",
         ce_log_100: "Versión inicial con moderación (/clearchat, /mutechat) y filtro anti-spam.",
         ge_log_100: "Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.",
-        pe_log_200: "Reescritura completa para Java 25 y Paper 26.2. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.",
+        pe_log_200: "Reescritura completa para Java 25 y Paper 26.3. Menú de votación en GUI con recuento en tiempo real, soporte de cambio de voto y anuncio de resultados automatizado.",
         pe_log_100: "Versión inicial de encuestas por chat con temporizador básico.",
         me_log_200: "Adaptación completa a Java 25 y Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM y STATIC. Modo de mantenimiento con bypass para administradores y hover multilínea.",
         me_log_100: "Lanzamiento inicial de gestor de mensajes MOTD para la lista de servidores."
@@ -1052,7 +1566,7 @@
         theme_light: "White",
         inicio_h1: "EnginePlugins Documentation",
         inicio_sub: "Technical specifications and configuration guide developed by sasukelol21.",
-        inicio_p1: "EnginePlugins is a performance-focused suite for Paper, Purpur, and Spigot servers. The codebase runs asynchronously, is compiled on Java 25, and supports Minecraft 1.21.x through 26.2.",
+        inicio_p1: "EnginePlugins is a performance-focused suite for Paper, Purpur, and Spigot servers. The codebase runs asynchronously, is compiled on Java 25, and supports Minecraft 1.21.x through 26.3.",
         card_chat_desc: "Chat channels, direct audio mentions (@Player), auto-moderation filters, and RGB colors.",
         card_gui_desc: "Core inventory framework optimized for creating interactive in-game menus.",
         card_poll_desc: "Interactive inventory GUI polls, live vote tracking, and automatic winner announcements.",
@@ -1070,7 +1584,7 @@
         inst_step3: "Start the server to generate default configuration files.",
         inst_step4: "Edit the <code>config.yml</code> files to fit your server setup.",
         inst_note_title: "Java 25 Toolchain:",
-        inst_note_desc: "Compiled using bytecode version 69 for full compatibility with Minecraft 26.2.",
+        inst_note_desc: "Compiled using bytecode version 69 for full compatibility with Minecraft 26.3.",
         chat_sub: "Chat manager featuring channels, mentions, and filters (v1.3.0).",
         gui_sub: "Inventory interface framework and interactive menu library.",
         gui_f1: "<strong>Secure Menu Engine:</strong> Prevents item taking, duplication, or illegal inventory movement.",
@@ -1121,12 +1635,12 @@
         changelog_title: "Changelog (Logs)",
         th_version: "Version",
         th_changes: "Change Details",
-        ce_log_130: "Compiled and tuned for Java 25 (bytecode 69) and Minecraft 1.21.x-26.2. Async processing pipeline and improved @player mention system with audio cues.",
+        ce_log_130: "Compiled and tuned for Java 25 (bytecode 69) and Minecraft 1.21.x-26.3. Async processing pipeline and improved @player mention system with audio cues.",
         ce_log_121: "Native integration with LuckPerms and PlaceholderAPI. Support for MiniMessage tags and 24-bit RGB hex gradients.",
         ce_log_110: "Custom channels configurable via channels.yml and per-world chat scopes.",
         ce_log_100: "Initial release featuring moderation tools (/clearchat, /mutechat) and anti-spam filters.",
         ge_log_100: "Initial core framework release. Comprehensive item theft/exploit protection, Adventure API support, and async click callbacks.",
-        pe_log_200: "Full refactor for Java 25 and Paper 26.2. Inventory GUI voting with live percentage tracking, vote change support, and broadcast announcements.",
+        pe_log_200: "Full refactor for Java 25 and Paper 26.3. Inventory GUI voting with live percentage tracking, vote change support, and broadcast announcements.",
         pe_log_100: "Initial release of interactive chat-based voting with countdown timers.",
         me_log_200: "Complete migration to Java 25 and Paper Profile API (ServerListPingEvent). ROTATING, RANDOM, and STATIC modes. Maintenance bypass permission and custom player hover tooltips.",
         me_log_100: "Initial server list MOTD manager release."
@@ -1145,7 +1659,7 @@
         theme_light: "Branco",
         inicio_h1: "Documentação do EnginePlugins",
         inicio_sub: "Especificações técnicas e guia de configuração por sasukelol21.",
-        inicio_p1: "EnginePlugins é uma suite focada em desempenho para servidores Paper, Purpur e Spigot. Executa de forma assíncrona, compilada em Java 25 para Minecraft 1.21.x até 26.2.",
+        inicio_p1: "EnginePlugins é uma suite focada em desempenho para servidores Paper, Purpur e Spigot. Executa de forma assíncrona, compilada em Java 25 para Minecraft 1.21.x até 26.3.",
         card_chat_desc: "Canais de chat, menções com áudio (@Player), filtros de moderação e suporte RGB.",
         card_gui_desc: "Framework base de inventários e menus interativos otimizado.",
         card_poll_desc: "Enquetes com interface GUI de inventário, contagem ao vivo e anúncio de vencedores.",
@@ -1163,7 +1677,7 @@
         inst_step3: "Inicie o servidor para gerar as configurações padrão.",
         inst_step4: "Ajuste os arquivos <code>config.yml</code> conforme necessário.",
         inst_note_title: "Java 25 Nativo:",
-        inst_note_desc: "Compilado com bytecode versão 69, pronto para o padrão do Minecraft 26.2.",
+        inst_note_desc: "Compilado com bytecode versão 69, pronto para o padrão do Minecraft 26.3.",
         chat_sub: "Gerenciador de chat com canais, menções e moderação (v1.3.0).",
         gui_sub: "Framework de interfaces de inventário e menus interativos.",
         gui_f1: "<strong>Menu Seguro:</strong> Impede retirada, duplicação ou movimentação indevida de itens.",
@@ -1214,12 +1728,12 @@
         changelog_title: "Registro de Alterações (Logs)",
         th_version: "Versão",
         th_changes: "Detalhes da Alteração",
-        ce_log_130: "Compilado e ajustado para Java 25 (bytecode 69) e Minecraft 1.21.x-26.2. Pipeline de chat assíncrono e sistema aprimorado de menções @player com aviso sonoro.",
+        ce_log_130: "Compilado e ajustado para Java 25 (bytecode 69) e Minecraft 1.21.x-26.3. Pipeline de chat assíncrono e sistema aprimorado de menções @player com aviso sonoro.",
         ce_log_121: "Integração nativa com LuckPerms e PlaceholderAPI. Suporte a tags MiniMessage e gradientes RGB.",
         ce_log_110: "Canais personalizados via channels.yml e escopos por mundo.",
         ce_log_100: "Lançamento inicial com moderação (/clearchat, /mutechat) e filtros anti-spam.",
         ge_log_100: "Lançamento do framework central. Proteção contra furto de itens em GUI, suporte Adventure API e callbacks assíncronos.",
-        pe_log_200: "Refatoração completa para Java 25 e Paper 26.2. Votação em GUI com contagem ao vivo, suporte para alterar voto e anúncio de vencedor.",
+        pe_log_200: "Refatoração completa para Java 25 e Paper 26.3. Votação em GUI com contagem ao vivo, suporte para alterar voto e anúncio de vencedor.",
         pe_log_100: "Lançamento inicial de votações pelo chat com temporizador.",
         me_log_200: "Migração completa para Java 25 e Paper Profile API (ServerListPingEvent). Modos ROTATING, RANDOM e STATIC. Permissão de bypass na manutenção e tooltips de jogadores.",
         me_log_100: "Lançamento inicial do gerenciador de MOTD."
