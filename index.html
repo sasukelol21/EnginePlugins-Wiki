@@ -491,6 +491,133 @@
       main { padding: 24px 18px; }
       header { padding: 10px 18px; flex-wrap: wrap; }
     }
+
+    /* BUSCADOR EN HEADER */
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      background: var(--sidebar);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      color: var(--text);
+      font-family: inherit;
+      width: 170px;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      width: 230px;
+      background: var(--card);
+    }
+
+    .search-results {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 320px;
+      max-height: 380px;
+      overflow-y: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      display: none;
+      z-index: 1000;
+    }
+
+    .search-results.active {
+      display: block;
+    }
+
+    .search-result-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+
+    .search-result-item:hover {
+      background: var(--accent-soft);
+    }
+
+    .search-result-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .search-result-tag {
+      font-size: 0.68rem;
+      padding: 1px 5px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+
+    .search-result-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* CONTENEDOR DE CÓDIGO CON BOTÓN COPIAR */
+    .code-container {
+      position: relative;
+      margin: 14px 0 20px 0;
+    }
+
+    .code-container pre {
+      margin: 0;
+    }
+
+    .code-copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text-muted);
+      padding: 4px 9px;
+      font-size: 0.72rem;
+      font-family: inherit;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      z-index: 5;
+      user-select: none;
+    }
+
+    .code-copy-btn:hover {
+      color: var(--text);
+      border-color: var(--border-focus);
+      background: var(--card);
+    }
+
+    .code-copy-btn.copied {
+      color: #4ade80;
+      border-color: #4ade80;
+      background: var(--card);
+    }
+
   </style>
 </head>
 <body>
@@ -551,6 +678,10 @@
     <header>
       <div class="location-bar">
         Docs / <strong id="section-crumb" data-i18n="tab_inicio">Inicio</strong>
+      </div>
+            <div class="search-container">
+        <input type="text" id="wiki-search-input" class="search-input" placeholder="Buscar docs..." data-i18n-ph="search_placeholder" autocomplete="off">
+        <div id="wiki-search-results" class="search-results"></div>
       </div>
       <div class="header-controls">
         <!-- Idiomas -->
@@ -859,13 +990,13 @@
         </table>
       </div>
 
-            <!-- APARTADO GUIENGINE -->
+                  <!-- APARTADO GUIENGINE -->
       <div id="tab-guiengine" class="tab-content">
         <div class="plugin-header">
           <img src="guiengine.png" alt="GUIEngine">
           <div class="plugin-header-info">
             <h1>GUIEngine</h1>
-            <div class="subtitle" data-i18n="gui_sub">Framework de interfaces de inventario y menús interactivos.</div>
+            <div class="subtitle" data-i18n="gui_sub">Framework modular y API de inventarios interactivos seguros para Paper, Purpur y Spigot.</div>
           </div>
         </div>
 
@@ -873,13 +1004,73 @@
           <span data-i18n="dl_guiengine">Descargar GUIEngine en Modrinth</span> <span>↗</span>
         </a>
 
-        <h2 data-i18n="features">Características</h2>
+        <h2 data-i18n="features">Características Principales</h2>
         <ul>
-          <li data-i18n="gui_f1"><strong>Motor de Menús Seguro:</strong> Previene la extracción, duplicación o movimiento indebido de ítems en interfaces.</li>
-          <li data-i18n="gui_f2"><strong>Renderizado de Componentes:</strong> Soporte directo de texto Adventure y MiniMessage en nombres y descripciones.</li>
-          <li data-i18n="gui_f3"><strong>Modular:</strong> Diseñado para servir como base para sistemas de tiendas, selección de modalidad y votaciones.</li>
-          <li data-i18n="gui_f4"><strong>Gestión de Eventos Automática:</strong> Cancelación de eventos no deseados en clics rápidos o atajos de teclado.</li>
+          <li data-i18n="ge_f_safe"><strong>Seguridad Antidupe Absoluta:</strong> Previene la extracción, duplicación, shift-click y hotbar swap (teclas 1-9) de forma nativa sin configurar nada extra.</li>
+          <li data-i18n="ge_f_callbacks"><strong>Arquitectura Funcional con Callbacks:</strong> Define acciones directamente al asignar el ítem con <code>(player, clickType) -&gt; { ... }</code>, eliminando la necesidad de crear listeners de eventos gigantes.</li>
+          <li data-i18n="ge_f_builder"><strong>ItemBuilder Fluido:</strong> Construcción de ítems con cadenas de métodos legibles, soporte de gradientes MiniMessage, encantamientos, banderas y cabezas de jugadores.</li>
+          <li data-i18n="ge_f_paged"><strong>Menús Paginados Nativos:</strong> Gestión automática de páginas para listas grandes con botones de navegación anterior/siguiente integrados.</li>
+          <li data-i18n="ge_f_perf"><strong>Rendimiento Cero Overhead:</strong> Creado para Java 25 y Paper 26.3, con recolección de basura automática y limpieza al cerrar inventarios.</li>
         </ul>
+
+        <h2 data-i18n="ge_dep_h2">Integración en tu Proyecto (Dependencia)</h2>
+        <p data-i18n="ge_dep_p">Puedes usar GUIEngine como librería embebida o como plugin central compartiendo la instancia en tu servidor.</p>
+
+        <h3 data-i18n="ge_dep_maven">Maven (pom.xml)</h3>
+        <pre><code data-i18n="ge_code_maven"></code></pre>
+
+        <h3 data-i18n="ge_dep_gradle">Gradle (build.gradle.kts)</h3>
+        <pre><code data-i18n="ge_code_gradle"></code></pre>
+
+        <div class="note">
+          <strong data-i18n="ge_note_plug_title">Uso como plugin dependiente:</strong>
+          <span data-i18n="ge_note_plug_desc">Si instalas GUIEngine en la carpeta plugins/, añade <code>depend: [GUIEngine]</code> en tu <code>plugin.yml</code> para asegurar el orden de carga.</span>
+        </div>
+
+        <h2 data-i18n="ge_tut1_h2">Guía 1: Creación de un Menú Básico</h2>
+        <p data-i18n="ge_tut1_p">Crea una interfaz de inventario interactiva de forma rápida con títulos estilizados y botones con acciones:</p>
+        <pre><code data-i18n="ge_code_simple"></code></pre>
+
+        <h2 data-i18n="ge_tut2_h2">Guía 2: Constructor Fluido (ItemBuilder)</h2>
+        <p data-i18n="ge_tut2_p">El <code>ItemBuilder</code> de GUIEngine simplifica la creación de ítems con soporte de componentes Adventure y cabezas de jugadores:</p>
+        <pre><code data-i18n="ge_code_itembuilder"></code></pre>
+
+        <h2 data-i18n="ge_tut3_h2">Guía 3: Menús Paginados (PaginatedMenu)</h2>
+        <p data-i18n="ge_tut3_p">Muestra listas grandes de elementos (jugadores, tiendas, kits) divididas en páginas con control de navegación:</p>
+        <pre><code data-i18n="ge_code_paginated"></code></pre>
+
+        <h2 data-i18n="ge_tut4_h2">Guía 4: Patrones Visuales y Relleno de Bordes</h2>
+        <p data-i18n="ge_tut4_p">Diseña menús visualmente en tu código usando esquemas ASCII o rellena bordes con un solo método:</p>
+        <pre><code data-i18n="ge_code_patterns"></code></pre>
+
+        <h2 data-i18n="ge_sec_h2">Seguridad y Protección Antidupe</h2>
+        <p data-i18n="ge_sec_p">GUIEngine implementa una capa estricta de validación sobre el ciclo de vida de los inventarios:</p>
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="th_event">Evento / Vulnerabilidad</th>
+              <th data-i18n="th_protection">Protección de GUIEngine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>InventoryClickEvent</code></td>
+              <td data-i18n="ge_prot_click">Cancela cualquier click no registrado, bloquea shift-click entre inventarios y teclas numéricas (hotbar 1-9).</td>
+            </tr>
+            <tr>
+              <td><code>InventoryDragEvent</code></td>
+              <td data-i18n="ge_prot_drag">Bloquea el arrastre y reparto de ítems en slots de la GUI para evitar clonaciones.</td>
+            </tr>
+            <tr>
+              <td><code>InventoryCloseEvent</code></td>
+              <td data-i18n="ge_prot_close">Limpia las referencias del jugador y listeners de memoria para evitar fugas (memory leaks).</td>
+            </tr>
+            <tr>
+              <td><code>Drop / Muerte del Jugador</code></td>
+              <td data-i18n="ge_prot_drop">Cierra de forma segura el menú si el jugador recibe daño fatal o intenta arrojar ítems con la tecla 'Q'.</td>
+            </tr>
+          </tbody>
+        </table>
 
         <h2 data-i18n="compat_h2">Compatibilidad de Versiones</h2>
         <table>
@@ -893,25 +1084,13 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>1.0.0</code> (Core)</td>
+              <td><code>1.0.0</code> (Core / API)</td>
               <td><strong>1.21.x – 26.3</strong> (Paper, Purpur, Spigot)</td>
               <td>Java 21 – 25+</td>
               <td><span style="color: #4ade80; font-weight: 600;" data-i18n="status_stable">Estable</span></td>
             </tr>
           </tbody>
         </table>
-
-        <h2 data-i18n="ge_sec_h2">Seguridad y Protección Antidupe</h2>
-        <p data-i18n="ge_sec_p">GUIEngine implementa una capa estricta de validación sobre el ciclo de vida de los inventarios:</p>
-        <ul>
-          <li data-i18n="ge_sec_li1"><strong>Cancelación Obligatoria:</strong> <code>InventoryClickEvent</code> y <code>InventoryDragEvent</code> están blindados contra robos de ítems.</li>
-          <li data-i18n="ge_sec_li2"><strong>Control de Cierre:</strong> Manejo seguro con <code>InventoryCloseEvent</code> para limpieza de memoria.</li>
-          <li data-i18n="ge_sec_li3"><strong>Prevención de Clicks Fantasma:</strong> Verificación por identificador único (UUID) en cada sesión.</li>
-        </ul>
-
-        <h2 data-i18n="ge_api_h2">Ejemplo de Integración (API para Desarrolladores)</h2>
-        <p data-i18n="ge_api_p">Ejemplo de creación de un menú interactivo protegido con callbacks usando la API de GUIEngine:</p>
-        <pre><code data-i18n="ge_code_api"></code></pre>
 
         <h2 data-i18n="changelog_title">Registro de Cambios (Logs)</h2>
         <table>
@@ -924,7 +1103,7 @@
           <tbody>
             <tr>
               <td><code>1.0.0</code></td>
-              <td data-i18n="ge_log_100">Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.</td>
+              <td data-i18n="ge_log_100">Lanzamiento oficial de GUIEngine Core y API. Sistema de callbacks por slot, constructor fluido ItemBuilder, menús paginados PaginatedMenu, soporte MiniMessage y protección total antidupe.</td>
             </tr>
           </tbody>
         </table>
@@ -1358,7 +1537,7 @@
     "ge_sec_li3": "<strong>Prevención de Clicks Fantasma:</strong> Verificación por identificador único (UUID) en cada sesión.",
     "ge_api_h2": "Ejemplo de Integración (API para Desarrolladores)",
     "ge_api_p": "Ejemplo de creación de un menú interactivo protegido con callbacks usando la API de GUIEngine:",
-    "ge_log_100": "Lanzamiento del motor central. Protección contra robo de ítems en GUI, compatibilidad con Adventure API y callbacks asíncronos para clics en inventarios.",
+    "ge_log_100": "Lanzamiento oficial de GUIEngine Core y API. Sistema de callbacks por slot, constructor fluido ItemBuilder, menús paginados PaginatedMenu, soporte MiniMessage y protección total antidupe.",
     "ge_code_api": "// Creación de un menú de 27 slots (3 filas)\nGUIEngineMenu menu = new GUIEngineMenu(&quot;Menú Principal&quot;, 27);\n\n// Configuración de un botón interactivo\nItemStack item = new ItemBuilder(Material.COMPASS)\n    .name(&quot;&amp;a&amp;lSelector de Modalidades&quot;)\n    .lore(&quot;&amp;7Haz clic para abrir el menú de servidores.&quot;)\n    .build();\n\nmenu.setItem(13, item, (player, clickType) -&gt; {\n    player.sendMessage(&quot;§aAbriendo servidor Survival...&quot;);\n    player.closeInventory();\n});\n\n// Relleno estético de bordes\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// Apertura segura para el jugador\nmenu.open(player);",
     "poll_sub": "Sistema de encuestas interactivas con interfaz gráfica (v2.0.0).",
     "poll_f1": "<strong>Interfaz GUI Interactiva:</strong> Los usuarios votan haciendo clic en el menú sin tener que escribir comandos complejos.",
@@ -1409,7 +1588,41 @@
     "faq_a1": "Asigna el permiso <code>motdengine.maintenance.bypass</code> mediante tu plugin de permisos al grupo de administradores.",
     "faq_q2": "¿Se puede permitir el cambio de voto?",
     "faq_a2": "Sí, la clave <code>allow-change-vote</code> en el archivo <code>config.yml</code> de PollEngine habilita o deshabilita esta opción.",
-    "footer_docs": "Documentación Oficial"
+    "footer_docs": "Documentación Oficial",
+    "search_placeholder": "Buscar comando, permiso, config...",
+    "btn_copy": "Copiar",
+    "btn_copied": "¡Copiado!",
+    "th_event": "Evento / Vulnerabilidad",
+    "th_protection": "Protección de GUIEngine",
+    "ge_f_safe": "<strong>Seguridad Antidupe Absoluta:</strong> Previene la extracción, duplicación, shift-click y hotbar swap (teclas 1-9) de forma nativa sin configurar nada extra.",
+    "ge_f_callbacks": "<strong>Arquitectura Funcional con Callbacks:</strong> Define acciones directamente al asignar el ítem con <code>(player, clickType) -&gt; { ... }</code>, eliminando la necesidad de crear listeners de eventos gigantes.",
+    "ge_f_builder": "<strong>ItemBuilder Fluido:</strong> Construcción de ítems con cadenas de métodos legibles, soporte de gradientes MiniMessage, encantamientos, banderas y cabezas de jugadores.",
+    "ge_f_paged": "<strong>Menús Paginados Nativos:</strong> Gestión automática de páginas para listas grandes con botones de navegación anterior/siguiente integrados.",
+    "ge_f_perf": "<strong>Rendimiento Cero Overhead:</strong> Creado para Java 25 y Paper 26.3, con recolección de basura automática y limpieza al cerrar inventarios.",
+    "ge_dep_h2": "Integración en tu Proyecto (Dependencia)",
+    "ge_dep_p": "Puedes usar GUIEngine como librería embebida o como plugin central compartiendo la instancia en tu servidor.",
+    "ge_dep_maven": "Maven (pom.xml)",
+    "ge_dep_gradle": "Gradle (build.gradle.kts)",
+    "ge_note_plug_title": "Uso como plugin dependiente:",
+    "ge_note_plug_desc": "Si instalas GUIEngine en la carpeta plugins/, añade <code>depend: [GUIEngine]</code> en tu <code>plugin.yml</code> para asegurar el orden de carga.",
+    "ge_tut1_h2": "Guía 1: Creación de un Menú Básico",
+    "ge_tut1_p": "Crea una interfaz de inventario interactiva de forma rápida con títulos estilizados y botones con acciones:",
+    "ge_tut2_h2": "Guía 2: Constructor Fluido (ItemBuilder)",
+    "ge_tut2_p": "El <code>ItemBuilder</code> de GUIEngine simplifica la creación de ítems con soporte de componentes Adventure y cabezas de jugadores:",
+    "ge_tut3_h2": "Guía 3: Menús Paginados (PaginatedMenu)",
+    "ge_tut3_p": "Muestra listas grandes de elementos (jugadores, tiendas, kits) divididas en páginas con control de navegación:",
+    "ge_tut4_h2": "Guía 4: Patrones Visuales y Relleno de Bordes",
+    "ge_tut4_p": "Diseña menús visualmente en tu código usando esquemas ASCII o rellena bordes con un solo método:",
+    "ge_prot_click": "Cancela cualquier click no registrado, bloquea shift-click entre inventarios y teclas numéricas (hotbar 1-9).",
+    "ge_prot_drag": "Bloquea el arrastre y reparto de ítems en slots de la GUI para evitar clonaciones.",
+    "ge_prot_close": "Limpia las referencias del jugador y listeners de memoria para evitar fugas (memory leaks).",
+    "ge_prot_drop": "Cierra de forma segura el menú si el jugador recibe daño fatal o intenta arrojar ítems con la tecla 'Q'.",
+    "ge_code_maven": "&lt;!-- Repositorio de EnginePlugins --&gt;\n&lt;repositories&gt;\n  &lt;repository&gt;\n    &lt;id&gt;engineplugins-repo&lt;/id&gt;\n    &lt;url&gt;https://repo.engineplugins.net/releases&lt;/url&gt;\n  &lt;/repository&gt;\n&lt;/repositories&gt;\n\n&lt;!-- Dependencia de GUIEngine Core --&gt;\n&lt;dependencies&gt;\n  &lt;dependency&gt;\n    &lt;groupId&gt;net.engineplugins&lt;/groupId&gt;\n    &lt;artifactId&gt;guiengine-core&lt;/artifactId&gt;\n    &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;scope&gt;provided&lt;/scope&gt;\n  &lt;/dependency&gt;\n&lt;/dependencies&gt;",
+    "ge_code_gradle": "repositories {\n    mavenCentral()\n    maven { url = uri(\"https://repo.engineplugins.net/releases\") }\n}\n\ndependencies {\n    compileOnly(\"net.engineplugins:guiengine-core:1.0.0\")\n}",
+    "ge_code_simple": "// 1. Crear un menú de 3 filas (27 slots) con título MiniMessage\nSimpleMenu menu = GUIEngine.createMenu()\n    .title(\"&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;Selector de Servidores&lt;/bold&gt;&lt;/gradient&gt;\")\n    .rows(3)\n    .build();\n\n// 2. Decorar bordes con paneles de cristal negro\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// 3. Añadir botón en el centro (slot 13)\nItemStack survivalItem = new ItemBuilder(Material.GRASS_BLOCK)\n    .name(\"&lt;green&gt;&lt;bold&gt;Servidor Survival&lt;/bold&gt;&lt;/green&gt;\")\n    .lore(\n        \"&lt;gray&gt;Modalidad vanilla con protecciones.\",\n        \"\",\n        \"&lt;yellow&gt;• Jugadores online: &lt;white&gt;42/100\",\n        \"&lt;yellow&gt;• Versión: &lt;white&gt;1.21.x - 26.3\",\n        \"\",\n        \"&lt;aqua&gt;▶ Haz clic izquierdo para entrar&quot;\n    )\n    .build();\n\nmenu.setButton(13, survivalItem, (player, click) -&gt; {\n    player.sendMessage(MiniMessage.miniMessage().deserialize(\"&lt;green&gt;Conectando a Survival...&lt;/green&gt;\"));\n    player.closeInventory();\n    // Enviar jugador al servidor (ej. BungeeCord / Velocity)\n});\n\n// 4. Botón de cierre en la esquina inferior derecha (slot 26)\nItemStack closeItem = new ItemBuilder(Material.BARRIER)\n    .name(\"&lt;red&gt;&lt;bold&gt;Cerrar Menú&lt;/bold&gt;&lt;/red&gt;\")\n    .build();\n\nmenu.setButton(26, closeItem, (player, click) -&gt; player.closeInventory());\n\n// 5. Abrir el menú al jugador de forma segura\nmenu.open(player);",
+    "ge_code_itembuilder": "// Creación de ítem personalizado con ItemBuilder\nItemStack customSword = new ItemBuilder(Material.NETHERITE_SWORD)\n    // Nombre con degradado MiniMessage\n    .name(\"&lt;gradient:#FF5555:#FFAA00&gt;&lt;bold&gt;Espada Legendaria&lt;/bold&gt;&lt;/gradient&gt;\")\n    // Lore dinámico multilínea\n    .lore(\n        \"&lt;gray&gt;Forjada en las llamas del inframundo.\",\n        \"\",\n        \"&lt;red&gt;+15 Daño de Ataque\",\n        \"&lt;gold&gt;Efecto: Ignición Solar\",\n        \"\",\n        \"&lt;yellow&gt;Objeto exclusivo para rangos VIP\"\n    )\n    // Encantamientos y efectos visuales\n    .enchant(Enchantment.SHARPNESS, 6)\n    .enchant(Enchantment.UNBREAKING, 3)\n    .flag(ItemFlag.HIDE_ENCHANTS) // Ocultar encantamientos si se prefiere\n    .customModelData(1005)        // Soporte de Resource Pack\n    .unbreakable(true)\n    .build();\n\n// Creación de cabeza de jugador personalizada\nItemStack playerHead = new ItemBuilder(Material.PLAYER_HEAD)\n    .skullOwner(player.getName()) // O UUID: .skullOwner(player.getUniqueId())\n    .name(\"&lt;yellow&gt;Perfil de &lt;white&gt;\" + player.getName())\n    .lore(\"&lt;gray&gt;Haz clic para ver tus estadísticas.\")\n    .build();",
+    "ge_code_paginated": "// 1. Crear menú paginado de 6 filas (54 slots)\nPaginatedMenu&lt;Player&gt; playerListMenu = GUIEngine.createPaginatedMenu(Player.class)\n    .title((page, total) -&gt; \"&lt;dark_gray&gt;Jugadores Online &lt;gray&gt;(\" + page + \"/\" + total + \")\")\n    .rows(6)\n    // Ranuras asignadas a los elementos (slots interiores)\n    .slots(10, 11, 12, 13, 14, 15, 16,\n           19, 20, 21, 22, 23, 24, 25,\n           28, 29, 30, 31, 32, 33, 34)\n    .build();\n\n// 2. Proveer la lista de datos dinámica\nplayerListMenu.setData(new ArrayList&lt;&gt;(Bukkit.getOnlinePlayers()));\n\n// 3. Renderizar cada elemento de la lista en su ítem correspondiente\nplayerListMenu.setItemRenderer((targetPlayer) -&gt; {\n    return new ItemBuilder(Material.PLAYER_HEAD)\n        .skullOwner(targetPlayer.getName())\n        .name(\"&lt;green&gt;\" + targetPlayer.getName())\n        .lore(\n            \"&lt;gray&gt;Ping: &lt;yellow&gt;\" + targetPlayer.getPing() + \"ms\",\n            \"&lt;gray&gt;Mundo: &lt;yellow&gt;\" + targetPlayer.getWorld().getName(),\n            \"\",\n            \"&lt;aqua&gt;Clic para teletransportarte.\"\n        )\n        .build();\n});\n\n// 4. Acción al hacer clic en un elemento de la lista\nplayerListMenu.onItemClick((viewer, targetPlayer, click) -&gt; {\n    viewer.teleport(targetPlayer.getLocation());\n    viewer.sendMessage(\"&lt;green&gt;Te has teletransportado a \" + targetPlayer.getName());\n    viewer.closeInventory();\n});\n\n// 5. Configurar botones de navegación\nplayerListMenu.setPreviousPageButton(45, new ItemBuilder(Material.ARROW).name(\"&lt;yellow&gt;◀ Página Anterior&quot;).build());\nplayerListMenu.setNextPageButton(53, new ItemBuilder(Material.ARROW).name(\"&lt;yellow&gt;Página Siguiente ▶&quot;).build());\n\n// 6. Abrir menú en la primera página\nplayerListMenu.open(viewer, 1);",
+    "ge_code_patterns": "// Creación de menú con matriz visual ASCII\nSimpleMenu menu = GUIEngine.createMenu()\n    .title(\"&lt;gold&gt;Panel de Control&lt;/gold&gt;\")\n    .rows(4)\n    .build();\n\n// Definir máscara de diseño (4 filas de 9 columnas)\nString[] pattern = {\n    \"#########\",\n    \"# S   K #\",\n    \"#   X   #\",\n    \"#########\"\n};\n\n// Mapear caracteres a ítems y callbacks\nmenu.applyPattern(pattern, (symbol, slot) -&gt; {\n    switch (symbol) {\n        case '#': // Borde decorativo\n            menu.setDecoration(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(\" \").build());\n            break;\n        case 'S': // Tienda\n            menu.setButton(slot, new ItemBuilder(Material.EMERALD).name(\"&lt;green&gt;Tienda&lt;/green&gt;\").build(), \n                (p, c) -&gt; p.performCommand(\"shop\"));\n            break;\n        case 'K': // Kits\n            menu.setButton(slot, new ItemBuilder(Material.CHEST).name(\"&lt;yellow&gt;Kits&lt;/yellow&gt;\").build(), \n                (p, c) -&gt; p.performCommand(\"kits\"));\n            break;\n        case 'X': // Cerrar\n            menu.setButton(slot, new ItemBuilder(Material.BARRIER).name(\"&lt;red&gt;Cerrar&lt;/red&gt;\").build(), \n                (p, c) -&gt; p.closeInventory());\n            break;\n    }\n});\n\nmenu.open(player);"
   },
   "en": {
     "by": "by",
@@ -1518,7 +1731,7 @@
     "ge_sec_li3": "<strong>Ghost Click Prevention:</strong> Unique session UUID verification per opened menu.",
     "ge_api_h2": "Integration Example (Developer API)",
     "ge_api_p": "Example of creating an interactive protected menu with callbacks using the GUIEngine API:",
-    "ge_log_100": "Initial core framework release. Comprehensive item theft/exploit protection, Adventure API support, and async click callbacks.",
+    "ge_log_100": "Initial release of GUIEngine Core & API. Per-slot callback handlers, fluent ItemBuilder, PaginatedMenu, MiniMessage rendering, and full antidupe protection.",
     "ge_code_api": "// Create a 27-slot menu (3 rows)\nGUIEngineMenu menu = new GUIEngineMenu(&quot;Main Menu&quot;, 27);\n\n// Configure an interactive button\nItemStack item = new ItemBuilder(Material.COMPASS)\n    .name(&quot;&amp;a&amp;lServer Selector&quot;)\n    .lore(&quot;&amp;7Click to open the gamemodes menu.&quot;)\n    .build();\n\nmenu.setItem(13, item, (player, clickType) -&gt; {\n    player.sendMessage(&quot;§aConnecting to Survival...&quot;);\n    player.closeInventory();\n});\n\n// Cosmetic border filling\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// Open safely for the player\nmenu.open(player);",
     "poll_sub": "Interactive GUI voting and poll engine (v2.0.0).",
     "poll_f1": "<strong>Interactive Inventory GUI:</strong> Players vote by clicking items in the menu without memorizing commands.",
@@ -1569,7 +1782,41 @@
     "faq_a1": "Grant the permission <code>motdengine.maintenance.bypass</code> to the administrative group in your permissions plugin.",
     "faq_q2": "Can players change their vote?",
     "faq_a2": "Yes, the <code>allow-change-vote</code> setting in PollEngine's <code>config.yml</code> controls this.",
-    "footer_docs": "Official Documentation"
+    "footer_docs": "Official Documentation",
+    "search_placeholder": "Search command, perm, config...",
+    "btn_copy": "Copy",
+    "btn_copied": "Copied!",
+    "th_event": "Event / Vulnerability",
+    "th_protection": "GUIEngine Protection",
+    "ge_f_safe": "<strong>Zero-Dupe Architecture:</strong> Natively prevents item extraction, duping, shift-clicking, and hotbar number swapping (1-9) without external plugins.",
+    "ge_f_callbacks": "<strong>Functional Callbacks:</strong> Define actions inline when placing items using <code>(player, clickType) -&gt; { ... }</code>, removing clumsy monolithic event handlers.",
+    "ge_f_builder": "<strong>Fluent ItemBuilder:</strong> Clean item creation with chainable methods, MiniMessage gradient support, enchants, item flags, and custom player skulls.",
+    "ge_f_paged": "<strong>Built-in Paginated Menus:</strong> Effortless pagination for large collections with automatic next/previous navigation controls.",
+    "ge_f_perf": "<strong>Zero Overhead:</strong> Tuned for Java 25 and Paper 26.3, with automated garbage collection and listener cleanup on menu close.",
+    "ge_dep_h2": "Project Integration (Dependency)",
+    "ge_dep_p": "Include GUIEngine as a shaded library or run it as a standalone server plugin.",
+    "ge_dep_maven": "Maven (pom.xml)",
+    "ge_dep_gradle": "Gradle (build.gradle.kts)",
+    "ge_note_plug_title": "Standalone Plugin Mode:",
+    "ge_note_plug_desc": "If installing GUIEngine into <code>plugins/</code>, declare <code>depend: [GUIEngine]</code> in your <code>plugin.yml</code> to enforce loading order.",
+    "ge_tut1_h2": "Guide 1: Creating a Basic Menu",
+    "ge_tut1_p": "Quickly build an interactive inventory menu with styled titles and clickable action buttons:",
+    "ge_tut2_h2": "Guide 2: Fluent ItemBuilder",
+    "ge_tut2_p": "The GUIEngine <code>ItemBuilder</code> simplifies item stack creation with Adventure components and custom skulls:",
+    "ge_tut3_h2": "Guide 3: Paginated Menus (PaginatedMenu)",
+    "ge_tut3_p": "Display large datasets (online players, shop items, warps) split across multiple pages with navigation:",
+    "ge_tut4_h2": "Guide 4: Visual Patterns and Border Filling",
+    "ge_tut4_p": "Design menus visually in code using ASCII templates or fill edges with a single call:",
+    "ge_prot_click": "Cancels unhandled clicks, blocks shift-clicking between top/bottom inventories and hotbar numerical swapping (1-9).",
+    "ge_prot_drag": "Blocks dragging and cursor distribution across inventory slots to prevent duplication.",
+    "ge_prot_close": "Cleans up player session handles and unregisters internal callbacks to prevent memory leaks.",
+    "ge_prot_drop": "Safely closes open GUIs if players take lethal damage or press 'Q' to throw items.",
+    "ge_code_maven": "&lt;!-- EnginePlugins Repository --&gt;\n&lt;repositories&gt;\n  &lt;repository&gt;\n    &lt;id&gt;engineplugins-repo&lt;/id&gt;\n    &lt;url&gt;https://repo.engineplugins.net/releases&lt;/url&gt;\n  &lt;/repository&gt;\n&lt;/repositories&gt;\n\n&lt;!-- GUIEngine Core Dependency --&gt;\n&lt;dependencies&gt;\n  &lt;dependency&gt;\n    &lt;groupId&gt;net.engineplugins&lt;/groupId&gt;\n    &lt;artifactId&gt;guiengine-core&lt;/artifactId&gt;\n    &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;scope&gt;provided&lt;/scope&gt;\n  &lt;/dependency&gt;\n&lt;/dependencies&gt;",
+    "ge_code_gradle": "repositories {\n    mavenCentral()\n    maven { url = uri(\"https://repo.engineplugins.net/releases\") }\n}\n\ndependencies {\n    compileOnly(\"net.engineplugins:guiengine-core:1.0.0\")\n}",
+    "ge_code_simple": "// 1. Create a 3-row (27-slot) menu with a MiniMessage gradient title\nSimpleMenu menu = GUIEngine.createMenu()\n    .title(\"&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;Server Selector&lt;/bold&gt;&lt;/gradient&gt;\")\n    .rows(3)\n    .build();\n\n// 2. Fill borders with black stained glass panes\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// 3. Add an interactive button in the center (slot 13)\nItemStack survivalItem = new ItemBuilder(Material.GRASS_BLOCK)\n    .name(\"&lt;green&gt;&lt;bold&gt;Survival Server&lt;/bold&gt;&lt;/green&gt;\")\n    .lore(\n        \"&lt;gray&gt;Vanilla gameplay with land claims.\",\n        \"\",\n        \"&lt;yellow&gt;• Online Players: &lt;white&gt;42/100\",\n        \"&lt;yellow&gt;• Version: &lt;white&gt;1.21.x - 26.3\",\n        \"\",\n        \"&lt;aqua&gt;▶ Left click to join&quot;\n    )\n    .build();\n\nmenu.setButton(13, survivalItem, (player, click) -&gt; {\n    player.sendMessage(MiniMessage.miniMessage().deserialize(\"&lt;green&gt;Connecting to Survival...&lt;/green&gt;\"));\n    player.closeInventory();\n    // Connect player to target server (BungeeCord / Velocity)\n});\n\n// 4. Close button on bottom-right corner (slot 26)\nItemStack closeItem = new ItemBuilder(Material.BARRIER)\n    .name(\"&lt;red&gt;&lt;bold&gt;Close Menu&lt;/bold&gt;&lt;/red&gt;\")\n    .build();\n\nmenu.setButton(26, closeItem, (player, click) -&gt; player.closeInventory());\n\n// 5. Open menu safely for player\nmenu.open(player);",
+    "ge_code_itembuilder": "// Build custom item stack using ItemBuilder\nItemStack customSword = new ItemBuilder(Material.NETHERITE_SWORD)\n    // MiniMessage gradient display name\n    .name(\"&lt;gradient:#FF5555:#FFAA00&gt;&lt;bold&gt;Legendary Sword&lt;/bold&gt;&lt;/gradient&gt;\")\n    // Dynamic multiline lore\n    .lore(\n        \"&lt;gray&gt;Forged in nether flames.\",\n        \"\",\n        \"&lt;red&gt;+15 Attack Damage\",\n        \"&lt;gold&gt;Effect: Solar Ignition\",\n        \"\",\n        \"&lt;yellow&gt;VIP rank exclusive item\"\n    )\n    // Enchantments & visual item flags\n    .enchant(Enchantment.SHARPNESS, 6)\n    .enchant(Enchantment.UNBREAKING, 3)\n    .flag(ItemFlag.HIDE_ENCHANTS)\n    .customModelData(1005)\n    .unbreakable(true)\n    .build();\n\n// Build custom player skull\nItemStack playerHead = new ItemBuilder(Material.PLAYER_HEAD)\n    .skullOwner(player.getName()) // Or UUID: .skullOwner(player.getUniqueId())\n    .name(\"&lt;yellow&gt;Profile: &lt;white&gt;\" + player.getName())\n    .lore(\"&lt;gray&gt;Click to view your statistics.\")\n    .build();",
+    "ge_code_paginated": "// 1. Create a 6-row (54-slot) paginated menu\nPaginatedMenu&lt;Player&gt; playerListMenu = GUIEngine.createPaginatedMenu(Player.class)\n    .title((page, total) -&gt; \"&lt;dark_gray&gt;Online Players &lt;gray&gt;(\" + page + \"/\" + total + \")\")\n    .rows(6)\n    // Designated content area slots\n    .slots(10, 11, 12, 13, 14, 15, 16,\n           19, 20, 21, 22, 23, 24, 25,\n           28, 29, 30, 31, 32, 33, 34)\n    .build();\n\n// 2. Supply dynamic data collection\nplayerListMenu.setData(new ArrayList&lt;&gt;(Bukkit.getOnlinePlayers()));\n\n// 3. Render each element into its corresponding item slot\nplayerListMenu.setItemRenderer((targetPlayer) -&gt; {\n    return new ItemBuilder(Material.PLAYER_HEAD)\n        .skullOwner(targetPlayer.getName())\n        .name(\"&lt;green&gt;\" + targetPlayer.getName())\n        .lore(\n            \"&lt;gray&gt;Ping: &lt;yellow&gt;\" + targetPlayer.getPing() + \"ms\",\n            \"&lt;gray&gt;World: &lt;yellow&gt;\" + targetPlayer.getWorld().getName(),\n            \"\",\n            \"&lt;aqua&gt;Click to teleport.\"\n        )\n        .build();\n});\n\n// 4. Handle element click action\nplayerListMenu.onItemClick((viewer, targetPlayer, click) -&gt; {\n    viewer.teleport(targetPlayer.getLocation());\n    viewer.sendMessage(\"&lt;green&gt;Teleported to \" + targetPlayer.getName());\n    viewer.closeInventory();\n});\n\n// 5. Navigation buttons\nplayerListMenu.setPreviousPageButton(45, new ItemBuilder(Material.ARROW).name(\"&lt;yellow&gt;◀ Previous Page&quot;).build());\nplayerListMenu.setNextPageButton(53, new ItemBuilder(Material.ARROW).name(\"&lt;yellow&gt;Next Page ▶&quot;).build());\n\n// 6. Open menu on first page\nplayerListMenu.open(viewer, 1);",
+    "ge_code_patterns": "// Create visual ASCII template menu\nSimpleMenu menu = GUIEngine.createMenu()\n    .title(\"&lt;gold&gt;Control Panel&lt;/gold&gt;\")\n    .rows(4)\n    .build();\n\n// Define 4x9 ASCII pattern matrix\nString[] pattern = {\n    \"#########\",\n    \"# S   K #\",\n    \"#   X   #\",\n    \"#########\"\n};\n\n// Map characters to items and actions\nmenu.applyPattern(pattern, (symbol, slot) -&gt; {\n    switch (symbol) {\n        case '#': // Border filler\n            menu.setDecoration(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(\" \").build());\n            break;\n        case 'S': // Shop shortcut\n            menu.setButton(slot, new ItemBuilder(Material.EMERALD).name(\"&lt;green&gt;Shop&lt;/green&gt;\").build(), \n                (p, c) -&gt; p.performCommand(\"shop\"));\n            break;\n        case 'K': // Kits shortcut\n            menu.setButton(slot, new ItemBuilder(Material.CHEST).name(\"&lt;yellow&gt;Kits&lt;/yellow&gt;\").build(), \n                (p, c) -&gt; p.performCommand(\"kits\"));\n            break;\n        case 'X': // Close button\n            menu.setButton(slot, new ItemBuilder(Material.BARRIER).name(\"&lt;red&gt;Close&lt;/red&gt;\").build(), \n                (p, c) -&gt; p.closeInventory());\n            break;\n    }\n});\n\nmenu.open(player);"
   },
   "pt": {
     "by": "por",
@@ -1678,7 +1925,7 @@
     "ge_sec_li3": "<strong>Prevenção de Cliques Fantasmas:</strong> Verificação por UUID único em cada sessão.",
     "ge_api_h2": "Exemplo de Integração (API para Desenvolvedores)",
     "ge_api_p": "Exemplo de criação de menu interativo protegido com callbacks usando a API do GUIEngine:",
-    "ge_log_100": "Lançamento do framework central. Proteção contra furto de itens em GUI, suporte Adventure API e callbacks assíncronos.",
+    "ge_log_100": "Lançamento oficial do GUIEngine Core e API. Callbacks por slot, construtor fluido ItemBuilder, menus paginados PaginatedMenu, renderização MiniMessage e proteção total contra duplicação.",
     "ge_code_api": "// Criação de um menu de 27 slots (3 fileiras)\nGUIEngineMenu menu = new GUIEngineMenu(&quot;Menu Principal&quot;, 27);\n\n// Configuração de botão interativo\nItemStack item = new ItemBuilder(Material.COMPASS)\n    .name(&quot;&amp;a&amp;lSeletor de Modos&quot;)\n    .lore(&quot;&amp;7Clique para abrir o menu de servidores.&quot;)\n    .build();\n\nmenu.setItem(13, item, (player, clickType) -&gt; {\n    player.sendMessage(&quot;§aAbrindo servidor Survival...&quot;);\n    player.closeInventory();\n});\n\n// Preenchimento de bordas\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// Abertura segura para o jogador\nmenu.open(player);",
     "poll_sub": "Sistema de enquetes interativas por GUI de inventário (v2.0.0).",
     "poll_f1": "<strong>Interface GUI Interativa:</strong> Jogadores votam clicando no menu sem comandos complexos.",
@@ -1729,9 +1976,156 @@
     "faq_a1": "Atribua a permissão <code>motdengine.maintenance.bypass</code> ao grupo administrativo.",
     "faq_q2": "É possível permitir mudança de voto?",
     "faq_a2": "Sim, a opção <code>allow-change-vote</code> no <code>config.yml</code> do PollEngine controla isso.",
-    "footer_docs": "Documentação Oficial"
+    "footer_docs": "Documentação Oficial",
+    "search_placeholder": "Pesquisar comando, permissão...",
+    "btn_copy": "Copiar",
+    "btn_copied": "Copiado!",
+    "th_event": "Evento / Vulnerabilidade",
+    "th_protection": "Proteção do GUIEngine",
+    "ge_f_safe": "<strong>Zero Dupes Nativo:</strong> Impede retirada, duplicação, shift-click e hotbar swap (teclas 1-9) diretamente sem plugins adicionais.",
+    "ge_f_callbacks": "<strong>Callbacks Funcionais:</strong> Defina ações diretamente ao adicionar itens com <code>(player, clickType) -&gt; { ... }</code>, sem listeners enormes.",
+    "ge_f_builder": "<strong>ItemBuilder Fluido:</strong> Criação rápida de itens com suporte a gradientes MiniMessage, encantamentos, tags e cabeças de jogadores.",
+    "ge_f_paged": "<strong>Menus Paginados Nativos:</strong> Paginação automatizada para listas extensas com botões anterior/próximo inclusos.",
+    "ge_f_perf": "<strong>Desempenho Sem Overhead:</strong> Feito para Java 25 e Paper 26.3, com descarte automático de referências ao fechar inventários.",
+    "ge_dep_h2": "Integração ao Projeto (Dependência)",
+    "ge_dep_p": "Use o GUIEngine como biblioteca incorporada ou como plugin compartilhado no servidor.",
+    "ge_dep_maven": "Maven (pom.xml)",
+    "ge_dep_gradle": "Gradle (build.gradle.kts)",
+    "ge_note_plug_title": "Modo Plugin Dependente:",
+    "ge_note_plug_desc": "Se instalar o GUIEngine na pasta <code>plugins/</code>, adicione <code>depend: [GUIEngine]</code> no seu <code>plugin.yml</code> para garantir a ordem de inicialização.",
+    "ge_tut1_h2": "Guia 1: Criação de Menu Básico",
+    "ge_tut1_p": "Crie uma interface interativa rapidamente com títulos estilizados e botões de ação:",
+    "ge_tut2_h2": "Guia 2: Construtor Fluido (ItemBuilder)",
+    "ge_tut2_p": "O <code>ItemBuilder</code> do GUIEngine agiliza a criação de itens com Adventure components e skins personalizadas:",
+    "ge_tut3_h2": "Guia 3: Menus Paginados (PaginatedMenu)",
+    "ge_tut3_p": "Exiba grandes listas (jogadores, lojas, kits) distribuídas em páginas com controle de navegação:",
+    "ge_tut4_h2": "Guia 4: Padrões Visuais e Preenchimento de Bordas",
+    "ge_tut4_p": "Desenhe menus usando matrizes ASCII visuais ou preencha bordas com um único método:",
+    "ge_prot_click": "Cancela cliques não registrados, impede shift-click entre inventários e atalhos numéricos (hotbar 1-9).",
+    "ge_prot_drag": "Bloqueia o arrasto e distribuição de itens na interface para evitar clonagens.",
+    "ge_prot_close": "Limpa as referências de jogadores e libera listeners da memória para evitar vazamentos.",
+    "ge_prot_drop": "Fecha com segurança o menu se o jogador receber dano fatal ou tentar soltar itens com 'Q'.",
+    "ge_code_maven": "&lt;!-- Repositório EnginePlugins --&gt;\n&lt;repositories&gt;\n  &lt;repository&gt;\n    &lt;id&gt;engineplugins-repo&lt;/id&gt;\n    &lt;url&gt;https://repo.engineplugins.net/releases&lt;/url&gt;\n  &lt;/repository&gt;\n&lt;/repositories&gt;\n\n&lt;!-- Dependência do GUIEngine Core --&gt;\n&lt;dependencies&gt;\n  &lt;dependency&gt;\n    &lt;groupId&gt;net.engineplugins&lt;/groupId&gt;\n    &lt;artifactId&gt;guiengine-core&lt;/artifactId&gt;\n    &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;scope&gt;provided&lt;/scope&gt;\n  &lt;/dependency&gt;\n&lt;/dependencies&gt;",
+    "ge_code_gradle": "repositories {\n    mavenCentral()\n    maven { url = uri(\"https://repo.engineplugins.net/releases\") }\n}\n\ndependencies {\n    compileOnly(\"net.engineplugins:guiengine-core:1.0.0\")\n}",
+    "ge_code_simple": "// 1. Criar menu de 3 fileiras (27 slots) com título MiniMessage\nSimpleMenu menu = GUIEngine.createMenu()\n    .title(\"&lt;gradient:#00FFAA:#00A2FF&gt;&lt;bold&gt;Seletor de Servidores&lt;/bold&gt;&lt;/gradient&gt;\")\n    .rows(3)\n    .build();\n\n// 2. Preencher bordas com painéis de vidro preto\nmenu.fillBorders(Material.BLACK_STAINED_GLASS_PANE);\n\n// 3. Adicionar botão central (slot 13)\nItemStack survivalItem = new ItemBuilder(Material.GRASS_BLOCK)\n    .name(\"&lt;green&gt;&lt;bold&gt;Servidor Survival&lt;/bold&gt;&lt;/green&gt;\")\n    .lore(\n        \"&lt;gray&gt;Modo vanilla com proteções.\",\n        \"\",\n        \"&lt;yellow&gt;• Jogadores online: &lt;white&gt;42/100\",\n        \"&lt;yellow&gt;• Versão: &lt;white&gt;1.21.x - 26.3\",\n        \"\",\n        \"&lt;aqua&gt;▶ Clique esquerdo para entrar&quot;\n    )\n    .build();\n\nmenu.setButton(13, survivalItem, (player, click) -&gt; {\n    player.sendMessage(MiniMessage.miniMessage().deserialize(\"&lt;green&gt;Conectando ao Survival...&lt;/green&gt;\"));\n    player.closeInventory();\n    // Envia o jogador para o servidor (BungeeCord / Velocity)\n});\n\n// 4. Botão de fechar no canto inferior direito (slot 26)\nItemStack closeItem = new ItemBuilder(Material.BARRIER)\n    .name(\"&lt;red&gt;&lt;bold&gt;Fechar Menu&lt;/bold&gt;&lt;/red&gt;\")\n    .build();\n\nmenu.setButton(26, closeItem, (player, click) -&gt; player.closeInventory());\n\n// 5. Abrir com segurança para o jogador\nmenu.open(player);",
+    "ge_code_itembuilder": "// Construção de item customizado com ItemBuilder\nItemStack customSword = new ItemBuilder(Material.NETHERITE_SWORD)\n    // Nome com gradiente MiniMessage\n    .name(\"&lt;gradient:#FF5555:#FFAA00&gt;&lt;bold&gt;Espada Lendária&lt;/bold&gt;&lt;/gradient&gt;\")\n    // Lore dinâmico em múltiplas linhas\n    .lore(\n        \"&lt;gray&gt;Forjada no fogo do submundo.\",\n        \"\",\n        \"&lt;red&gt;+15 Dano de Ataque\",\n        \"&lt;gold&gt;Efeito: Ignição Solar\",\n        \"\",\n        \"&lt;yellow&gt;Item exclusivo para ranks VIP\"\n    )\n    // Encantamentos e flags visuais\n    .enchant(Enchantment.SHARPNESS, 6)\n    .enchant(Enchantment.UNBREAKING, 3)\n    .flag(ItemFlag.HIDE_ENCHANTS)\n    .customModelData(1005)\n    .unbreakable(true)\n    .build();\n\n// Cabeça de jogador personalizada\nItemStack playerHead = new ItemBuilder(Material.PLAYER_HEAD)\n    .skullOwner(player.getName()) // Ou UUID: .skullOwner(player.getUniqueId())\n    .name(\"&lt;yellow&gt;Perfil de &lt;white&gt;\" + player.getName())\n    .lore(\"&lt;gray&gt;Clique para ver estatísticas.\")\n    .build();",
+    "ge_code_paginated": "// 1. Criar menu paginado de 6 fileiras (54 slots)\nPaginatedMenu&lt;Player&gt; playerListMenu = GUIEngine.createPaginatedMenu(Player.class)\n    .title((page, total) -&gt; \"&lt;dark_gray&gt;Jogadores Online &lt;gray&gt;(\" + page + \"/\" + total + \")\")\n    .rows(6)\n    // Slots centrais para os itens\n    .slots(10, 11, 12, 13, 14, 15, 16,\n           19, 20, 21, 22, 23, 24, 25,\n           28, 29, 30, 31, 32, 33, 34)\n    .build();\n\n// 2. Definir coleção de dados\nplayerListMenu.setData(new ArrayList&lt;&gt;(Bukkit.getOnlinePlayers()));\n\n// 3. Renderizar cada jogador em um item\nplayerListMenu.setItemRenderer((targetPlayer) -&gt; {\n    return new ItemBuilder(Material.PLAYER_HEAD)\n        .skullOwner(targetPlayer.getName())\n        .name(\"&lt;green&gt;\" + targetPlayer.getName())\n        .lore(\n            \"&lt;gray&gt;Ping: &lt;yellow&gt;\" + targetPlayer.getPing() + \"ms\",\n            \"&lt;gray&gt;Mundo: &lt;yellow&gt;\" + targetPlayer.getWorld().getName(),\n            \"\",\n            \"&lt;aqua&gt;Clique para teletransportar.\"\n        )\n        .build();\n});\n\n// 4. Ação ao clicar em um jogador\nplayerListMenu.onItemClick((viewer, targetPlayer, click) -&gt; {\n    viewer.teleport(targetPlayer.getLocation());\n    viewer.sendMessage(\"&lt;green&gt;Teleportado para \" + targetPlayer.getName());\n    viewer.closeInventory();\n});\n\n// 5. Botões de navegação\nplayerListMenu.setPreviousPageButton(45, new ItemBuilder(Material.ARROW).name(\"&lt;yellow&gt;◀ Página Anterior&quot;).build());\nplayerListMenu.setNextPageButton(53, new ItemBuilder(Material.ARROW).name(\"&lt;yellow&gt;Próxima Página ▶&quot;).build());\n\n// 6. Abrir na página 1\nplayerListMenu.open(viewer, 1);",
+    "ge_code_patterns": "// Criação de menu com matriz ASCII\nSimpleMenu menu = GUIEngine.createMenu()\n    .title(\"&lt;gold&gt;Painel de Controle&lt;/gold&gt;\")\n    .rows(4)\n    .build();\n\n// Desenho da matriz (4 fileiras de 9 colunas)\nString[] pattern = {\n    \"#########\",\n    \"# S   K #\",\n    \"#   X   #\",\n    \"#########\"\n};\n\n// Mapear caracteres para botões e ações\nmenu.applyPattern(pattern, (symbol, slot) -&gt; {\n    switch (symbol) {\n        case '#': // Borda\n            menu.setDecoration(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(\" \").build());\n            break;\n        case 'S': // Loja\n            menu.setButton(slot, new ItemBuilder(Material.EMERALD).name(\"&lt;green&gt;Loja&lt;/green&gt;\").build(), \n                (p, c) -&gt; p.performCommand(\"shop\"));\n            break;\n        case 'K': // Kits\n            menu.setButton(slot, new ItemBuilder(Material.CHEST).name(\"&lt;yellow&gt;Kits&lt;/yellow&gt;\").build(), \n                (p, c) -&gt; p.performCommand(\"kits\"));\n            break;\n        case 'X': // Fechar\n            menu.setButton(slot, new ItemBuilder(Material.BARRIER).name(\"&lt;red&gt;Fechar&lt;/red&gt;\").build(), \n                (p, c) -&gt; p.closeInventory());\n            break;\n    }\n});\n\nmenu.open(player);"
   }
 };
+
+
+    // Sistema de botones Copiar en todos los bloques <pre>
+    function setupCopyButtons() {
+      document.querySelectorAll('pre').forEach(pre => {
+        if (pre.parentElement.classList.contains('code-container')) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-container';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        const btn = document.createElement('button');
+        btn.className = 'code-copy-btn';
+        btn.innerText = (i18n[currentLang] && i18n[currentLang].btn_copy) || 'Copiar';
+
+        btn.addEventListener('click', () => {
+          const codeEl = pre.querySelector('code') || pre;
+          const text = codeEl.innerText;
+          navigator.clipboard.writeText(text).then(() => {
+            btn.classList.add('copied');
+            btn.innerText = (i18n[currentLang] && i18n[currentLang].btn_copied) || '¡Copiado!';
+            setTimeout(() => {
+              btn.classList.remove('copied');
+              btn.innerText = (i18n[currentLang] && i18n[currentLang].btn_copy) || 'Copiar';
+            }, 2000);
+          });
+        });
+
+        wrapper.appendChild(btn);
+      });
+    }
+
+    // Buscador interactivo
+    const searchData = [
+      // ChatEngine
+      { tab: 'chatengine', title: 'ChatEngine - config.yml', desc: 'Canales, prefijos, menciones y anti-spam', tag: 'Config' },
+      { tab: 'chatengine', title: 'ChatEngine - channels.yml', desc: 'Canales por mundo, permisos de hablar y ver', tag: 'Config' },
+      { tab: 'chatengine', title: 'ChatEngine - Comandos', desc: '/chat, /clearchat, /mutechat, /channel', tag: 'Comandos' },
+      { tab: 'chatengine', title: 'ChatEngine - Permisos', desc: 'chatengine.admin, chatengine.color, chatengine.mentions', tag: 'Permisos' },
+      { tab: 'chatengine', title: 'ChatEngine - Placeholders', desc: '{player}, {prefix}, {suffix}, {world}, PAPI', tag: 'Placeholders' },
+      // GUIEngine
+      { tab: 'guiengine', title: 'GUIEngine - Dependencia Maven/Gradle', desc: 'pom.xml y build.gradle.kts para importar en tu plugin', tag: 'API' },
+      { tab: 'guiengine', title: 'GUIEngine - SimpleMenu (Guía 1)', desc: 'Crear menús con callbacks y botones interactivos', tag: 'Guía' },
+      { tab: 'guiengine', title: 'GUIEngine - ItemBuilder (Guía 2)', desc: 'Construcción fluida de ítems, gradientes y player skulls', tag: 'Guía' },
+      { tab: 'guiengine', title: 'GUIEngine - PaginatedMenu (Guía 3)', desc: 'Menús paginados con listas dinámicas de jugadores o tiendas', tag: 'Guía' },
+      { tab: 'guiengine', title: 'GUIEngine - Patrones ASCII (Guía 4)', desc: 'Diseño visual con matrices de caracteres y fillBorders', tag: 'Guía' },
+      { tab: 'guiengine', title: 'GUIEngine - Seguridad Antidupe', desc: 'Protección contra robos, dragging, shift-click y hotbars', tag: 'Seguridad' },
+      // PollEngine
+      { tab: 'pollengine', title: 'PollEngine - config.yml', desc: 'Sonidos, temporizador, cambio de voto y mensajes', tag: 'Config' },
+      { tab: 'pollengine', title: 'PollEngine - /poll start', desc: 'Creación de encuestas interactivas con tiempo límite', tag: 'Comandos' },
+      { tab: 'pollengine', title: 'PollEngine - Permisos', desc: 'pollengine.vote, pollengine.admin, pollengine.start', tag: 'Permisos' },
+      // MotdEngine
+      { tab: 'motdengine', title: 'MotdEngine - config.yml', desc: 'Modos ROTATING, RANDOM, STATIC, hover de jugadores', tag: 'Config' },
+      { tab: 'motdengine', title: 'MotdEngine - Mantenimiento', desc: 'Modo mantenimiento con bypass y kick-message', tag: 'Config' },
+      { tab: 'motdengine', title: 'MotdEngine - Comandos', desc: '/motd maintenance, /motd preview, /motd set, /motd reload', tag: 'Comandos' },
+      // Formatos y FAQ
+      { tab: 'formatos', title: 'Formatos y Colores MiniMessage', desc: 'Gradientes RGB, códigos clásicos &a-&f y arcoíris', tag: 'Guía' },
+      { tab: 'faq', title: 'Preguntas Frecuentes (FAQ)', desc: 'Java 25, permisos de bypass, cambio de votos', tag: 'FAQ' },
+      { tab: 'instalacion', title: 'Guía de Instalación', desc: 'Requisitos de Java 21-25+ y despliegue en servidor', tag: 'Instalación' }
+    ];
+
+    function setupSearch() {
+      const input = document.getElementById('wiki-search-input');
+      const results = document.getElementById('wiki-search-results');
+      if (!input || !results) return;
+
+      input.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) {
+          results.classList.remove('active');
+          results.innerHTML = '';
+          return;
+        }
+
+        const filtered = searchData.filter(item => 
+          item.title.toLowerCase().includes(query) ||
+          item.desc.toLowerCase().includes(query) ||
+          item.tag.toLowerCase().includes(query)
+        );
+
+        if (filtered.length === 0) {
+          results.innerHTML = '<div style="padding: 12px; font-size: 0.76rem; color: var(--text-dim); text-align: center;">Sin resultados</div>';
+          results.classList.add('active');
+          return;
+        }
+
+        results.innerHTML = filtered.map(item => `
+          <div class="search-result-item" onclick="selectSearchResult('${item.tab}')">
+            <div class="search-result-title">
+              <span>${item.title}</span>
+              <span class="search-result-tag">${item.tag}</span>
+            </div>
+            <div class="search-result-desc">${item.desc}</div>
+          </div>
+        `).join('');
+        results.classList.add('active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !results.contains(e.target)) {
+          results.classList.remove('active');
+        }
+      });
+    }
+
+    function selectSearchResult(tabId) {
+      openTab(tabId);
+      const results = document.getElementById('wiki-search-results');
+      const input = document.getElementById('wiki-search-input');
+      if (results) results.classList.remove('active');
+      if (input) input.value = '';
+    }
 
     let currentLang = localStorage.getItem('ep_doc_lang') || 'es';
     let currentTab = 'inicio';
@@ -1749,6 +2143,19 @@
         const key = el.getAttribute('data-i18n');
         if (i18n[lang][key]) {
           el.innerHTML = i18n[lang][key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (i18n[lang][key]) {
+          el.setAttribute('placeholder', i18n[lang][key]);
+        }
+      });
+
+      document.querySelectorAll('.code-copy-btn').forEach(btn => {
+        if (!btn.classList.contains('copied')) {
+          btn.innerText = (i18n[lang] && i18n[lang].btn_copy) || 'Copiar';
         }
       });
 
@@ -1792,6 +2199,8 @@
     const savedTheme = localStorage.getItem('ep_doc_theme') || 'dark';
     setTheme(savedTheme);
     setLang(currentLang);
+    setupCopyButtons();
+    setupSearch();
   </script>
 </body>
 </html>
